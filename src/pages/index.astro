@@ -1,11 +1,48 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import ArtistCard from '../components/ArtistCard.astro';
+import { artists } from '../lib/content';
 ---
 
 <Layout>
-	<Welcome />
+	<section class="px-6 pt-6 pb-24 sm:px-10 md:px-14 md:pt-12 md:pb-36">
+		<h1 class="display max-w-5xl text-[clamp(2.75rem,9vw,8.5rem)]">
+			Artist management from Berlin &amp; London.
+		</h1>
+		<p class="mt-10 max-w-xl text-lg leading-relaxed text-muted sm:text-xl">
+			We work honestly and openly with artists and producers of strong individual character — and
+			find the right path to represent them.
+		</p>
+	</section>
+
+	<section id="artists" class="px-6 sm:px-10 md:px-14">
+		<div class="flex items-baseline justify-between border-b border-line pb-4">
+			<h2 class="label text-muted">Roster</h2>
+			<span class="label text-muted">{artists.length}</span>
+		</div>
+		<ul class="mt-10 grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
+			{
+				artists.map((artist, index) => (
+					<li>
+						<ArtistCard artist={artist} eager={index < 3} />
+					</li>
+				))
+			}
+		</ul>
+	</section>
+
+	<section class="mt-32 px-6 sm:px-10 md:px-14">
+		<div class="border-t border-line pt-12">
+			<p class="display max-w-3xl text-3xl sm:text-4xl md:text-5xl">
+				In a time where this industry concentrates more and more on quantity, we believe in the
+				quality of our artists and of our own work.
+			</p>
+			<a
+				href="/about"
+				class="label mt-10 inline-block text-muted underline-offset-8 transition-colors hover:text-ink hover:underline"
+			>
+				About Karakter ↗
+			</a>
+		</div>
+	</section>
 </Layout>

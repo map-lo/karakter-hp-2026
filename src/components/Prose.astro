@@ -1,0 +1,37 @@
+---
+import { paragraphs } from '../lib/content';
+
+interface Props {
+	text: string;
+	class?: string;
+}
+
+const { text, class: className } = Astro.props;
+
+const escapeHtml = (value: string) =>
+	value
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;');
+
+const linkClass = 'underline underline-offset-4 decoration-line hover:decoration-ink';
+
+function linkify(paragraph: string): string {
+	return escapeHtml(paragraph)
+		.replace(
+			/https?:\/\/[^\s<]+[^\s<.,)]/g,
+			(url) =>
+				`<a class="${linkClass}" href="${url}" target="_blank" rel="noopener noreferrer">${url.replace(/^https?:\/\//, '')}</a>`
+		)
+		.replace(
+			/[\w.+-]+@[\w-]+\.[\w.]+[\w]/g,
+			(mail) => `<a class="${linkClass}" href="mailto:${mail}">${mail}</a>`
+		)
+		.replace(/\n/g, '<br />');
+}
+---
+
+<div class:list={['space-y-6', className]}>
+	{paragraphs(text).map((paragraph) => <p set:html={linkify(paragraph)} />)}
+</div>

@@ -1,0 +1,38 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Prose from '../components/Prose.astro';
+import { contact, paragraphs, philosophy, team } from '../lib/content';
+
+// The roster and the disclaimer summary live on their own pages already.
+const contactText = paragraphs(contact)
+	.filter((paragraph) => !/^Artist roster:/.test(paragraph) && !/standard disclaimer/.test(paragraph))
+	.join('\n\n');
+
+const sections = [
+	{ id: 'philosophy', label: 'Philosophy', text: philosophy, lead: true },
+	{ id: 'team', label: 'Team', text: team, lead: true },
+	{ id: 'contact', label: 'Contact', text: contactText, lead: false }
+];
+---
+
+<Layout title="About" description="Karakter Worldwide — philosophy, team and contact.">
+	<section class="px-6 pt-6 pb-20 sm:px-10 md:px-14 md:pt-12 md:pb-28">
+		<h1 class="display max-w-4xl text-[clamp(2.5rem,8vw,7rem)]">About</h1>
+	</section>
+
+	<div class="px-6 sm:px-10 md:px-14">
+		{
+			sections.map((section) => (
+				<section id={section.id} class="border-t border-line py-14 md:grid md:grid-cols-12 md:gap-8">
+					<h2 class="label mb-6 text-muted md:col-span-3 md:mb-0">{section.label}</h2>
+					<Prose
+						text={section.text}
+						class={`md:col-span-9 md:max-w-3xl leading-relaxed ${
+							section.lead ? 'text-lg sm:text-xl' : 'text-base text-muted sm:text-lg'
+						}`}
+					/>
+				</section>
+			))
+		}
+	</div>
+</Layout>

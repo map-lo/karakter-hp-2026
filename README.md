@@ -1,46 +1,44 @@
-# Astro Starter Kit: Basics
+# Karakter Worldwide
 
-```sh
-npm create astro@latest -- --template basics
-```
+Minimal homepage for the artist management Karakter Worldwide, built with Astro and Tailwind CSS.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Content
 
-## 🚀 Project Structure
+All copy lives in [`karakter-content.json`](./karakter-content.json) and is read through
+[`src/lib/content.ts`](./src/lib/content.ts). Editing the JSON updates the site — no markup changes needed.
 
-Inside of your Astro project, you'll see the following folders and files:
+- `artists` → the roster grid on the homepage
+- `philosophy`, `team`, `contact` → `/about`
+- `privacy_policy` → `/privacy`
+- `imprint` → `/imprint`
+
+## Artist images
+
+Every artist has a portrait in `src/assets/artists/`, named after the artist slug
+(e.g. `get-well-soon.jpg`). The committed files are generated typographic
+stand-ins — the old site had no artist photos. Replace a file with a real press
+photo of the same slug and the roster picks it up automatically. See the README
+in that folder for details.
+
+## Structure
 
 ```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+scripts/              # portrait generator
+src/
+├── assets/artists/   # artist portraits (one per slug)
+├── components/       # ArtistCard, Prose
+├── layouts/          # Layout with header + footer
+├── lib/content.ts    # typed access to karakter-content.json
+├── pages/            # index, about, privacy, imprint
+└── styles/global.css # Tailwind theme, typography utilities
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Commands
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+| Command           | Action                                      |
+| :---------------- | :------------------------------------------ |
+| `npm install`     | Install dependencies                        |
+| `npm run dev`     | Start the dev server at `localhost:4321`    |
+| `npm run build`   | Build the production site to `./dist/`      |
+| `npm run preview` | Preview the production build locally        |
+| `npm run artist-portraits` | Generate missing artist portraits (`-- --force` redraws all) |

@@ -1,0 +1,15 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Prose from '../components/Prose.astro';
+import { privacyPolicy } from '../lib/content';
+---
+
+<Layout title="Privacy Policy" description="Privacy policy of Karakter Worldwide GmbH.">
+	<section class="px-6 pt-6 pb-16 sm:px-10 md:px-14 md:pt-12 md:pb-24">
+		<h1 class="display max-w-4xl text-[clamp(2.5rem,7vw,6rem)]">Privacy Policy</h1>
+	</section>
+
+	<div class="border-t border-line px-6 py-14 sm:px-10 md:px-14">
+		<Prose text={privacyPolicy} class="max-w-2xl leading-relaxed text-muted" />
+	</div>
+</Layout>
