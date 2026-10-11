@@ -10,7 +10,7 @@ import { artists } from '../lib/content';
 			Artist management from Berlin &amp; London.
 		</h1>
 		<p class="mt-10 max-w-xl text-lg leading-relaxed text-muted sm:text-xl">
-			We work honestly and openly with artists and producers of strong individual character — and
+			We work honestly and openly with artists and producers of strong individual character. We
 			find the right path to represent them.
 		</p>
 	</section>
@@ -20,11 +20,11 @@ import { artists } from '../lib/content';
 			<h2 class="label text-muted">Roster</h2>
 			<span class="label text-muted">{artists.length}</span>
 		</div>
-		<ul class="mt-10 grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
+		<ul class="mt-10 grid grid-cols-2 gap-x-4 gap-y-12 sm:gap-x-6 lg:grid-cols-4 lg:gap-x-8 lg:gap-y-16">
 			{
 				artists.map((artist, index) => (
 					<li>
-						<ArtistCard artist={artist} eager={index < 3} />
+						<ArtistCard artist={artist} eager={index < 4} />
 					</li>
 				))
 			}
@@ -41,7 +41,7 @@ import { artists } from '../lib/content';
 				href="/about"
 				class="label mt-10 inline-block text-muted underline-offset-8 transition-colors hover:text-ink hover:underline"
 			>
-				About Karakter ↗
+				About Karakter
 			</a>
 		</div>
 	</section>
