@@ -9,7 +9,6 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "artist-portraits": "node scripts/generate-artist-portraits.mjs",
     "astro": "astro"
   },
   "dependencies": {

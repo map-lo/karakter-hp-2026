@@ -1,17 +1,10 @@
-import type { ImageMetadata } from 'astro';
 import data from '../../karakter-content.json';
 
 export type Artist = {
   name: string;
   url: string;
   slug: string;
-  image?: ImageMetadata;
 };
-
-const artistImages = import.meta.glob<{ default: ImageMetadata }>(
-  '../assets/artists/*.{jpg,jpeg,png,webp,avif}',
-  { eager: true }
-);
 
 export function slugify(value: string): string {
   return value
@@ -22,16 +15,9 @@ export function slugify(value: string): string {
     .replace(/^-|-$/g, '');
 }
 
-function imageFor(slug: string): ImageMetadata | undefined {
-  const match = Object.entries(artistImages).find(
-    ([path]) => slugify(path.split('/').pop()!.replace(/\.[^.]+$/, '')) === slug
-  );
-  return match?.[1].default;
-}
-
 export const artists: Artist[] = data.artists.map((artist) => {
   const slug = slugify(artist.name);
-  return { name: artist.name, url: artist.url, slug, image: imageFor(slug) };
+  return { name: artist.name, url: artist.url, slug };
 });
 
 export const philosophy = data.philosophy.text;
