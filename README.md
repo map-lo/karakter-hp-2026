@@ -12,20 +12,30 @@ All copy lives in [`karakter-content.json`](./karakter-content.json) and is read
 - `privacy_policy` → `/privacy`
 - `imprint` → `/imprint`
 
-## Homepage media
+## Releases
 
-The collage is configured in `src/lib/media.ts`. Each item can use a remote
-artwork URL and is matched to an artist from the content JSON. `createPlaceholder()`
-generates an inline SVG fallback when no image is supplied or a remote image
-cannot be loaded.
+The homepage grid shows every release in [`src/data/releases.json`](./src/data/releases.json),
+newest first. That file is a committed cache so builds stay offline safe. Refresh it with:
+
+```sh
+npm run releases
+```
+
+[`scripts/fetch-releases.mjs`](./scripts/fetch-releases.mjs) reads the roster's releases from the
+public iTunes Search API (no key needed) and stores title, release date, label and artwork URL.
+Artist IDs are pinned inside the script because names such as `Mine` and `LOTTE` match several
+unrelated acts. Add an artist to `artistIds` there to include them; the script reports anyone on
+the roster without an ID. `createPlaceholder()` in `src/lib/releases.ts` draws an inline SVG sleeve
+when a remote artwork fails to load.
 
 ## Structure
 
 ```text
 src/
-├── components/       # MediaTile, Prose
+├── components/       # ReleaseCard, Prose
 ├── layouts/          # Layout with header + footer
-├── lib/              # content access and homepage media
+├── data/             # cached release data
+├── lib/              # content and release access
 ├── pages/            # index, about, privacy, imprint
 └── styles/global.css # Tailwind theme, typography utilities
 ```
@@ -38,3 +48,4 @@ src/
 | `npm run dev`     | Start the dev server at `localhost:4321`    |
 | `npm run build`   | Build the production site to `./dist/`      |
 | `npm run preview` | Preview the production build locally        |
+| `npm run releases`| Refresh `src/data/releases.json` from iTunes |

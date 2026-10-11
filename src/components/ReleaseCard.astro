@@ -1,0 +1,81 @@
+---
+import type { Release } from "../lib/releases";
+import { createPlaceholder } from "../lib/releases";
+
+interface Props {
+  release: Release;
+  href?: string;
+  index?: number;
+  eager?: boolean;
+}
+
+const { release, href, index = 0, eager = false } = Astro.props;
+const target = release.url ?? href;
+const Tag = target ? "a" : "div";
+---
+
+<article class="release">
+  <Tag
+    class="release-link"
+    href={target}
+    target={target ? "_blank" : undefined}
+    rel={target ? "noopener noreferrer" : undefined}
+  >
+    <img
+      src={release.artwork}
+      alt={`${release.title} by ${release.artist}`}
+      width="600"
+      height="600"
+      loading={eager ? "eager" : "lazy"}
+      decoding="async"
+      data-fallback={createPlaceholder(release.title, index)}
+    />
+  </Tag>
+</article>
+
+<style>
+  .release {
+    position: relative;
+    z-index: 2;
+  }
+
+  .release-link {
+    position: relative;
+    display: block;
+    border: 1px solid #0c0c0c;
+    box-shadow: 3px 3px 0 rgb(12 12 12 / 0.75);
+    color: inherit;
+    text-decoration: none;
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+  .release-link:hover,
+  .release-link:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 #e43d30;
+    outline: none;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    background: #d6d2c8;
+    filter: contrast(1.06) saturate(0.94);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .release-link {
+      transition: none;
+    }
+
+    .release-link:hover,
+    .release-link:focus-visible {
+      transform: none;
+    }
+  }
+
+</style>

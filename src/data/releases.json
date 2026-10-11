@@ -1,0 +1,510 @@
+{
+  "source": "iTunes Search API",
+  "fetchedAt": "2026-10-11",
+  "releases": [
+    {
+      "artist": "Get Well Soon",
+      "title": "Séance",
+      "kind": "album",
+      "releaseDate": "2026-10-30",
+      "label": "Scarlet Beast Records",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/f0/92/b2/f092b2b3-8384-76b0-8c58-514c26a4c0a2/cover_4068992775456.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/s%C3%A9ance/6790763072?uo=4"
+    },
+    {
+      "artist": "Mine",
+      "title": "Killer",
+      "kind": "album",
+      "releaseDate": "2026-09-04",
+      "label": "TIER Musik",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/8c/7a/44/8c7a447f-04db-251b-5eab-9bc63433eeae/cover_4068992775081.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/killer/6790474201?uo=4"
+    },
+    {
+      "artist": "LOTTE",
+      "title": "Lotte",
+      "kind": "album",
+      "releaseDate": "2026-08-21",
+      "label": "LOTTE/TextundTon/Epic Records Germany",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/a8/18/99/a81899be-b218-c08b-4a09-63e8c2cbe770/196874296073.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/lotte/1893096878?uo=4"
+    },
+    {
+      "artist": "Wallis Bird",
+      "title": "I Can See Your House From Here",
+      "kind": "album",
+      "releaseDate": "2026-06-05",
+      "label": "bród records",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/fc/4f/21/fc4f2107-8258-c357-8077-a3f64ddc8cba/cover_4068992661995.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/i-can-see-your-house-from-here/1881891187?uo=4"
+    },
+    {
+      "artist": "Get Well Soon",
+      "title": "Minus The Magic",
+      "kind": "album",
+      "releaseDate": "2026-05-22",
+      "label": "Scarlet Beast Records",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/b0/82/b7/b082b7f4-2f33-a714-b3ac-2fa6f916ed11/cover_4068992655314.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/minus-the-magic/1879791908?uo=4"
+    },
+    {
+      "artist": "Hundreds",
+      "title": "Sirens",
+      "kind": "album",
+      "releaseDate": "2026-02-06",
+      "label": "Embassy of Music GmbH",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/ae/44/85/ae448570-c928-32e0-9ade-9c9e49c583b6/4066004874012_3000.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/sirens/1825128584?uo=4"
+    },
+    {
+      "artist": "MALAKOFF KOWALSKI",
+      "title": "Songs With Words",
+      "kind": "album",
+      "releaseDate": "2025-03-21",
+      "label": "Sony Classical, a label of Sony Music Entertainment, under exclusive license from Malakoff Kowalski",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c8/01/8d/c8018d3e-79bd-1e7d-46b3-65d8c1ef31cd/196872559705.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/songs-with-words/1791771032?uo=4"
+    },
+    {
+      "artist": "MALAKOFF KOWALSKI",
+      "title": "Sexuell verfügbar (Original Soundtrack)",
+      "kind": "album",
+      "releaseDate": "2024-03-22",
+      "label": "It Sounds",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/45/bd/ce/45bdce8f-252e-629d-6297-2d67b5e053a8/cover.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/sexuell-verf%C3%BCgbar-original-soundtrack/1733856365?uo=4"
+    },
+    {
+      "artist": "Mine",
+      "title": "BAUM",
+      "kind": "album",
+      "releaseDate": "2024-02-02",
+      "label": "A Virgin Music Label And Artist Services release; ℗ 2024 Mine, under exclusive license to Universal Music GmbH",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/a4/a9/c4/a4a9c480-9792-f208-2d1f-0c71b7ea4ff1/23UM1IM19226.rgb.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/baum/1712906162?uo=4"
+    },
+    {
+      "artist": "Wallis Bird",
+      "title": "Hands",
+      "kind": "album",
+      "releaseDate": "2022-05-27",
+      "label": "Mount Silver Records under exclusive license to Soundly Music",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/da/d0/c3/dad0c38c-9c53-8116-abe6-065eee97dac4/196626050069.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/hands/1603326176?uo=4"
+    },
+    {
+      "artist": "LOTTE",
+      "title": "WORAN HÄLTST DU DICH FEST, WENN ALLES ZERBRICHT?",
+      "kind": "album",
+      "releaseDate": "2022-05-27",
+      "label": "COLUMBIA a division of Sony Music Entertainment Germany GmbH",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/05/2b/ce/052bcec9-49ff-6385-d047-d685b5b87fea/886449824229.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/woran-h%C3%A4ltst-du-dich-fest-wenn-alles-zerbricht/1617844712?uo=4"
+    },
+    {
+      "artist": "MALAKOFF KOWALSKI",
+      "title": "Leander Haußmanns Stasikomödie (The Stasi Score - Original Motion Picture Soundtrack)",
+      "kind": "album",
+      "releaseDate": "2022-05-19",
+      "label": "Königskinder Music",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/33/c1/96/33c19671-d9f0-3297-778a-0ea1c39b5afd/4066004447889_3000.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/leander-hau%C3%9Fmanns-stasikom%C3%B6die-the-stasi-score/1620258412?uo=4"
+    },
+    {
+      "artist": "LOTTE",
+      "title": "Lotte bei Sing meinen Song, Vol. 9",
+      "kind": "album",
+      "releaseDate": "2022-05-13",
+      "label": "Music For Millions, A DIVISION OF AD ALLIANCE GmbH",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/92/54/d2/9254d22b-190c-f04b-63b9-44203741c04a/4066004438481_3000.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/lotte-bei-sing-meinen-song-vol-9/1622344562?uo=4"
+    },
+    {
+      "artist": "Get Well Soon",
+      "title": "Amen",
+      "kind": "album",
+      "releaseDate": "2022-03-25",
+      "label": "Get Well Soon, under exclusive Licence to Virgin Music Label & Artist Services",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/bd/8a/39/bd8a393b-8bdf-71ac-7f2c-73bfab39919e/21UM1IM44879.rgb.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/amen/1597156823?uo=4"
+    },
+    {
+      "artist": "Anaïs Mitchell",
+      "title": "Anaïs Mitchell (Deluxe)",
+      "kind": "album",
+      "releaseDate": "2022-01-28",
+      "label": "Anaïs Mitchell under exclusive license to BMG Rights Management (US) LLC",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/6f/74/e1/6f74e1c3-ae82-d539-4b53-ad585b19772d/4050538811810.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/ana%C3%AFs-mitchell-deluxe/1617863451?uo=4"
+    },
+    {
+      "artist": "Hundreds",
+      "title": "In a Decade (Live at Elbphilharmonie)",
+      "kind": "album",
+      "releaseDate": "2021-05-25",
+      "label": "Embassy of Music GmbH",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/99/4b/81/994b8130-e9bd-b28a-7a03-73ff27546f6d/4251888718396_3000.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/in-a-decade-live-at-elbphilharmonie/1555513412?uo=4"
+    },
+    {
+      "artist": "Mine",
+      "title": "HINÜBER",
+      "kind": "album",
+      "releaseDate": "2021-04-30",
+      "label": "A Virgin Music Label And Artist Services Release; ℗ 2021 Mine, under exclusive license to Universal Music GmbH",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/ab/bd/e3/abbde315-ba82-9fe6-7c53-483dc35596d0/20UMGIM89904.rgb.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/hin%C3%BCber/1542368595?uo=4"
+    },
+    {
+      "artist": "Hundreds",
+      "title": "Electric Current",
+      "kind": "album",
+      "releaseDate": "2020-08-28",
+      "label": "Embassy of Music GmbH",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/ff/28/31/ff2831ef-30f7-bcc1-c052-e2f4aac0e3fc/4251625995899_3000.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/electric-current/1525841029?uo=4"
+    },
+    {
+      "artist": "Hundreds",
+      "title": "The Current",
+      "kind": "album",
+      "releaseDate": "2020-03-27",
+      "label": "Embassy of Music GmbH",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/da/c5/ce/dac5ce4c-5af5-a065-d439-f1ca77833850/4251625948505_3000.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/the-current/1487429462?uo=4"
+    },
+    {
+      "artist": "MALAKOFF KOWALSKI",
+      "title": "Onomatopoetika",
+      "kind": "album",
+      "releaseDate": "2020-02-28",
+      "label": "MPS - Musik Produktion Schwarzwald  / Edel Germany GmbH",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/9f/13/f0/9f13f0de-1229-d2b0-a8b0-f4d1235ef50a/cover.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/onomatopoetika/1489185371?uo=4"
+    },
+    {
+      "artist": "LOTTE",
+      "title": "Glück",
+      "kind": "album",
+      "releaseDate": "2019-10-11",
+      "label": "COLUMBIA a division of Sony Music Entertainment Germany GmbH",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/cb/80/9d/cb809d44-58f5-a5f9-b128-a40e38c46efd/886447620403.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/gl%C3%BCck/1476547993?uo=4"
+    },
+    {
+      "artist": "Anaïs Mitchell",
+      "title": "Hadestown (Original Broadway Cast Recording)",
+      "kind": "album",
+      "releaseDate": "2019-06-21",
+      "label": "Hadestown Broadway under exclusive license to Sing It Again, LLC.  All Rights Reserved.",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/6f/1f/29/6f1f298f-5517-daa1-380f-58425c85bd85/093624899273.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/hadestown-original-broadway-cast-recording/1466351033?uo=4"
+    },
+    {
+      "artist": "Mine",
+      "title": "Klebstoff",
+      "kind": "album",
+      "releaseDate": "2019-04-12",
+      "label": "A Caroline International release; ℗ 2019 Mine, under exclusive license to Universal Music GmbH",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/20/44/5a/20445af7-46bf-d51b-6bd1-d5eef84b61a6/00602577441318.rgb.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/klebstoff/1449647948?uo=4"
+    },
+    {
+      "artist": "Anaïs Mitchell",
+      "title": "Hadestown Live From London",
+      "kind": "album",
+      "releaseDate": "2019-01-01",
+      "label": "Hadestown Broadway under exclusive license to Sing It Again, LLC.  All Rights Reserved.",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/59/04/ae/5904aef8-80ef-77bc-283f-0b371664bcf8/732388390809.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/hadestown-live-from-london/1880808239?uo=4"
+    },
+    {
+      "artist": "Get Well Soon",
+      "title": "The Horror",
+      "kind": "album",
+      "releaseDate": "2018-06-08",
+      "label": "Get Well Soon, under exclusive licence to Virgin Music UK",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/12/4a/78/124a788a-a3cc-f39d-05d5-4a434afdd3eb/00602567501763.rgb.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/the-horror/1365544960?uo=4"
+    },
+    {
+      "artist": "Inner Tongue",
+      "title": "Favours",
+      "kind": "album",
+      "releaseDate": "2018-05-25",
+      "label": "Mount Silver Records",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music62/v4/cf/aa/d5/cfaad57a-de68-2ab9-a737-b652fe11ff9e/00602567533931.rgb.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/favours/1368072709?uo=4"
+    },
+    {
+      "artist": "MALAKOFF KOWALSKI",
+      "title": "My First Piano",
+      "kind": "album",
+      "releaseDate": "2018-04-06",
+      "label": "Malakoff Kowalski under exclusive license to MPS / Edel Germany GmbH",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/5a/7d/b1/5a7db1c3-d4ed-4008-fd5c-65a7afd80424/cover.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/my-first-piano/1340969395?uo=4"
+    },
+    {
+      "artist": "Mine",
+      "title": "Mine und Orchester (Live in Berlin)",
+      "kind": "album",
+      "releaseDate": "2018-02-02",
+      "label": "Tier Musik",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/9a/0c/5b/9a0c5be4-65fc-7341-1f70-1d26b81d54fa/cover_3614974401519.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/mine-und-orchester-live-in-berlin/1553774869?uo=4"
+    },
+    {
+      "artist": "Mine",
+      "title": "Alle Liebe nachträglich",
+      "kind": "album",
+      "releaseDate": "2017-10-13",
+      "label": "Mine & Fatoni, under exclusive license to Caroline International, a division of Universal Music GmbH",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/c4/1e/0a/c41e0a54-2104-432f-e45d-7f16874f956d/00602557900613.rgb.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/alle-liebe-nachtr%C3%A4glich/1440899780?uo=4"
+    },
+    {
+      "artist": "LOTTE",
+      "title": "Querfeldein",
+      "kind": "album",
+      "releaseDate": "2017-09-15",
+      "label": "Sony Music Entertainment Germany GmbH",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/3d/db/73/3ddb739b-8bec-0acb-6d91-76141b6a34e3/886446541280.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/querfeldein/1255213067?uo=4"
+    },
+    {
+      "artist": "Wallis Bird",
+      "title": "Home",
+      "kind": "album",
+      "releaseDate": "2017-03-30",
+      "label": "Mount Silver Records, All rights reserved. Label Services by Caroline International",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/3f/96/5a/3f965a76-9fa4-45d6-9e0b-6b95f459a50e/00602557029116.rgb.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/home/1442849904?uo=4"
+    },
+    {
+      "artist": "Hundreds",
+      "title": "Wilderness (Deluxe Edition)",
+      "kind": "album",
+      "releaseDate": "2016-11-04",
+      "label": "Embassy of Music",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music71/v4/28/e9/8c/28e98cc5-d949-e3a7-081d-71784cee00ad/4251234316818_1448.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/wilderness-deluxe-edition/1150364628?uo=4"
+    },
+    {
+      "artist": "Mine",
+      "title": "Das Ziel ist im Weg (Deluxe Edition)",
+      "kind": "album",
+      "releaseDate": "2016-04-15",
+      "label": "Tier Musik",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/b7/9d/16/b79d169d-7d4c-f454-8f81-9080acf78801/cover_3614595703900.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/das-ziel-ist-im-weg-deluxe-edition/1562110914?uo=4"
+    },
+    {
+      "artist": "MALAKOFF KOWALSKI",
+      "title": "I Love You",
+      "kind": "album",
+      "releaseDate": "2015-09-18",
+      "label": "Malakoff Kowalski under exclusive license to Edel Germany GmbH",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/61/02/ca/6102ca5f-bb05-8f5f-2c12-e2d281b81b00/cover.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/i-love-you/1033480840?uo=4"
+    },
+    {
+      "artist": "Wallis Bird",
+      "title": "Yeah! (Live 2007-2014)",
+      "kind": "album",
+      "releaseDate": "2015-08-21",
+      "label": "Wallis Bird, under exclusive licence to Mount Silver Records",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/46/27/26/462726ee-8799-63e6-762c-1573c86f7f1e/00602557698886.rgb.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/yeah-live-2007-2014/1443129511?uo=4"
+    },
+    {
+      "artist": "Hundreds",
+      "title": "Tame the Noise",
+      "kind": "album",
+      "releaseDate": "2015-06-26",
+      "label": "Sinnbus",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/53/2c/d7/532cd790-3b6e-76a2-cf1c-2a1c24169737/cover.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/tame-the-noise/1684349883?uo=4"
+    },
+    {
+      "artist": "Hundreds",
+      "title": "Aftermath Remixes",
+      "kind": "album",
+      "releaseDate": "2014-12-08",
+      "label": "Krakatau Records",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music1/v4/ab/88/e9/ab88e990-69a3-1277-d265-a8af5730ea09/cover.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/aftermath-remixes/935395006?uo=4"
+    },
+    {
+      "artist": "Get Well Soon",
+      "title": "Henry - The Infinite Desire of Heinrich Zeppelin Alfred von Nullmeyer - Greatest Hits",
+      "kind": "album",
+      "releaseDate": "2014-11-21",
+      "label": "Scarlet Beast Records",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e3/16/ba/e316ba08-69f1-1df8-e557-14c141da8fe6/cover_4250506852580.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/henry-the-infinite-desire-of-heinrich-zeppelin/1887895120?uo=4"
+    },
+    {
+      "artist": "Mine",
+      "title": "Mine",
+      "kind": "album",
+      "releaseDate": "2014-10-10",
+      "label": "Tier Musik",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/98/92/1c/98921c26-131a-118d-9690-2c6f673b648b/cover_4018939271114.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/mine/1553783287?uo=4"
+    },
+    {
+      "artist": "Anaïs Mitchell",
+      "title": "xoa",
+      "kind": "album",
+      "releaseDate": "2014-10-06",
+      "label": "Wilderland Records marketed and distributed by Thirty Tigers",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/83/81/60/83816056-bc63-ae30-0cf7-122cdbc0f56a/197188470814.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/xoa/1679410562?uo=4"
+    },
+    {
+      "artist": "Hundreds",
+      "title": "Aftermath",
+      "kind": "album",
+      "releaseDate": "2014-05-27",
+      "label": "Sky Council Recordings",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music6/v4/cd/d8/06/cdd80636-4874-839e-d1fc-c2343c3dc1b2/886444576680.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/aftermath/873340165?uo=4"
+    },
+    {
+      "artist": "Wallis Bird",
+      "title": "Architect (Deluxe)",
+      "kind": "album",
+      "releaseDate": "2014-04-11",
+      "label": "Wallis Bird, under exclusive licence to Mount Silver Records",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/10/29/a7/1029a704-843c-e6e3-0ae6-0b97d5da1937/04018939259242.rgb.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/architect-deluxe/1443892201?uo=4"
+    },
+    {
+      "artist": "MALAKOFF KOWALSKI",
+      "title": "Kill Your Babies - Filmscore for an Unknown Picture",
+      "kind": "album",
+      "releaseDate": "2012-10-12",
+      "label": "Buback Tonträger",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/cb/ee/6a/cbee6a8d-435e-f6e8-9e39-662c740048c6/4047179712620_3000.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/kill-your-babies-filmscore-for-an-unknown-picture/1562190792?uo=4"
+    },
+    {
+      "artist": "Get Well Soon",
+      "title": "Xanadu (An Original Soundtrack by Get Well Soon)",
+      "kind": "album",
+      "releaseDate": "2012-08-24",
+      "label": "Scarlet Beast Records",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/18/61/5f/18615f49-f9dc-3a7f-4c01-fbf398ca3b35/cover_4250506825577.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/xanadu-an-original-soundtrack-by-get-well-soon/1879658609?uo=4"
+    },
+    {
+      "artist": "Get Well Soon",
+      "title": "The Scarlet Beast O'Seven Heads",
+      "kind": "album",
+      "releaseDate": "2012-08-24",
+      "label": "Scarlet Beast Records",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/0c/86/8f/0c868f47-51ea-dad9-278c-f10abf644e5d/cover_4250506825461.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/the-scarlet-beast-oseven-heads/1879657004?uo=4"
+    },
+    {
+      "artist": "Wallis Bird",
+      "title": "Wallis Bird (Deluxe)",
+      "kind": "album",
+      "releaseDate": "2012-03-09",
+      "label": "Wallis Bird, under exclusive licence to Mount Silver Records",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/39/d1/c4/39d1c439-0316-fd89-78f0-adbf523f42e9/00602557194371.rgb.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/wallis-bird-deluxe/1443895282?uo=4"
+    },
+    {
+      "artist": "Anaïs Mitchell",
+      "title": "Young Man In America",
+      "kind": "album",
+      "releaseDate": "2012-02-28",
+      "label": "Wilderland Records",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music/39/1e/a8/mzi.kggektsl.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/young-man-in-america/498739583?uo=4"
+    },
+    {
+      "artist": "Hundreds",
+      "title": "Variations",
+      "kind": "album",
+      "releaseDate": "2011-12-02",
+      "label": "Sinnbus",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/f3/d2/97/f3d29756-5946-1a10-6fae-79184866891c/cover.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/variations/1676029867?uo=4"
+    },
+    {
+      "artist": "Anaïs Mitchell",
+      "title": "Hadestown",
+      "kind": "album",
+      "releaseDate": "2010-04-26",
+      "label": "Wilderland Records marketed and distributed by Thirty Tigers",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/da/4b/bd/da4bbdd5-239f-410a-c70b-7358cd80b691/193483169408.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/hadestown/1441690444?uo=4"
+    },
+    {
+      "artist": "Get Well Soon",
+      "title": "Vexations",
+      "kind": "album",
+      "releaseDate": "2010-01-22",
+      "label": "Scarlet Beast Records",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/1f/b7/eb/1fb7eb9c-c377-6fae-e5b9-5093563d133f/cover_4250506825119.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/vexations/1879653667?uo=4"
+    },
+    {
+      "artist": "MALAKOFF KOWALSKI",
+      "title": "Neue Deutsche Reiselieder",
+      "kind": "album",
+      "releaseDate": "2009-08-28",
+      "label": "Das Kowalski Komitee",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/4b/2c/e3/4b2ce361-1dcd-7d7e-17e4-3febea2101a3/cover_3661585147497.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/neue-deutsche-reiselieder/6803156403?uo=4"
+    },
+    {
+      "artist": "Get Well Soon",
+      "title": "Songs Against the Glaciation",
+      "kind": "album",
+      "releaseDate": "2008-11-14",
+      "label": "Scarlet Beast Records",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/10/e0/d9/10e0d948-3c5a-2205-e10f-d9834b4c623a/cover_4250506824945.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/songs-against-the-glaciation/1879655550?uo=4"
+    },
+    {
+      "artist": "Get Well Soon",
+      "title": "Rest Now, Weary Head! You Will Get Well Soon",
+      "kind": "album",
+      "releaseDate": "2008-01-18",
+      "label": "Scarlet Beast Records",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/ad/bf/a2/adbfa2f4-d427-145f-6c61-88d0e9418d6c/cover_5033197501086.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/rest-now-weary-head-you-will-get-well-soon/1879654877?uo=4"
+    },
+    {
+      "artist": "Anaïs Mitchell",
+      "title": "The Brightness",
+      "kind": "album",
+      "releaseDate": "2007-02-13",
+      "label": "Wilderland Records marketed and distributed by Thirty Tigers",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/ad/b0/a3/adb0a36b-9aff-6c01-057b-d4c55af6320e/193483169378.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/the-brightness/1441813236?uo=4"
+    },
+    {
+      "artist": "Wallis Bird",
+      "title": "Spoons",
+      "kind": "album",
+      "releaseDate": "2007-01-01",
+      "label": "Universal Island Records Ltd. A Universal Music Company.",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/5c/80/fa/5c80facf-2773-0dd2-f51d-e8d122eab10d/00602517476288.rgb.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/spoons/1443649033?uo=4"
+    },
+    {
+      "artist": "Anaïs Mitchell",
+      "title": "Hymns for the Exiled",
+      "kind": "album",
+      "releaseDate": "2004-09-21",
+      "label": "Wilderland Records marketed and distributed by Thirty Tigers",
+      "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/85/bb/d3/85bbd324-ce53-c401-818d-b724cf7582cb/193483169385.jpg/600x600bb.jpg",
+      "url": "https://music.apple.com/us/album/hymns-for-the-exiled/1441689156?uo=4"
+    }
+  ]
+}

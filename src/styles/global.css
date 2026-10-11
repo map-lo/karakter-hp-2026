@@ -3,10 +3,10 @@
 @theme {
   --font-sans: var(--font-inter-tight), "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-  --color-ink: #111110;
-  --color-paper: #f4f3f0;
-  --color-muted: #6f6d67;
-  --color-line: #d9d6d0;
+  --color-ink: #f2eee5;
+  --color-paper: #292929;
+  --color-muted: #a7a39c;
+  --color-line: #353535;
 }
 
 @layer base {
@@ -24,8 +24,8 @@
   }
 
   ::selection {
-    background-color: var(--color-ink);
-    color: var(--color-paper);
+    background-color: #e43d30;
+    color: #292929;
   }
 
   :focus-visible {
