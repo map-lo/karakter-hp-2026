@@ -44,6 +44,10 @@ src/
 
 Use Tailwind utilities for layout, spacing, typography, and responsive styles.
 Shared colors and typography utilities live in [`src/styles/global.css`](./src/styles/global.css).
+Light ink, the wall background, and info-page surfaces share the bright, cool
+white `#F7FAFF`.
+The homepage canvas uses the light background, including during scroll overshoot;
+the artist aside owns its dark background. Info pages retain their dark outer canvas.
 For repeated patterns, use scoped classes with `@apply` in `@layer components`,
 referencing the global stylesheet with `@reference` so theme utilities are available.
 Keep custom CSS for details that are clearer without utilities, such as SVG stroke settings.

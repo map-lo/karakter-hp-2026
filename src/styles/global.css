@@ -4,30 +4,31 @@
   --font-sans: var(--font-inter-tight), "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-inter: var(--font-inter-family), "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-  --color-ink: #f5f5f2;
+  --color-ink: #f7faff;
   --color-paper: #202020;
   --color-muted: #a3a3a0;
   --color-line: #3d3d3d;
-  --color-wall: #f3f3f1;
+  --color-wall: var(--color-ink);
   --color-wall-ink: #191919;
 }
 
 @layer base {
   html {
+    background-color: var(--page-background, var(--color-paper));
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
   }
 
   body {
-    background-color: var(--color-paper);
+    background-color: var(--page-background, var(--color-paper));
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-synthesis-weight: none;
   }
 
   ::selection {
-    background-color: #f5f5f2;
+    background-color: var(--color-ink);
     color: #202020;
   }
 

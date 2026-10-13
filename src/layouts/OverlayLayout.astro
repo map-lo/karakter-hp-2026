@@ -12,14 +12,14 @@ const { title, description } = Astro.props;
 <Layout title={title} description={description} chrome={false}>
 	<div class="h-screen p-3 sm:p-6 md:p-10">
 		<div
-			class="relative h-full overflow-y-auto rounded-[1.75rem] bg-white text-black sm:rounded-[2.5rem] md:rounded-[3rem]"
+			class="relative h-full overflow-y-auto rounded-[1.75rem] bg-ink text-black sm:rounded-[2.5rem] md:rounded-[3rem]"
 		>
-			<div class="sticky top-0 z-10 flex justify-end bg-white p-5 sm:p-8">
+			<div class="sticky top-0 z-10 flex justify-end bg-ink p-5 sm:p-8">
 				<a
 					href="/"
 					data-overlay-close
 					aria-label="Close"
-					class="flex h-12 w-12 items-center justify-center rounded-full bg-white text-black transition-colors hover:bg-black/5"
+					class="flex h-12 w-12 items-center justify-center rounded-full bg-ink text-black transition-colors hover:bg-black/5"
 				>
 					<svg
 						viewBox="0 0 24 24"
@@ -47,7 +47,7 @@ const { title, description } = Astro.props;
 <style is:global>
 	.overlay-body ::selection {
 		background-color: #191919;
-		color: #f5f5f2;
+		color: var(--color-ink);
 	}
 
 	.overlay-body a {

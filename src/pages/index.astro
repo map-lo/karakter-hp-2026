@@ -12,10 +12,10 @@ const sortedArtists = [...artists].sort((a, b) =>
 );
 ---
 
-<Layout chrome={false}>
-  <div class="min-h-screen bg-paper">
+<Layout chrome={false} background="wall">
+  <div class="min-h-screen bg-wall">
     <aside
-      class="flex flex-col bg-paper px-5 pt-6 pb-8 text-ink min-[1024px]:fixed min-[1024px]:inset-y-0 min-[1024px]:left-0 min-[1024px]:z-20 min-[1024px]:min-h-svh min-[1024px]:w-[38%] min-[1024px]:overflow-y-auto min-[1024px]:p-[clamp(1.5rem,3vw,3rem)] min-h-screen justify-between"
+      class="flex flex-col bg-paper px-6 pt-8 pb-12 text-ink min-[1024px]:fixed min-[1024px]:inset-y-0 min-[1024px]:left-0 min-[1024px]:z-20 min-[1024px]:min-h-svh min-[1024px]:w-[38%] min-[1024px]:overflow-y-auto min-[1024px]:p-[clamp(1.5rem,3vw,3rem)] min-h-screen justify-between"
     >
       <div
         class="flex flex-col gap-2 min-[1024px]:gap-[clamp(0.5rem,1vh,0.85rem)]"
@@ -50,9 +50,9 @@ const sortedArtists = [...artists].sort((a, b) =>
                   <stop offset="65%" stop-color="#2980B9"></stop>
                   <stop offset="79%" stop-color="#2980B9"></stop>
                   <stop offset="79%" stop-color="#2980B9"></stop>
-                  <stop offset="91%" stop-color="#F5F5DC"></stop>
-                  <stop offset="91%" stop-color="#F5F5DC"></stop>
-                  <stop offset="100%" stop-color="#F5F5DC"></stop>
+                  <stop offset="91%" stop-color="#F5F5E8"></stop>
+                  <stop offset="91%" stop-color="#F5F5E8"></stop>
+                  <stop offset="100%" stop-color="#F5F5E8"></stop>
                 </linearGradient>
               </defs>
               <path
@@ -96,7 +96,7 @@ const sortedArtists = [...artists].sort((a, b) =>
 
       <nav
         id="artists"
-        class="mt-12 min-[1024px]:mt-0 min-[1024px]:flex min-[1024px]:flex-1 min-[1024px]:flex-col min-[1024px]:justify-center"
+        class="mt-16 min-[1024px]:mt-0 min-[1024px]:flex min-[1024px]:flex-1 min-[1024px]:flex-col min-[1024px]:justify-center"
         aria-label="Artist roster"
       >
         <ol class="flex flex-col">
@@ -122,7 +122,7 @@ const sortedArtists = [...artists].sort((a, b) =>
       {
         /* Bottom section: contact icons, liner notes, and unobtrusive site links */
       }
-      <div class="mt-8 min-[1024px]:mt-auto pt-6 flex flex-col gap-4">
+      <div class="mt-12 min-[1024px]:mt-auto pt-6 flex flex-col gap-6 min-[1024px]:gap-4">
         {
           /* Contact links: Mail, Instagram, Spotify & Apple Music icons before about text */
         }
@@ -217,7 +217,7 @@ const sortedArtists = [...artists].sort((a, b) =>
 
     {/* Right column / CD packaging presentation */}
     <section
-      class="relative flex flex-col items-center justify-center overflow-x-hidden bg-wall px-6 py-12 text-wall-ink min-[1024px]:ml-[38%] min-[1024px]:min-h-svh min-[1024px]:w-[62%] min-[1024px]:p-8 xl:p-12"
+      class="relative flex flex-col items-center justify-center overflow-x-hidden bg-wall px-8 py-16 text-wall-ink min-[1024px]:ml-[38%] min-[1024px]:min-h-svh min-[1024px]:w-[62%] min-[1024px]:p-8 xl:p-12"
       aria-label="Releases Packaging"
     >
       {/* CD presentation wrapper: sleeve + peaking CD */}
@@ -247,11 +247,11 @@ const sortedArtists = [...artists].sort((a, b) =>
 
         {/* The CD Packaging / Sleeve Backside */}
         <div
-          class="cd-sleeve relative z-10 aspect-square w-[80%] bg-[#1c1c1c] text-[#f0f0ee] rounded-[3px] shadow-[0_22px_45px_-10px_rgba(0,0,0,0.55),0_8px_18px_-6px_rgba(0,0,0,0.35),inset_0_1px_1px_rgba(255,255,255,0.12)] flex items-center justify-center p-3 min-[1024px]:p-4 overflow-hidden border border-black/60 select-none"
+          class="cd-sleeve relative z-10 aspect-square w-[80%] bg-[#1c1c1c] text-ink rounded-[3px] shadow-[0_22px_45px_-10px_rgba(0,0,0,0.55),0_8px_18px_-6px_rgba(0,0,0,0.35),inset_0_1px_1px_rgba(245,245,232,0.12)] flex items-center justify-center p-3 min-[1024px]:p-4 overflow-hidden border border-black/60 select-none"
         >
           {/* Subtle paper / cardboard sleeve texture & spine highlight */}
           <div
-            class="pointer-events-none absolute inset-0 z-20 shadow-[inset_2px_0_4px_rgba(255,255,255,0.06),inset_-4px_0_8px_rgba(0,0,0,0.6)]"
+            class="pointer-events-none absolute inset-0 z-20 shadow-[inset_2px_0_4px_rgba(245,245,232,0.06),inset_-4px_0_8px_rgba(0,0,0,0.6)]"
             aria-hidden="true"
           >
           </div>
@@ -283,7 +283,7 @@ const sortedArtists = [...artists].sort((a, b) =>
       </div>
     </section>
 
-    <footer class="bg-wall px-5 py-8 text-wall-ink min-[1024px]:hidden">
+    <footer class="bg-wall px-6 py-10 text-wall-ink min-[1024px]:hidden">
       <nav class="site-links gap-6 text-[0.78rem]" aria-label="Site">
         <a href="/about">About</a>
         <a href="/privacy">Privacy</a>
@@ -434,7 +434,7 @@ const sortedArtists = [...artists].sort((a, b) =>
     .brand-lockup {
       --brand-size: min(
         clamp(1.3125rem, 6vh, 4.5rem),
-        calc((100vw - 2.5rem) / 5.25)
+        calc((100vw - 3rem) / 5.25)
       );
       --logo-height: calc(var(--brand-size) * 23 / 16);
     }
@@ -522,12 +522,12 @@ const sortedArtists = [...artists].sort((a, b) =>
     }
 
     .sleeve-grid-viewport::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.15);
+      background: rgb(245 245 232 / 0.15);
       border-radius: 9999px;
     }
 
     .sleeve-grid-viewport::-webkit-scrollbar-thumb:hover {
-      background: rgba(255, 255, 255, 0.35);
+      background: rgb(245 245 232 / 0.35);
     }
   }
 </style>
