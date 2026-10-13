@@ -48,6 +48,9 @@ For repeated patterns, use scoped classes with `@apply` in `@layer components`,
 referencing the global stylesheet with `@reference` so theme utilities are available.
 Keep custom CSS for details that are clearer without utilities, such as SVG stroke settings.
 The homepage retains its 1024px desktop and 420px small-screen breakpoints.
+The logo uses explicit proportional dimensions and a transform-based wordmark overlay
+to keep its placement consistent in Safari/iPhone and Chromium. Below 1024px, site
+links appear only in the bottom footer; desktop keeps them in the fixed artist panel.
 
 ## Commands
 
