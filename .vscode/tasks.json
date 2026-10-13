@@ -1,0 +1,28 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build homepage",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"build"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Deploy homepage preview",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"deploy:preview"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		}
+	]
+}

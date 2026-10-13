@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "deploy:preview": "bash scripts/deploy-preview.sh",
     "preview": "astro preview",
     "releases": "node scripts/fetch-releases.mjs",
     "astro": "astro"

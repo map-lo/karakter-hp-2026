@@ -58,3 +58,28 @@ The homepage retains its 1024px desktop and 420px small-screen breakpoints.
 | `npm run build`   | Build the production site to `./dist/`      |
 | `npm run preview` | Preview the production build locally        |
 | `npm run releases`| Refresh `src/data/releases.json` from iTunes |
+| `npm run deploy:preview` | Build and upload the public S3 preview |
+
+## AWS preview
+
+The preview is hosted at:
+
+http://karakter-homepage-preview-035932132046.s3-website.eu-central-1.amazonaws.com
+
+The S3 bucket `karakter-homepage-preview-035932132046` is in `eu-central-1`
+and uses the local AWS CLI profile `lya2`. Sign in first if the SSO session has expired:
+
+```sh
+aws sso login --profile lya2
+npm run deploy:preview
+```
+
+[`scripts/deploy-preview.sh`](./scripts/deploy-preview.sh) verifies the bucket owner,
+builds the static site, and syncs `dist/` to the bucket. Uploads use `Cache-Control: no-cache`
+so browsers revalidate content when the preview changes. Sync does not delete older files.
+Only deploy content intended to be public.
+
+This is an HTTP-only, publicly readable preview with AWS storage and request charges.
+Public ACLs remain blocked; anonymous reads are granted by the bucket policy, not ACLs.
+The website serves `index.html`, including the generated page directories.
+For HTTPS, use CloudFront with a private S3 bucket instead.
