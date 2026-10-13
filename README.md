@@ -51,6 +51,10 @@ The homepage retains its 1024px desktop and 420px small-screen breakpoints.
 The logo uses explicit proportional dimensions and a transform-based wordmark overlay
 to keep its placement consistent in Safari/iPhone and Chromium. Below 1024px, site
 links appear only in the bottom footer; desktop keeps them in the fixed artist panel.
+The title and SVG share a viewport-height-based scale with a fixed size ratio;
+that shared scale is capped to fit the available panel width on every screen.
+The SVG logo's solid shapes use unequal colour bands from top to bottom, with a
+shared SVG gradient keeping all paths aligned.
 
 ## Commands
 
