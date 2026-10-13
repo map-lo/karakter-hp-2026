@@ -40,6 +40,15 @@ src/
 └── styles/global.css # Tailwind theme, typography utilities
 ```
 
+## Styling
+
+Use Tailwind utilities for layout, spacing, typography, and responsive styles.
+Shared colors and typography utilities live in [`src/styles/global.css`](./src/styles/global.css).
+For repeated patterns, use scoped classes with `@apply` in `@layer components`,
+referencing the global stylesheet with `@reference` so theme utilities are available.
+Keep custom CSS for details that are clearer without utilities, such as SVG stroke settings.
+The homepage retains its 1024px desktop and 420px small-screen breakpoints.
+
 ## Commands
 
 | Command           | Action                                      |

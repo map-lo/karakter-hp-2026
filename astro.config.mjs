@@ -18,6 +18,15 @@ export default defineConfig({
       styles: ['normal'],
       subsets: ['latin', 'latin-ext'],
       fallbacks: ['Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif']
+    },
+    {
+      provider: fontProviders.google(),
+      name: 'Inter',
+      cssVariable: '--font-inter-family',
+      weights: [900],
+      styles: ['normal'],
+      subsets: ['latin', 'latin-ext'],
+      fallbacks: ['Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif']
     }
   ]
 });
