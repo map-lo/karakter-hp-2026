@@ -322,7 +322,12 @@ const sortedArtists = [...artists].sort((a, b) =>
       scrollArtistIntoViewIfNeeded(artist);
     }
 
+    const supportsHover = window.matchMedia(
+      "(hover: hover) and (pointer: fine)",
+    ).matches;
+
     rosterLinks.forEach((link) => {
+      if (!supportsHover) return;
       link.addEventListener("mouseenter", () => {
         // Clear any pending reset timeout from a previous mouseleave
         if (resetTimer) {
@@ -380,14 +385,16 @@ const sortedArtists = [...artists].sort((a, b) =>
 
   @layer components {
     .roster-link {
-      @apply inline-flex w-fit lowercase py-[0.5rem] font-inter text-[clamp(1rem,4vw,3rem)] leading-[1.2] font-black tracking-tight text-inherit no-underline hover:text-[#e43d30] focus-visible:text-[#e43d30] transition-colors duration-150;
+      @apply inline-flex w-fit lowercase font-inter font-black tracking-tight text-inherit no-underline hover:text-[#e43d30] focus-visible:text-[#e43d30] transition-colors duration-150;
+      /* Padding is em-based so the vertical rhythm scales with the type at every size */
+      font-size: clamp(1.125rem, 7vw, 2.25rem);
+      line-height: 1.15;
+      padding-block: 0.18em;
     }
 
     @media (min-width: 1024px) {
       .roster-link {
-        padding-block: clamp(0.2rem, 0.45vh, 0.6rem);
-        font-size: clamp(1em, 3vh, 2rem);
-        line-height: 1.15;
+        font-size: clamp(1.25rem, 3vh, 2rem);
       }
     }
 
