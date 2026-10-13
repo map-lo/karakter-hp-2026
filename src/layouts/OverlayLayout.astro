@@ -1,0 +1,84 @@
+---
+import Layout from './Layout.astro';
+
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<Layout title={title} description={description} chrome={false}>
+	<div class="h-screen p-3 sm:p-6 md:p-10">
+		<div
+			class="relative h-full overflow-y-auto rounded-[1.75rem] bg-white text-black sm:rounded-[2.5rem] md:rounded-[3rem]"
+		>
+			<div class="sticky top-0 z-10 flex justify-end bg-white p-5 sm:p-8">
+				<a
+					href="/"
+					data-overlay-close
+					aria-label="Close"
+					class="flex h-12 w-12 items-center justify-center rounded-full bg-white text-black transition-colors hover:bg-black/5"
+				>
+					<svg
+						viewBox="0 0 24 24"
+						aria-hidden="true"
+						class="h-6 w-6"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="1.5"
+						stroke-linecap="round"
+					>
+						<path d="M5 5l14 14M19 5L5 19"></path>
+					</svg>
+				</a>
+			</div>
+
+			<div class="overlay-body px-6 pt-6 pb-20 sm:px-12 sm:pb-24 md:px-20 md:pb-28">
+				<div class="max-w-3xl text-left">
+					<slot />
+				</div>
+			</div>
+		</div>
+	</div>
+</Layout>
+
+<style is:global>
+	.overlay-body ::selection {
+		background-color: #191919;
+		color: #f5f5f2;
+	}
+
+	.overlay-body a {
+		text-decoration-color: rgba(0, 0, 0, 0.35);
+	}
+
+	.overlay-body a:hover {
+		text-decoration-color: #000;
+	}
+
+	.overlay-body :focus-visible {
+		outline-color: #000;
+	}
+</style>
+
+<script>
+	const close = document.querySelector<HTMLAnchorElement>('[data-overlay-close]');
+
+	const dismiss = (event?: Event) => {
+		if (history.length > 1 && document.referrer && new URL(document.referrer).origin === location.origin) {
+			event?.preventDefault();
+			history.back();
+			return;
+		}
+
+		if (!event) location.href = '/';
+	};
+
+	close?.addEventListener('click', dismiss);
+
+	document.addEventListener('keydown', (event) => {
+		if (event.key === 'Escape') dismiss();
+	});
+</script>

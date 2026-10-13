@@ -1,5 +1,5 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import OverlayLayout from '../layouts/OverlayLayout.astro';
 import Prose from '../components/Prose.astro';
 import { contact, paragraphs, philosophy, team } from '../lib/content';
 
@@ -9,30 +9,23 @@ const contactText = paragraphs(contact)
 	.join('\n\n');
 
 const sections = [
-	{ id: 'philosophy', label: 'Philosophy', text: philosophy, lead: true },
-	{ id: 'team', label: 'Team', text: team, lead: true },
-	{ id: 'contact', label: 'Contact', text: contactText, lead: false }
+	{ id: 'philosophy', label: 'Philosophy', text: philosophy },
+	{ id: 'team', label: 'Team', text: team },
+	{ id: 'contact', label: 'Contact', text: contactText }
 ];
 ---
 
-<Layout title="About" description="Karakter Worldwide — philosophy, team and contact.">
-	<section class="px-6 pt-6 pb-20 sm:px-10 md:px-14 md:pt-12 md:pb-28">
-		<h1 class="display max-w-4xl text-[clamp(2.5rem,8vw,7rem)]">About</h1>
-	</section>
+<OverlayLayout title="About" description="Karakter Worldwide — philosophy, team and contact.">
+	<h1 class="display text-[clamp(2.5rem,7vw,5rem)]">About</h1>
 
-	<div class="px-6 sm:px-10 md:px-14">
+	<div class="mt-14 space-y-14">
 		{
 			sections.map((section) => (
-				<section id={section.id} class="border-t border-line py-14 md:grid md:grid-cols-12 md:gap-8">
-					<h2 class="label mb-6 text-muted md:col-span-3 md:mb-0">{section.label}</h2>
-					<Prose
-						text={section.text}
-						class={`md:col-span-9 md:max-w-3xl leading-relaxed ${
-							section.lead ? 'text-lg sm:text-xl' : 'text-base text-muted sm:text-lg'
-						}`}
-					/>
+				<section id={section.id}>
+					<h2 class="label mb-5 text-black/50">{section.label}</h2>
+					<Prose text={section.text} class="text-xl leading-relaxed sm:text-2xl sm:leading-relaxed" />
 				</section>
 			))
 		}
 	</div>
-</Layout>
+</OverlayLayout>
