@@ -52,9 +52,12 @@ const sortedArtists = [...artists].sort((a, b) =>
                   <stop offset="65%" stop-color="#2980B9"></stop>
                   <stop offset="79%" stop-color="#2980B9"></stop>
                   <stop offset="79%" stop-color="#2980B9"></stop>
-                  <stop offset="91%" stop-color="#F5F5E8"></stop>
-                  <stop offset="91%" stop-color="#F5F5E8"></stop>
-                  <stop offset="100%" stop-color="#F5F5E8"></stop>
+                  <stop offset="91%" stop-color="#F5F5E8" data-logo-end-color
+                  ></stop>
+                  <stop offset="91%" stop-color="#F5F5E8" data-logo-end-color
+                  ></stop>
+                  <stop offset="100%" stop-color="#F5F5E8" data-logo-end-color
+                  ></stop>
                 </linearGradient>
               </defs>
               <path
@@ -112,6 +115,24 @@ const sortedArtists = [...artists].sort((a, b) =>
                       .setAttribute("fill", color);
                   } else if (name === "bgColor") {
                     panel.style.setProperty("--color-paper", color);
+                    if (!params.has("logoColor")) {
+                      const hex =
+                        value.length <= 4
+                          ? [...value].map((digit) => digit.repeat(2)).join("")
+                          : value;
+                      const red = parseInt(hex.slice(0, 2), 16);
+                      const green = parseInt(hex.slice(2, 4), 16);
+                      const blue = parseInt(hex.slice(4, 6), 16);
+                      const brightness =
+                        (red * 299 + green * 587 + blue * 114) / 1000;
+                      const endColor =
+                        brightness >= 128 ? "#000000" : "#F5F5E8";
+                      homepage
+                        .querySelectorAll("[data-logo-end-color]")
+                        .forEach((stop) =>
+                          stop.setAttribute("stop-color", endColor),
+                        );
+                    }
                   } else if (name === "textColor") {
                     panel.style.setProperty("--color-ink", color);
                     panel.style.setProperty("--roster-hover-color", color);
