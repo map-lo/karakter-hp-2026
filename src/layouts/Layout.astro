@@ -1,6 +1,7 @@
 ---
 import { Font } from "astro:assets";
 import "../styles/global.css";
+import { url } from "../lib/url";
 
 interface Props {
   title?: string;
@@ -19,7 +20,8 @@ const {
 const pageTitle = title
   ? `${title} — Karakter`
   : "Karakter — Artist Management";
-const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const path = Astro.url.pathname.slice(base.length).replace(/\/$/, "") || "/";
 
 const nav = [
   { href: "/", label: "Artists" },
@@ -32,7 +34,7 @@ const nav = [
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" href={url("/favicon.ico")} />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <meta property="og:title" content={pageTitle} />
@@ -47,13 +49,13 @@ const nav = [
       chrome && (
         <header class="px-6 pt-8 pb-10 sm:px-10 md:px-14 md:pt-12">
           <div class="flex flex-wrap items-baseline justify-between gap-x-10 gap-y-4">
-            <a href="/" class="label font-medium">
+            <a href={url("/")} class="label font-medium">
               Karakter Worldwide
             </a>
             <nav class="flex gap-6 sm:gap-8">
               {nav.map((item) => (
                 <a
-                  href={item.href}
+                  href={url(item.href)}
                   class:list={[
                     "label transition-colors hover:text-ink",
                     path === item.href ? "text-ink" : "text-muted",
@@ -102,19 +104,19 @@ const nav = [
             <nav class="flex flex-wrap gap-x-6 gap-y-2">
               <a
                 class="label text-muted transition-colors hover:text-ink"
-                href="/about"
+                href={url("/about")}
               >
                 About
               </a>
               <a
                 class="label text-muted transition-colors hover:text-ink"
-                href="/privacy"
+                href={url("/privacy")}
               >
                 Privacy
               </a>
               <a
                 class="label text-muted transition-colors hover:text-ink"
-                href="/imprint"
+                href={url("/imprint")}
               >
                 Imprint
               </a>
