@@ -308,7 +308,7 @@ const sortedArtists = [...artists].sort((a, b) =>
             aria-hidden="true"
           />
           <div
-            class="cd-sleeve absolute z-10 text-ink rounded-[3px] flex items-center justify-center p-3 min-[1024px]:p-4 overflow-hidden select-none"
+            class="cd-sleeve absolute z-10 text-ink rounded-[3px] flex items-center justify-center min-[1024px]:p-4 overflow-hidden select-none"
           >
             <div
               class="sleeve-grid-viewport relative z-10 size-full overflow-y-auto overflow-x-hidden snap-y snap-mandatory scroll-smooth rounded-[2px] no-scrollbar"
@@ -590,6 +590,14 @@ const sortedArtists = [...artists].sort((a, b) =>
       width: calc(100% * 1450 / 1644);
       height: calc(100% * 1404 / 1464);
       background-color: var(--sleeve-color, transparent);
+    }
+
+    @media (width < 1024px) {
+      .cd-sleeve {
+        /* Scale desktop's offsets from the full-size 672px case (840px * 80%). */
+        left: calc(100% * (132 / 1644 + 10 / 672));
+        padding: calc(100% * 16 / 672);
+      }
     }
 
     /* Clean scrollbar for sleeve release viewport while maintaining CD aesthetic */
