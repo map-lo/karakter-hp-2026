@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import SleeveCover from "../components/SleeveCover.astro";
 import { artists } from "../lib/content";
 import { releases } from "../lib/releases";
+import { url } from "../lib/url";
 
 const artistByName = new Map(
   artists.map((artist) => [artist.name.toLowerCase(), artist]),
@@ -265,9 +266,9 @@ const sortedArtists = [...artists].sort((a, b) =>
           /* Footer links: styled like the short about text to avoid distraction */
         }
         <nav class="site-links hidden min-[1024px]:flex" aria-label="Site">
-          <a href="/about">About</a>
-          <a href="/privacy">Privacy</a>
-          <a href="/imprint">Imprint</a>
+          <a href={url("/about")}>About</a>
+          <a href={url("/privacy")}>Privacy</a>
+          <a href={url("/imprint")}>Imprint</a>
         </nav>
       </div>
     </aside>
@@ -289,7 +290,7 @@ const sortedArtists = [...artists].sort((a, b) =>
           {/* Authentic CD image from untitled.stream */}
           <div
             class="cd-disc-element size-full rounded-full bg-contain bg-center bg-no-repeat drop-shadow-2xl transition-transform duration-700 ease-out"
-            style="background-image: url('/assets/cd.webp');"
+            style={`background-image: url('${url("/assets/cd.webp")}');`}
           >
           </div>
         </div>
@@ -334,9 +335,9 @@ const sortedArtists = [...artists].sort((a, b) =>
 
     <footer class="bg-wall px-6 py-10 text-wall-ink min-[1024px]:hidden">
       <nav class="site-links gap-6 text-[0.78rem]" aria-label="Site">
-        <a href="/about">About</a>
-        <a href="/privacy">Privacy</a>
-        <a href="/imprint">Imprint</a>
+        <a href={url("/about")}>About</a>
+        <a href={url("/privacy")}>Privacy</a>
+        <a href={url("/imprint")}>Imprint</a>
       </nav>
     </footer>
   </div>

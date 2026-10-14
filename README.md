@@ -122,6 +122,16 @@ builds the static site, and syncs `dist/` to the bucket. Uploads use `Cache-Cont
 so browsers revalidate content when the preview changes. Sync does not delete older files.
 Only deploy content intended to be public.
 
+The target depends on the current Git branch:
+
+- On `main`, the site is synced to the bucket root (the URL above).
+- On any other branch, the site is built with `ASTRO_BASE=/<branch>` and synced to a
+  `<branch>/` subfolder, e.g. `.../feature-x/`. The folder name is the lowercased branch name
+  with unsafe characters replaced by `-`. Branch syncs use `--delete`, scoped to that folder.
+
+Because of this, internal links and public assets must go through `url()` from
+[`src/lib/url.ts`](./src/lib/url.ts) (or `import.meta.env.BASE_URL`) instead of hard-coded `/` paths.
+
 This is an HTTP-only, publicly readable preview with AWS storage and request charges.
 Public ACLs remain blocked; anonymous reads are granted by the bucket policy, not ACLs.
 The website serves `index.html`, including the generated page directories.

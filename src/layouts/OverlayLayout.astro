@@ -1,5 +1,6 @@
 ---
 import Layout from './Layout.astro';
+import { url } from '../lib/url';
 
 interface Props {
 	title: string;
@@ -16,7 +17,7 @@ const { title, description } = Astro.props;
 		>
 			<div class="sticky top-0 z-10 flex justify-end bg-ink p-5 sm:p-8">
 				<a
-					href="/"
+					href={url("/")}
 					data-overlay-close
 					aria-label="Close"
 					class="flex h-12 w-12 items-center justify-center rounded-full bg-ink text-black transition-colors hover:bg-black/5"
@@ -80,7 +81,7 @@ const { title, description } = Astro.props;
 			return;
 		}
 
-		if (!event) location.href = '/';
+		if (!event) location.href = import.meta.env.BASE_URL;
 	};
 
 	close?.addEventListener('click', dismiss);
