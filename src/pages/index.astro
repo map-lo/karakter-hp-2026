@@ -277,21 +277,13 @@ const sortedArtists = [...artists].sort((a, b) =>
       class="relative flex flex-col items-center justify-center overflow-x-hidden bg-wall px-8 py-16 text-wall-ink min-[1024px]:ml-[38%] min-[1024px]:min-h-svh min-[1024px]:w-[62%] min-[1024px]:p-8 xl:p-12"
       aria-label="Releases Packaging"
     >
-      {/* CD presentation wrapper: sleeve + peaking CD */}
+      {/* CD presentation wrapper: jewel case + peeking CD */}
       <div
         class="relative flex w-full max-w-[840px] items-center justify-start py-8 min-[1024px]:py-0"
       >
-        {
-          /* The CD Disc peaking out ~25% from behind the right edge of the sleeve */
-        }
-        {
-          /* Sleeve is 80% width, Disc is 76% width. Left position = 80% - (0.75 * 76%) = 23% */
-        }
-        {
-          /* That places the disc right edge at exactly 23% + 76% = 99%, so 19% / 76% = 25.0% of the disc is exposed */
-        }
+        {/* Disc diameter follows the case height, with 25% exposed on the right. */}
         <div
-          class="cd-disc absolute top-1/2 left-[23%] -translate-y-1/2 aspect-square w-[76%] rounded-full z-1"
+          class="cd-disc absolute top-1/2 -translate-y-1/2 aspect-square rounded-full z-1"
           aria-hidden="true"
         >
           {/* Authentic CD image from untitled.stream */}
@@ -302,31 +294,38 @@ const sortedArtists = [...artists].sort((a, b) =>
           </div>
         </div>
 
-        {/* The CD Packaging / Sleeve Backside */}
-        <div
-          class="cd-sleeve relative z-10 aspect-square w-[80%] text-ink rounded-[3px] flex items-center justify-center p-3 min-[1024px]:p-4 overflow-hidden select-none"
-        >
-          {
-            /* Scrollable release covers grid with snapping: exact aspect-square viewport so exactly 6 rows show */
-          }
+        <div class="cd-case relative z-10 w-[80%]">
+          <img
+            class="pointer-events-none absolute inset-0 size-full select-none"
+            src="/assets/cd%20case.jpg"
+            alt=""
+            width="1644"
+            height="1464"
+            decoding="async"
+            aria-hidden="true"
+          />
           <div
-            class="sleeve-grid-viewport relative z-10 aspect-square w-full max-h-full overflow-y-auto overflow-x-hidden snap-y snap-mandatory scroll-smooth rounded-[2px] no-scrollbar"
+            class="cd-sleeve absolute z-10 text-ink rounded-[3px] flex items-center justify-center p-3 min-[1024px]:p-4 overflow-hidden select-none"
           >
-            <div class="grid grid-cols-6 gap-1 w-full">
-              {
-                releases.map((release, index) => (
-                  <div
-                    class={`aspect-square ${index % 6 === 0 ? "snap-start" : ""}`}
-                  >
-                    <SleeveCover
-                      release={release}
-                      href={artistByName.get(release.artist.toLowerCase())?.url}
-                      index={index}
-                      eager={index < 18}
-                    />
-                  </div>
-                ))
-              }
+            <div
+              class="sleeve-grid-viewport relative z-10 size-full overflow-y-auto overflow-x-hidden snap-y snap-mandatory scroll-smooth rounded-[2px] no-scrollbar"
+            >
+              <div class="grid grid-cols-6 gap-1 w-full">
+                {
+                  releases.map((release, index) => (
+                    <div
+                      class={`aspect-square ${index % 6 === 0 ? "snap-start" : ""}`}
+                    >
+                      <SleeveCover
+                        release={release}
+                        href={artistByName.get(release.artist.toLowerCase())?.url}
+                        index={index}
+                        eager={index < 18}
+                      />
+                    </div>
+                  ))
+                }
+              </div>
             </div>
           </div>
         </div>
@@ -565,13 +564,27 @@ const sortedArtists = [...artists].sort((a, b) =>
       transition: opacity 0.25s ease;
     }
 
-    .cd-sleeve {
-      background-color: var(--sleeve-color, #1c1c1c);
+    .cd-disc {
+      width: calc(80% * 1464 / 1644);
+      left: calc(80% - (80% * 1464 / 1644 * 0.75));
+    }
+
+    .cd-case {
+      aspect-ratio: 1644 / 1464;
       box-shadow:
         0 22px 45px -10px
           color-mix(in srgb, var(--sleeve-shadow, black) 55%, transparent),
         0 8px 18px -6px
           color-mix(in srgb, var(--sleeve-shadow, black) 35%, transparent);
+    }
+
+    .cd-sleeve {
+      /* Image coordinates scale with the frame; the inlay shifts 10 screen pixels. */
+      left: calc(100% * 132 / 1644 + 10px);
+      top: calc(100% * 30 / 1464);
+      width: calc(100% * 1450 / 1644);
+      height: calc(100% * 1404 / 1464);
+      background-color: var(--sleeve-color, transparent);
     }
 
     /* Clean scrollbar for sleeve release viewport while maintaining CD aesthetic */

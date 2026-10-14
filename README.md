@@ -59,6 +59,14 @@ The title and SVG share a viewport-height-based scale with a fixed size ratio;
 that shared scale is capped to fit the available panel width on every screen.
 The SVG logo's solid shapes use unequal colour bands from top to bottom, with a
 shared SVG gradient keeping all paths aligned.
+The release sleeve sits inside the photographic jewel case in
+[`public/assets/cd case.jpg`](./public/assets/cd%20case.jpg). The case keeps its
+1644:1464 proportions; the insert starts at image coordinates (132, 30) and
+measures 1450 by 1404 pixels, leaving 30 pixels above and below. These coordinates
+scale proportionally in the homepage's scoped CSS, with an additional fixed
+10-screen-pixel shift to the right for the inlay. The six-column artwork grid
+keeps square covers inside the slightly landscape insert, and a separate disc
+peeks out from behind the case.
 
 Temporary homepage palette controls are available as independent query parameters:
 
@@ -72,8 +80,10 @@ Temporary homepage palette controls are available as independent query parameter
 - `highlightColor`: homepage link text and contact icons on hover/focus, and the
   text-selection background. Selection text retains its default dark colour.
 - `sleeveColor`: CD sleeve background, also visible through the transparent grid gaps.
-  The outer shadow uses a darker mix of this colour. There is no inset shading,
-  and the sleeve and release covers have no borders.
+  The sleeve defaults to transparent, revealing the case behind it, while the
+  outer shadow retains its default black colour. Providing `sleeveColor` overrides
+  the background and derives the shadow from a darker mix of that colour.
+  There is no inset shading, and the sleeve and release covers have no borders.
 
 For example: `/?logoColor=ff0066&bgColor=202020&textColor=f7faff&sleeveColor=d9b8a0&pageColor=f7faff&highlightColor=e43d30`.
 Values accept 3, 4, 6, or 8 hex digits. The `#` is optional but must be URL-encoded
