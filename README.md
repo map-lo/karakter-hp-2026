@@ -58,9 +58,29 @@ links appear only in the bottom footer; desktop keeps them in the fixed artist p
 The title and SVG share a viewport-height-based scale with a fixed size ratio;
 that shared scale is capped to fit the available panel width on every screen.
 The SVG logo's solid shapes use unequal colour bands from top to bottom, with a
-shared SVG gradient keeping all paths aligned. To preview a solid logo colour,
-append a hex value as a query parameter, e.g. `/?color=ff0066` (the `#` is optional
-but must be URL-encoded as `%23`). Invalid or missing values keep the gradient.
+shared SVG gradient keeping all paths aligned.
+
+Temporary homepage palette controls are available as independent query parameters:
+
+- `logoColor`: solid SVG logo colour (replaces the gradient; formerly `color`).
+- `bgColor`: first-column background.
+- `textColor`: all first-column text and contact icons, including hover/focus states,
+  preserving the liner-note and site-link opacity levels. `highlightColor` takes
+  precedence for hover/focus when supplied.
+- `pageColor`: page canvas, right-column and mobile-footer backgrounds, including
+  the background visible during scroll overshoot. Does not change text or panel colours.
+- `highlightColor`: homepage link text and contact icons on hover/focus, and the
+  text-selection background. Selection text retains its default dark colour.
+- `sleeveColor`: CD sleeve background, also visible through the transparent grid gaps.
+  The outer shadow uses a darker mix of this colour. There is no inset shading,
+  and the sleeve and release covers have no borders.
+
+For example: `/?logoColor=ff0066&bgColor=202020&textColor=f7faff&sleeveColor=d9b8a0&pageColor=f7faff&highlightColor=e43d30`.
+Values accept 3, 4, 6, or 8 hex digits. The `#` is optional but must be URL-encoded
+as `%23` when included. Missing values keep the defaults; invalid values keep the
+defaults and log a console warning. The old `color` parameter is no longer used.
+These client-side controls also work in static production builds and are intended
+for quick palette experiments, not a permanent user-facing feature.
 
 ## Commands
 

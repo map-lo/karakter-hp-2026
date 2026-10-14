@@ -13,7 +13,7 @@ const sortedArtists = [...artists].sort((a, b) =>
 ---
 
 <Layout chrome={false} background="wall">
-  <div class="min-h-screen bg-wall">
+  <div class="min-h-screen bg-wall" data-homepage>
     <aside
       class="flex flex-col bg-paper px-6 pt-12 pb-12 text-ink min-[1024px]:fixed min-[1024px]:inset-y-0 min-[1024px]:left-0 min-[1024px]:z-20 min-[1024px]:min-h-svh min-[1024px]:w-[38%] min-[1024px]:overflow-y-auto min-[1024px]:px-[clamp(1.5rem,3vw,3rem)] min-[1024px]:pb-[clamp(1.5rem,3vw,3rem)] min-[1024px]:pt-[calc(clamp(1.5rem,3vw,3rem)+1rem)] min-h-screen justify-between"
     >
@@ -83,15 +83,57 @@ const sortedArtists = [...artists].sort((a, b) =>
             </svg>
             <script is:inline>
               (() => {
-                // Optional logo colour override, e.g. /?color=ff0066 (fallback: gradient).
-                const value = new URLSearchParams(location.search)
-                  .get("color")
-                  ?.trim()
-                  .replace(/^#/, "");
-                if (!value || !/^([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(value)) return;
-                document
-                  .querySelector("[data-brand-logo]")
-                  ?.setAttribute("fill", `#${value}`);
+                const params = new URLSearchParams(location.search);
+                const homepage = document.querySelector("[data-homepage]");
+                const panel = homepage.querySelector("aside");
+                for (const name of [
+                  "logoColor",
+                  "bgColor",
+                  "textColor",
+                  "sleeveColor",
+                  "pageColor",
+                  "highlightColor",
+                ]) {
+                  if (!params.has(name)) continue;
+                  const value = params.get(name).trim().replace(/^#/, "");
+                  if (
+                    !/^([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(value)
+                  ) {
+                    console.warn(
+                      `Invalid ${name}: expected a 3, 4, 6, or 8 digit hex colour.`,
+                    );
+                    continue;
+                  }
+                  const color = `#${value}`;
+                  if (name === "logoColor") {
+                    homepage
+                      .querySelector("[data-brand-logo]")
+                      .setAttribute("fill", color);
+                  } else if (name === "bgColor") {
+                    panel.style.setProperty("--color-paper", color);
+                  } else if (name === "textColor") {
+                    panel.style.setProperty("--color-ink", color);
+                    panel.style.setProperty("--roster-hover-color", color);
+                  } else if (name === "pageColor") {
+                    homepage.style.setProperty("--color-wall", color);
+                    document.documentElement.style.setProperty(
+                      "--page-background",
+                      color,
+                    );
+                  } else if (name === "highlightColor") {
+                    homepage.style.setProperty("--highlight-color", color);
+                    document.documentElement.style.setProperty(
+                      "--selection-background",
+                      color,
+                    );
+                  } else {
+                    homepage.style.setProperty("--sleeve-color", color);
+                    homepage.style.setProperty(
+                      "--sleeve-shadow",
+                      `color-mix(in srgb, ${color} 60%, black)`,
+                    );
+                  }
+                }
               })();
             </script>
           </div>
@@ -99,10 +141,9 @@ const sortedArtists = [...artists].sort((a, b) =>
           <h1
             class="brand-wordmark absolute left-1/2 top-1/2 z-10 whitespace-nowrap"
           >
-            <a
-              class="font-inter leading-none font-black tracking-[-0.045em] lowercase no-underline inline-block"
-              href="/"
-              aria-label="Karakter Worldwide, home">Karakter</a
+            <span
+              class="font-inter select-none leading-none font-black tracking-[-0.045em] lowercase no-underline inline-block"
+              aria-label="Karakter Worldwide, home">Karakter</span
             >
           </h1>
         </div>
@@ -136,7 +177,9 @@ const sortedArtists = [...artists].sort((a, b) =>
       {
         /* Bottom section: contact icons, liner notes, and unobtrusive site links */
       }
-      <div class="mt-12 min-[1024px]:mt-auto pt-6 flex flex-col gap-6 min-[1024px]:gap-4">
+      <div
+        class="mt-12 min-[1024px]:mt-auto pt-6 flex flex-col gap-6 min-[1024px]:gap-4"
+      >
         {
           /* Contact links: Mail, Instagram, Spotify & Apple Music icons before about text */
         }
@@ -261,20 +304,13 @@ const sortedArtists = [...artists].sort((a, b) =>
 
         {/* The CD Packaging / Sleeve Backside */}
         <div
-          class="cd-sleeve relative z-10 aspect-square w-[80%] bg-[#1c1c1c] text-ink rounded-[3px] shadow-[0_22px_45px_-10px_rgba(0,0,0,0.55),0_8px_18px_-6px_rgba(0,0,0,0.35),inset_0_1px_1px_rgba(245,245,232,0.12)] flex items-center justify-center p-3 min-[1024px]:p-4 overflow-hidden border border-black/60 select-none"
+          class="cd-sleeve relative z-10 aspect-square w-[80%] text-ink rounded-[3px] flex items-center justify-center p-3 min-[1024px]:p-4 overflow-hidden select-none"
         >
-          {/* Subtle paper / cardboard sleeve texture & spine highlight */}
-          <div
-            class="pointer-events-none absolute inset-0 z-20 shadow-[inset_2px_0_4px_rgba(245,245,232,0.06),inset_-4px_0_8px_rgba(0,0,0,0.6)]"
-            aria-hidden="true"
-          >
-          </div>
-
           {
             /* Scrollable release covers grid with snapping: exact aspect-square viewport so exactly 6 rows show */
           }
           <div
-            class="sleeve-grid-viewport relative z-10 aspect-square w-full max-h-full overflow-y-auto overflow-x-hidden snap-y snap-mandatory scroll-smooth rounded-[2px] bg-black/40 shadow-inner no-scrollbar"
+            class="sleeve-grid-viewport relative z-10 aspect-square w-full max-h-full overflow-y-auto overflow-x-hidden snap-y snap-mandatory scroll-smooth rounded-[2px] no-scrollbar"
           >
             <div class="grid grid-cols-6 gap-1 w-full">
               {
@@ -447,10 +483,7 @@ const sortedArtists = [...artists].sort((a, b) =>
   @layer components {
     .brand-lockup {
       --brand-size: calc(
-        min(
-          clamp(1.3125rem, 6vh, 4.5rem),
-          calc((100vw - 3rem) / 5.25)
-        ) * 0.875
+        min(clamp(1.3125rem, 6vh, 4.5rem), calc((100vw - 3rem) / 5.25)) * 0.875
       );
       --logo-height: calc(var(--brand-size) * 23 / 16);
     }
@@ -465,25 +498,38 @@ const sortedArtists = [...artists].sort((a, b) =>
       transform: translateY(-50%);
     }
 
-    .brand-wordmark a {
+    .brand-wordmark :first-child {
       padding: 0.0556em 0.1111em;
     }
 
     .roster-link {
-      @apply inline-flex w-fit lowercase font-inter font-black tracking-tight text-inherit no-underline hover:text-[#e43d30] focus-visible:text-[#e43d30] transition-colors duration-150;
+      @apply inline-flex w-fit lowercase font-inter font-black tracking-tight text-inherit no-underline transition-colors duration-150;
       /* Padding is em-based so the vertical rhythm scales with the type at every size */
       font-size: clamp(1.125rem, 7vw, 2.25rem);
       line-height: 1.15;
       padding-block: 0.18em;
     }
 
+    aside a:not(.roster-link):hover,
+    aside a:not(.roster-link):focus-visible,
+    .site-links a:hover,
+    .site-links a:focus-visible {
+      color: var(--highlight-color, currentColor);
+    }
+
+    .roster-link:hover,
+    .roster-link:focus-visible {
+      color: var(--highlight-color, var(--roster-hover-color, #e43d30));
+    }
+
     @media (min-width: 1024px) {
       .brand-lockup {
         --brand-size: calc(
           min(
-            clamp(1.3125rem, 6vh, 4.5rem),
-            calc((38vw - 2 * clamp(1.5rem, 3vw, 3rem)) / 5.25)
-          ) * 0.875
+              clamp(1.3125rem, 6vh, 4.5rem),
+              calc((38vw - 2 * clamp(1.5rem, 3vw, 3rem)) / 5.25)
+            ) *
+            0.875
         );
       }
 
@@ -501,7 +547,7 @@ const sortedArtists = [...artists].sort((a, b) =>
     }
 
     .contact-link {
-      @apply inline-grid place-items-center font-sans text-[0.76rem] font-medium tracking-[-0.02em] text-ink no-underline hover:opacity-[0.68] focus-visible:opacity-[0.68];
+      @apply inline-grid place-items-center font-sans text-[0.76rem] font-medium tracking-[-0.02em] text-ink no-underline;
     }
 
     .contact-icon {
@@ -517,6 +563,15 @@ const sortedArtists = [...artists].sort((a, b) =>
 
     .release-item {
       transition: opacity 0.25s ease;
+    }
+
+    .cd-sleeve {
+      background-color: var(--sleeve-color, #1c1c1c);
+      box-shadow:
+        0 22px 45px -10px
+          color-mix(in srgb, var(--sleeve-shadow, black) 55%, transparent),
+        0 8px 18px -6px
+          color-mix(in srgb, var(--sleeve-shadow, black) 35%, transparent);
     }
 
     /* Clean scrollbar for sleeve release viewport while maintaining CD aesthetic */

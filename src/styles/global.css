@@ -28,7 +28,7 @@
   }
 
   ::selection {
-    background-color: var(--color-ink);
+    background-color: var(--selection-background, var(--color-ink));
     color: #202020;
   }
 
