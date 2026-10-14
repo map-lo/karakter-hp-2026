@@ -15,7 +15,7 @@ const sortedArtists = [...artists].sort((a, b) =>
 <Layout chrome={false} background="wall">
   <div class="min-h-screen bg-wall">
     <aside
-      class="flex flex-col bg-paper px-6 pt-8 pb-12 text-ink min-[1024px]:fixed min-[1024px]:inset-y-0 min-[1024px]:left-0 min-[1024px]:z-20 min-[1024px]:min-h-svh min-[1024px]:w-[38%] min-[1024px]:overflow-y-auto min-[1024px]:p-[clamp(1.5rem,3vw,3rem)] min-h-screen justify-between"
+      class="flex flex-col bg-paper px-6 pt-12 pb-12 text-ink min-[1024px]:fixed min-[1024px]:inset-y-0 min-[1024px]:left-0 min-[1024px]:z-20 min-[1024px]:min-h-svh min-[1024px]:w-[38%] min-[1024px]:overflow-y-auto min-[1024px]:px-[clamp(1.5rem,3vw,3rem)] min-[1024px]:pb-[clamp(1.5rem,3vw,3rem)] min-[1024px]:pt-[calc(clamp(1.5rem,3vw,3rem)+1rem)] min-h-screen justify-between"
     >
       <div
         class="flex flex-col gap-2 min-[1024px]:gap-[clamp(0.5rem,1vh,0.85rem)]"
@@ -446,9 +446,11 @@ const sortedArtists = [...artists].sort((a, b) =>
 
   @layer components {
     .brand-lockup {
-      --brand-size: min(
-        clamp(1.3125rem, 6vh, 4.5rem),
-        calc((100vw - 3rem) / 5.25)
+      --brand-size: calc(
+        min(
+          clamp(1.3125rem, 6vh, 4.5rem),
+          calc((100vw - 3rem) / 5.25)
+        ) * 0.875
       );
       --logo-height: calc(var(--brand-size) * 23 / 16);
     }
@@ -477,9 +479,11 @@ const sortedArtists = [...artists].sort((a, b) =>
 
     @media (min-width: 1024px) {
       .brand-lockup {
-        --brand-size: min(
-          clamp(1.3125rem, 6vh, 4.5rem),
-          calc((38vw - 2 * clamp(1.5rem, 3vw, 3rem)) / 5.25)
+        --brand-size: calc(
+          min(
+            clamp(1.3125rem, 6vh, 4.5rem),
+            calc((38vw - 2 * clamp(1.5rem, 3vw, 3rem)) / 5.25)
+          ) * 0.875
         );
       }
 
