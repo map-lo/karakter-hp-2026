@@ -30,6 +30,7 @@ const sortedArtists = [...artists].sort((a, b) =>
               viewBox="0 0 953 728"
               class="size-full opacity-90"
               fill="url(#brand-palette)"
+              data-brand-logo
               xmlns="http://www.w3.org/2000/svg"
             >
               <defs>
@@ -80,6 +81,19 @@ const sortedArtists = [...artists].sort((a, b) =>
                 d="M125.69 652.44c1.46 -0.08 2.86 0.14 4.31 0.23l152.98 11.64c1.74 0.1 3.35 0.39 5.1 0.17c-7.34 4.59 -16.5 5.39 -23.97 9.6c-7.8 4.58 -15.09 9.78 -23.27 13.74c-12.49 6.33 -26.01 9.62 -39.6 12.61c-13.94 2.88 -30.32 5.59 -44.36 2.6c-22.84 -4.93 -30.36 -30.11 -31.19 -50.59z"
               ></path>
             </svg>
+            <script is:inline>
+              (() => {
+                // Optional logo colour override, e.g. /?color=ff0066 (fallback: gradient).
+                const value = new URLSearchParams(location.search)
+                  .get("color")
+                  ?.trim()
+                  .replace(/^#/, "");
+                if (!value || !/^([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(value)) return;
+                document
+                  .querySelector("[data-brand-logo]")
+                  ?.setAttribute("fill", `#${value}`);
+              })();
+            </script>
           </div>
 
           <h1

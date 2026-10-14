@@ -10,9 +10,9 @@ const { title, description } = Astro.props;
 ---
 
 <Layout title={title} description={description} chrome={false}>
-	<div class="h-screen p-3 sm:p-6 md:p-10">
+	<div class="overlay-root fixed inset-0 h-dvh p-3 sm:p-6 md:p-10">
 		<div
-			class="relative h-full overflow-y-auto rounded-[1.75rem] bg-ink text-black sm:rounded-[2.5rem] md:rounded-[3rem]"
+			class="relative h-full overflow-x-hidden overflow-y-auto overscroll-contain rounded-[1.75rem] bg-ink text-black sm:rounded-[2.5rem] md:rounded-[3rem]"
 		>
 			<div class="sticky top-0 z-10 flex justify-end bg-ink p-5 sm:p-8">
 				<a
@@ -36,7 +36,7 @@ const { title, description } = Astro.props;
 			</div>
 
 			<div class="overlay-body px-6 pt-6 pb-20 sm:px-12 sm:pb-24 md:px-20 md:pb-28">
-				<div class="max-w-3xl text-left">
+				<div class="max-w-3xl min-w-0 text-left wrap-anywhere">
 					<slot />
 				</div>
 			</div>
@@ -45,6 +45,13 @@ const { title, description } = Astro.props;
 </Layout>
 
 <style is:global>
+	html:has(.overlay-root),
+	html:has(.overlay-root) body {
+		height: 100%;
+		overflow: hidden;
+		overscroll-behavior: none;
+	}
+
 	.overlay-body ::selection {
 		background-color: #191919;
 		color: var(--color-ink);

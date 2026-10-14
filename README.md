@@ -58,7 +58,9 @@ links appear only in the bottom footer; desktop keeps them in the fixed artist p
 The title and SVG share a viewport-height-based scale with a fixed size ratio;
 that shared scale is capped to fit the available panel width on every screen.
 The SVG logo's solid shapes use unequal colour bands from top to bottom, with a
-shared SVG gradient keeping all paths aligned.
+shared SVG gradient keeping all paths aligned. To preview a solid logo colour,
+append a hex value as a query parameter, e.g. `/?color=ff0066` (the `#` is optional
+but must be URL-encoded as `%23`). Invalid or missing values keep the gradient.
 
 ## Commands
 

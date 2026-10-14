@@ -26,8 +26,6 @@ const artistIds = {
   Hundreds: 355169873,
   'Inner Tongue': 978465089,
   Mine: 1027177254,
-  HONAS: 1506440911,
-  'MALAKOFF KOWALSKI': 317563739,
   LOTTE: 1213801726
   // Marcus Wuest has no iTunes artist page; he is a producer and composer.
 };
