@@ -71,7 +71,11 @@ peeks out from behind the case.
 Temporary homepage palette controls are available as independent query parameters:
 
 - `logoColor`: solid SVG logo colour (replaces the gradient; formerly `color`).
-- `bgColor`: first-column background.
+- `bgColor`: first-column background. When `logoColor` is not supplied, the
+  gradient's final band becomes black (`#000000`) on bright backgrounds and
+  stays cream (`#F5F5E8`) on dark backgrounds. Brightness uses weighted RGB
+  (299 red, 587 green, 114 blue), with a threshold of 128 out of 255;
+  alpha digits do not affect this classification.
 - `textColor`: all first-column text and contact icons, including hover/focus states,
   preserving the liner-note and site-link opacity levels. `highlightColor` takes
   precedence for hover/focus when supplied.
