@@ -313,7 +313,7 @@ const sortedArtists = [...artists].sort((a, b) =>
           /* That places the disc right edge at exactly 23% + 76% = 99%, so 19% / 76% = 25.0% of the disc is exposed */
         }
         <div
-          class="vinyl-disc absolute top-1/2 left-[23%] -translate-y-1/2 aspect-square w-[76%] rounded-full z-1"
+          class="vinyl-disc absolute top-1/2 left-[23%] -translate-y-1/2 aspect-square w-[79%] rounded-full z-1"
           aria-hidden="true"
         >
           {/* Karakter vinyl record artwork */}
@@ -369,8 +369,9 @@ const sortedArtists = [...artists].sort((a, b) =>
       document.querySelectorAll<HTMLAnchorElement>(".roster-link");
     const releaseItems =
       document.querySelectorAll<HTMLElement>(".release-item");
-    const vinylDisc =
-      document.querySelector<HTMLElement>(".vinyl-disc-element");
+    const vinylDisc = document.querySelector<HTMLElement>(
+      ".vinyl-disc-element",
+    );
     const sleeveViewport = document.querySelector<HTMLElement>(
       ".sleeve-grid-viewport",
     );
