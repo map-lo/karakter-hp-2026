@@ -75,7 +75,7 @@ Temporary homepage palette controls are available as independent query parameter
   the background visible during scroll overshoot. Does not change text or panel colours.
 - `highlightColor`: homepage link text and contact icons on hover/focus, and the
   text-selection background. Selection text retains its default dark colour.
-- `sleeveColor`: CD sleeve background, also visible through the transparent grid gaps.
+- `sleeveColor`: vinyl sleeve background, also visible through the transparent grid gaps.
   The outer shadow uses a darker mix of this colour. There is no inset shading,
   and the sleeve and release covers have no borders.
 

@@ -270,7 +270,7 @@ const sortedArtists = [...artists].sort((a, b) =>
         </div>
 
         {
-          /* Liner notes: Dimmed, compact about summary styled like CD back notes */
+          /* Liner notes: Dimmed, compact about summary styled like record sleeve notes */
         }
         <div
           class="text-[0.62rem] sm:text-[0.68rem] min-[1024px]:text-[clamp(0.6rem,0.95vh,0.72rem)] leading-relaxed text-ink/40 font-mono tracking-tight max-w-[28rem]"
@@ -294,17 +294,17 @@ const sortedArtists = [...artists].sort((a, b) =>
       </div>
     </aside>
 
-    {/* Right column / CD packaging presentation */}
+    {/* Right column / vinyl packaging presentation */}
     <section
       class="relative flex flex-col items-center justify-center overflow-x-hidden bg-wall px-8 py-16 text-wall-ink min-[1024px]:ml-[38%] min-[1024px]:min-h-svh min-[1024px]:w-[62%] min-[1024px]:p-8 xl:p-12"
       aria-label="Releases Packaging"
     >
-      {/* CD presentation wrapper: sleeve + peaking CD */}
+      {/* Vinyl presentation wrapper: sleeve + peeking record */}
       <div
         class="relative flex w-full max-w-[840px] items-center justify-start py-8 min-[1024px]:py-0"
       >
         {
-          /* The CD Disc peaking out ~25% from behind the right edge of the sleeve */
+          /* The record peeking out ~25% from behind the right edge of the sleeve */
         }
         {
           /* Sleeve is 80% width, Disc is 76% width. Left position = 80% - (0.75 * 76%) = 23% */
@@ -313,20 +313,20 @@ const sortedArtists = [...artists].sort((a, b) =>
           /* That places the disc right edge at exactly 23% + 76% = 99%, so 19% / 76% = 25.0% of the disc is exposed */
         }
         <div
-          class="cd-disc absolute top-1/2 left-[23%] -translate-y-1/2 aspect-square w-[76%] rounded-full z-1"
+          class="vinyl-disc absolute top-1/2 left-[23%] -translate-y-1/2 aspect-square w-[76%] rounded-full z-1"
           aria-hidden="true"
         >
-          {/* Authentic CD image from untitled.stream */}
+          {/* Karakter vinyl record artwork */}
           <div
-            class="cd-disc-element size-full rounded-full bg-contain bg-center bg-no-repeat drop-shadow-2xl transition-transform duration-700 ease-out"
-            style={`background-image: url('${url("/assets/cd.webp")}');`}
+            class="vinyl-disc-element size-full rounded-full bg-contain bg-center bg-no-repeat drop-shadow-2xl transition-transform duration-700 ease-out"
+            style={`background-image: url('${url("/karakter-vinyl_750px.png")}');`}
           >
           </div>
         </div>
 
-        {/* The CD Packaging / Sleeve Backside */}
+        {/* The vinyl packaging / sleeve backside */}
         <div
-          class="cd-sleeve relative z-10 aspect-square w-[80%] text-ink rounded-[3px] flex items-center justify-center p-3 min-[1024px]:p-4 overflow-hidden select-none"
+          class="vinyl-sleeve relative z-10 aspect-square w-[80%] text-ink rounded-[3px] flex items-center justify-center p-3 min-[1024px]:p-4 overflow-hidden select-none"
         >
           {
             /* Scrollable release covers grid with snapping: exact aspect-square viewport so exactly 6 rows show */
@@ -369,7 +369,8 @@ const sortedArtists = [...artists].sort((a, b) =>
       document.querySelectorAll<HTMLAnchorElement>(".roster-link");
     const releaseItems =
       document.querySelectorAll<HTMLElement>(".release-item");
-    const cdDisc = document.querySelector<HTMLElement>(".cd-disc-element");
+    const vinylDisc =
+      document.querySelector<HTMLElement>(".vinyl-disc-element");
     const sleeveViewport = document.querySelector<HTMLElement>(
       ".sleeve-grid-viewport",
     );
@@ -458,10 +459,10 @@ const sortedArtists = [...artists].sort((a, b) =>
         if (artist && artist !== activeArtist) {
           activeArtist = artist;
 
-          // Slightly rotate the CD disc on hover
+          // Slightly rotate the vinyl record on hover
           currentRotation += 25;
-          if (cdDisc) {
-            cdDisc.style.transform = `rotate(${currentRotation}deg)`;
+          if (vinylDisc) {
+            vinylDisc.style.transform = `rotate(${currentRotation}deg)`;
           }
 
           applyHighlight(artist);
@@ -587,7 +588,7 @@ const sortedArtists = [...artists].sort((a, b) =>
       transition: opacity 0.25s ease;
     }
 
-    .cd-sleeve {
+    .vinyl-sleeve {
       background-color: var(--sleeve-color, #1c1c1c);
       box-shadow:
         0 22px 45px -10px
@@ -596,7 +597,7 @@ const sortedArtists = [...artists].sort((a, b) =>
           color-mix(in srgb, var(--sleeve-shadow, black) 35%, transparent);
     }
 
-    /* Clean scrollbar for sleeve release viewport while maintaining CD aesthetic */
+    /* Clean scrollbar for sleeve release viewport while maintaining the record aesthetic */
     .sleeve-grid-viewport {
       overflow-x: hidden;
     }
