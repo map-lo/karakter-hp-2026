@@ -1,31 +1,5 @@
 ---
-import OverlayLayout from '../layouts/OverlayLayout.astro';
-import Prose from '../components/Prose.astro';
-import { contact, paragraphs, philosophy, team } from '../lib/content';
-
-// The roster and the disclaimer summary live on their own pages already.
-const contactText = paragraphs(contact)
-	.filter((paragraph) => !/^Artist roster:/.test(paragraph) && !/standard disclaimer/.test(paragraph))
-	.join('\n\n');
-
-const sections = [
-	{ id: 'philosophy', label: 'Philosophy', text: philosophy },
-	{ id: 'team', label: 'Team', text: team },
-	{ id: 'contact', label: 'Contact', text: contactText }
-];
+import ContentPage from '../components/ContentPage.astro';
 ---
 
-<OverlayLayout title="About" description="Karakter Worldwide — philosophy, team and contact.">
-	<h1 class="display text-[clamp(2.5rem,7vw,5rem)]">About</h1>
-
-	<div class="mt-14 space-y-14">
-		{
-			sections.map((section) => (
-				<section id={section.id}>
-					<h2 class="label mb-5 text-black/50">{section.label}</h2>
-					<Prose text={section.text} class="text-xl leading-relaxed sm:text-2xl sm:leading-relaxed" />
-				</section>
-			))
-		}
-	</div>
-</OverlayLayout>
+<ContentPage id="about" />

@@ -1,10 +1,5 @@
 ---
-import OverlayLayout from '../layouts/OverlayLayout.astro';
-import Prose from '../components/Prose.astro';
-import { privacyPolicy } from '../lib/content';
+import ContentPage from '../components/ContentPage.astro';
 ---
 
-<OverlayLayout title="Privacy Policy" description="Privacy policy of Karakter Worldwide GmbH.">
-	<h1 class="display text-[clamp(2.5rem,7vw,5rem)]">Privacy Policy</h1>
-	<Prose text={privacyPolicy} class="mt-14 text-xl leading-relaxed sm:text-2xl sm:leading-relaxed" />
-</OverlayLayout>
+<ContentPage id="privacy" />

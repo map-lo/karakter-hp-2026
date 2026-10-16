@@ -1,16 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import SleeveCover from "../components/SleeveCover.astro";
-import { artists } from "../lib/content";
+import { artists, site } from "../lib/content";
 import { releases } from "../lib/releases";
 import { url } from "../lib/url";
 
-const artistByName = new Map(
-  artists.map((artist) => [artist.name.toLowerCase(), artist]),
-);
-const sortedArtists = [...artists].sort((a, b) =>
-  a.name.localeCompare(b.name, "en", { sensitivity: "base" }),
-);
+const artistById = new Map(artists.map((artist) => [artist.id, artist]));
 ---
 
 <Layout chrome={false} background="wall">
@@ -178,7 +173,7 @@ const sortedArtists = [...artists].sort((a, b) =>
       >
         <ol class="flex flex-col">
           {
-            sortedArtists.map((artist, i) => (
+            artists.map((artist, i) => (
               <li class="flex">
                 <a
                   class="roster-link"
@@ -208,7 +203,7 @@ const sortedArtists = [...artists].sort((a, b) =>
         <div class="flex items-center gap-4">
           <a
             class="contact-link"
-            href="https://open.spotify.com/"
+            href={site.spotifyUrl}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Karakter Playlist on Spotify"
@@ -225,7 +220,7 @@ const sortedArtists = [...artists].sort((a, b) =>
           </a>
           <a
             class="contact-link"
-            href="https://music.apple.com/"
+            href={site.appleMusicUrl}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Karakter Playlist on Apple Music"
@@ -242,7 +237,7 @@ const sortedArtists = [...artists].sort((a, b) =>
           </a>
           <a
             class="contact-link"
-            href="mailto:info@karakter-worldwide.com"
+            href={`mailto:${site.email}`}
             aria-label="Email Karakter Worldwide"
           >
             <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -252,7 +247,7 @@ const sortedArtists = [...artists].sort((a, b) =>
           </a>
           <a
             class="contact-link"
-            href="https://www.instagram.com/karaktermanagement/"
+            href={site.instagramUrl}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Karakter Worldwide on Instagram"
@@ -342,7 +337,7 @@ const sortedArtists = [...artists].sort((a, b) =>
                   >
                     <SleeveCover
                       release={release}
-                      href={artistByName.get(release.artist.toLowerCase())?.url}
+                      href={artistById.get(release.artistId)?.url}
                       index={index}
                       eager={index < 18}
                     />

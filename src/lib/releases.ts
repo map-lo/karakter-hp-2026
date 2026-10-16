@@ -1,8 +1,13 @@
 import data from '../data/releases.json';
+import editorial from '../data/release-editorial.json';
+import { artists } from './content';
+import { resolveCatalogue } from './content-schema.mjs';
 
 export type ReleaseKind = 'album' | 'ep' | 'single';
 
 export type Release = {
+  id: string;
+  artistId: string;
   artist: string;
   title: string;
   kind: ReleaseKind;
@@ -12,7 +17,7 @@ export type Release = {
   url: string | null;
 };
 
-export const releases = data.releases as Release[];
+export const releases: Release[] = resolveCatalogue(data, editorial, artists.map(({ slug, ...artist }) => artist));
 export const releasesFetchedAt = data.fetchedAt;
 
 const palettes = [

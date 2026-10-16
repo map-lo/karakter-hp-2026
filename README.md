@@ -4,13 +4,51 @@ Minimal homepage for the artist management Karakter Worldwide, built with Astro 
 
 ## Content
 
-All copy lives in [`karakter-content.json`](./karakter-content.json) and is read through
-[`src/lib/content.ts`](./src/lib/content.ts). Editing the JSON updates the site — no markup changes needed.
+Content is repository-owned and editable through [Pages CMS](https://app.pagescms.org).
+The public website remains a static Astro build; no CMS database or application server is needed.
 
-- `artists` → the roster in the fixed homepage panel
-- `philosophy`, `team`, `contact` → `/about`
-- `privacy_policy` → `/privacy`
-- `imprint` → `/imprint`
+| Content | Canonical file | Website |
+| --- | --- | --- |
+| Artist roster | [`src/data/artists.json`](./src/data/artists.json) | Homepage roster and release associations |
+| Shared company details / links | [`src/data/site.json`](./src/data/site.json) | Homepage icons and shared layout footer |
+| About | [`src/content/pages/about.md`](./src/content/pages/about.md) | `/about` |
+| Privacy | [`src/content/pages/privacy.md`](./src/content/pages/privacy.md) | `/privacy` |
+| Imprint | [`src/content/pages/imprint.md`](./src/content/pages/imprint.md) | `/imprint` |
+| Imported catalogue | [`src/data/releases.json`](./src/data/releases.json) | Source data, not edited by hand |
+| Release corrections / manual entries | [`src/data/release-editorial.json`](./src/data/release-editorial.json) | Merged with imported catalogue at build time |
+
+Markdown pages have required `title` and `description` frontmatter. Their bodies support
+headings, paragraphs, links, lists, and emphasis, rendered with Astro content collections.
+Two trailing spaces preserve a line break inside an address or contact block.
+Page bodies are independent editorial copy: changing shared company settings does not
+rewrite company details mentioned in About or legal text. Update those documents explicitly.
+The existing legal wording was preserved during migration, including the Squarespace reference.
+
+### Connecting Pages CMS
+
+1. Push this branch/configuration to GitHub.
+2. Open [Pages CMS](https://app.pagescms.org), sign in, and authorize access to this repository.
+   For a private repository or organization, approve only the necessary repository access.
+3. Select the repository and the branch to edit. Pages CMS reads [`.pages.yml`](./.pages.yml).
+4. Edit and save. Changes are commits; a `main` save triggers validation and, if enabled,
+   deployment. For review first, edit a content branch and open a pull request into `main`.
+5. Check the **Validate and publish** Actions run before considering the change live.
+   A saved commit is not a successful publication. Failed validation/builds do not deploy.
+
+Editors need repository access; confirm organization policies and the hosted CMS access model
+before inviting them. The CMS interface lives separately from S3; there is no `/admin` route.
+Pages CMS authorization is a manual account step, not something the repository config can do.
+
+The website always sorts the roster alphabetically by artist name, ignoring case and accents,
+regardless of CMS list order. Keep artist IDs stable when renaming an artist. Optional iTunes artist
+IDs configure imports; artists without one remain valid roster members.
+Remove or reassign an artist's imported/manual releases before deleting the artist.
+Validation deliberately rejects orphan references.
+
+Uploads go to [`public/uploads`](./public/uploads) and are stored as `/uploads/...` references.
+Both release-card components apply the Astro base path, including branch previews.
+External artwork URLs remain supported. Rich-text page media uploads are disabled to keep
+the text pages focused; release artwork is uploaded using its dedicated image field.
 
 ## Releases
 
@@ -22,17 +60,49 @@ npm run releases
 ```
 
 [`scripts/fetch-releases.mjs`](./scripts/fetch-releases.mjs) reads the roster's releases from the
-public iTunes Search API (no key needed) and stores title, release date, label and artwork URL.
-Artist IDs are pinned inside the script because names such as `Mine` and `LOTTE` match several
-unrelated acts. Add an artist to `artistIds` there to include them; the script reports anyone on
-the roster without an ID. `createPlaceholder()` in `src/lib/releases.ts` draws an inline SVG sleeve
-when a remote artwork fails to load.
+public iTunes Search API (no key needed). It imports albums only, collapses later editions,
+and preserves provider collection IDs as `itunes-<collectionId>`. Source artist IDs live on
+roster entries, not in code, because names such as `Mine` and `LOTTE` are ambiguous.
+Artists without a source ID are explicitly skipped.
+
+Imports fail on source errors, empty artist catalogues, potentially truncated results,
+invalid records, or stale editorial references. The cache is replaced atomically only after
+the complete candidate validates; failed imports leave the committed cache untouched.
+Unexpected removals are blocked. After reviewing intentional roster/catalogue changes, use:
+
+```sh
+npm run releases -- --allow-removals
+```
+
+An override for a removed import must also be removed or migrated to a manual entry.
+The removal flag never bypasses reference/content validation.
+
+### Editorial changes
+
+In Pages CMS, **Imported releases** is a read-only reference. Copy a release's ID into
+**Release corrections**, then fill only the fields to override. `hidden: true` hides it.
+Blank optional title/date/artwork/kind fields retain source values; an explicitly blank
+label or link clears that field. A blank link falls back to the artist website.
+Deleting an override restores imported values.
+
+**Manual releases** require a unique `manual-...` ID, an existing artist ID, title,
+kind, date and artwork. Label/link are optional. Imports never write the editorial file.
+All visible releases sort newest first, including future-dated records as before.
+`createPlaceholder()` in [`src/lib/releases.ts`](./src/lib/releases.ts) provides the existing
+inline SVG fallback for unavailable artwork.
+
+The **Refresh release catalogue** Actions workflow runs weekly or manually, validates and
+builds the candidate, and opens a pull request rather than publishing automatically. Enable
+GitHub Actions' permission to create pull requests in repository settings for this workflow.
+Its bot-created PR may not trigger another Actions run with `GITHUB_TOKEN`; validation is
+performed in the refresh workflow itself. Merging by a user triggers the normal `main` build.
 
 ## Structure
 
 ```text
 src/
 ├── components/       # ReleaseCard, Prose
+├── content/pages/    # Markdown page bodies and metadata
 ├── layouts/          # Layout with header + footer
 ├── data/             # cached release data
 ├── lib/              # content and release access
@@ -93,9 +163,59 @@ for quick palette experiments, not a permanent user-facing feature.
 | `npm install`     | Install dependencies                        |
 | `npm run dev`     | Start the dev server at `localhost:4321`    |
 | `npm run build`   | Build the production site to `./dist/`      |
+| `npm run validate:content` | Validate schemas, IDs, references, page metadata and local artwork |
+| `npm run check` | Type-check Astro and TypeScript |
+| `npm test` | Run content, importer, CMS configuration and routing tests |
 | `npm run preview` | Preview the production build locally        |
 | `npm run releases`| Refresh `src/data/releases.json` from iTunes |
 | `npm run deploy:preview` | Build and upload the public S3 preview |
+
+## Production: private S3 + CloudFront
+
+[`.github/workflows/publish.yml`](./.github/workflows/publish.yml) validates pull requests and
+`main` changes, runs tests/type-checks, and builds a downloadable static site artifact.
+Deployment is **off by default**; no AWS resources are created by these workflows.
+
+To enable it:
+
+1. Create a private S3 bucket and a CloudFront distribution with an S3 **REST origin**
+   and Origin Access Control. Keep S3 public access blocked and restrict the bucket policy
+   to that distribution. Set up the domain/TLS certificate separately.
+2. Publish [`scripts/cloudfront-rewrite.js`](./scripts/cloudfront-rewrite.js) as a CloudFront
+   Function using JavaScript runtime 2.0 and associate it with the site's **viewer-request** event. It maps `/about`
+   and `/about/` to `/about/index.html` without rewriting asset paths.
+3. Create an AWS role for GitHub OIDC. Restrict its trust to this repository's `production`
+   environment (`repo:map-lo/karakter-hp-2026:environment:production`) and audience
+   `sts.amazonaws.com`. Give it only bucket listing/object read-write access for this site,
+   plus `cloudfront:CreateInvalidation` and `cloudfront:GetInvalidation` for its distribution.
+   No long-lived AWS access keys belong in GitHub or the repository.
+4. Create the GitHub `production` environment, restrict deployment branches to `main`,
+   and optionally require approval.
+5. Configure these **repository Actions variables**:
+
+   | Variable | Value |
+   | --- | --- |
+   | `DEPLOY_ENABLED` | `true` only once infrastructure and permissions are ready |
+   | `AWS_REGION` | Bucket region, e.g. `eu-central-1` |
+   | `AWS_ROLE_ARN` | OIDC deployment role ARN |
+   | `AWS_ACCOUNT_ID` | Expected 12-digit bucket-owning AWS account ID |
+   | `S3_BUCKET` | Production bucket name, without `s3://` |
+   | `CLOUDFRONT_DISTRIBUTION_ID` | Production distribution ID |
+
+6. Run **Validate and publish** on `main` and check both the build and deployment jobs.
+   Verify `/`, `/about`, `/privacy`, `/imprint` and artwork over HTTPS.
+
+Deployment uploads content-hashed `_astro` assets first with immutable caching, then HTML
+and uploads with revalidation, and waits for CloudFront invalidation. Configure CloudFront
+cache policies with minimum TTL **0** so origin `no-cache` is respected. S3 sync intentionally
+does not delete old assets, avoiding broken in-flight pages. Deleted routes/uploads therefore
+need deliberate cleanup; do not upload confidential material. S3 uploads are not an atomic
+whole-site switch: a failed deployment can partially update files. Re-run a known-good
+revision's workflow to recover; enable bucket versioning for additional recovery options.
+
+Use content branches/PRs for approval; this configuration does not implement automatic
+CloudFront preview deployments or a separate draft database. The existing local branch
+preview command below remains available.
 
 ## AWS preview
 

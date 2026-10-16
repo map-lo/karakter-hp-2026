@@ -7,7 +7,10 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "npm run validate:content && astro build",
+    "check": "astro check",
+    "test": "node --test scripts/*.test.mjs",
+    "validate:content": "node scripts/validate-content.mjs",
     "deploy:preview": "bash scripts/deploy-preview.sh",
     "preview": "astro preview",
     "releases": "node scripts/fetch-releases.mjs",
@@ -16,6 +19,13 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.8",
-    "tailwindcss": "^4.3.3"
+    "tailwindcss": "^4.3.3",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.9.3",
+    "yaml": "^2.9.1"
   }
 }
