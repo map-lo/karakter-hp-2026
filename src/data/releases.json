@@ -3,7 +3,8 @@
   "fetchedAt": "2026-10-11",
   "releases": [
     {
-      "artist": "Get Well Soon",
+      "id": "itunes-6790763072",
+      "artistId": "get-well-soon",
       "title": "Séance",
       "kind": "album",
       "releaseDate": "2026-10-30",
@@ -12,7 +13,8 @@
       "url": "https://music.apple.com/us/album/s%C3%A9ance/6790763072?uo=4"
     },
     {
-      "artist": "Mine",
+      "id": "itunes-6790474201",
+      "artistId": "mine",
       "title": "Killer",
       "kind": "album",
       "releaseDate": "2026-09-04",
@@ -21,7 +23,8 @@
       "url": "https://music.apple.com/us/album/killer/6790474201?uo=4"
     },
     {
-      "artist": "LOTTE",
+      "id": "itunes-1893096878",
+      "artistId": "lotte",
       "title": "Lotte",
       "kind": "album",
       "releaseDate": "2026-08-21",
@@ -30,7 +33,8 @@
       "url": "https://music.apple.com/us/album/lotte/1893096878?uo=4"
     },
     {
-      "artist": "Wallis Bird",
+      "id": "itunes-1881891187",
+      "artistId": "wallis-bird",
       "title": "I Can See Your House From Here",
       "kind": "album",
       "releaseDate": "2026-06-05",
@@ -39,7 +43,8 @@
       "url": "https://music.apple.com/us/album/i-can-see-your-house-from-here/1881891187?uo=4"
     },
     {
-      "artist": "Get Well Soon",
+      "id": "itunes-1879791908",
+      "artistId": "get-well-soon",
       "title": "Minus The Magic",
       "kind": "album",
       "releaseDate": "2026-05-22",
@@ -48,7 +53,8 @@
       "url": "https://music.apple.com/us/album/minus-the-magic/1879791908?uo=4"
     },
     {
-      "artist": "Hundreds",
+      "id": "itunes-1825128584",
+      "artistId": "hundreds",
       "title": "Sirens",
       "kind": "album",
       "releaseDate": "2026-02-06",
@@ -57,7 +63,8 @@
       "url": "https://music.apple.com/us/album/sirens/1825128584?uo=4"
     },
     {
-      "artist": "Mine",
+      "id": "itunes-1712906162",
+      "artistId": "mine",
       "title": "BAUM",
       "kind": "album",
       "releaseDate": "2024-02-02",
@@ -66,7 +73,8 @@
       "url": "https://music.apple.com/us/album/baum/1712906162?uo=4"
     },
     {
-      "artist": "Wallis Bird",
+      "id": "itunes-1603326176",
+      "artistId": "wallis-bird",
       "title": "Hands",
       "kind": "album",
       "releaseDate": "2022-05-27",
@@ -75,7 +83,8 @@
       "url": "https://music.apple.com/us/album/hands/1603326176?uo=4"
     },
     {
-      "artist": "Get Well Soon",
+      "id": "itunes-1597156823",
+      "artistId": "get-well-soon",
       "title": "Amen",
       "kind": "album",
       "releaseDate": "2022-03-25",
@@ -84,7 +93,8 @@
       "url": "https://music.apple.com/us/album/amen/1597156823?uo=4"
     },
     {
-      "artist": "Anaïs Mitchell",
+      "id": "itunes-1617863451",
+      "artistId": "anais-mitchell",
       "title": "Anaïs Mitchell (Deluxe)",
       "kind": "album",
       "releaseDate": "2022-01-28",
@@ -93,7 +103,8 @@
       "url": "https://music.apple.com/us/album/ana%C3%AFs-mitchell-deluxe/1617863451?uo=4"
     },
     {
-      "artist": "Hundreds",
+      "id": "itunes-1555513412",
+      "artistId": "hundreds",
       "title": "In a Decade (Live at Elbphilharmonie)",
       "kind": "album",
       "releaseDate": "2021-05-25",
@@ -102,7 +113,8 @@
       "url": "https://music.apple.com/us/album/in-a-decade-live-at-elbphilharmonie/1555513412?uo=4"
     },
     {
-      "artist": "Mine",
+      "id": "itunes-1542368595",
+      "artistId": "mine",
       "title": "HINÜBER",
       "kind": "album",
       "releaseDate": "2021-04-30",
@@ -111,7 +123,8 @@
       "url": "https://music.apple.com/us/album/hin%C3%BCber/1542368595?uo=4"
     },
     {
-      "artist": "Hundreds",
+      "id": "itunes-1525841029",
+      "artistId": "hundreds",
       "title": "Electric Current",
       "kind": "album",
       "releaseDate": "2020-08-28",
@@ -120,7 +133,8 @@
       "url": "https://music.apple.com/us/album/electric-current/1525841029?uo=4"
     },
     {
-      "artist": "Hundreds",
+      "id": "itunes-1487429462",
+      "artistId": "hundreds",
       "title": "The Current",
       "kind": "album",
       "releaseDate": "2020-03-27",
@@ -129,7 +143,8 @@
       "url": "https://music.apple.com/us/album/the-current/1487429462?uo=4"
     },
     {
-      "artist": "Anaïs Mitchell",
+      "id": "itunes-1466351033",
+      "artistId": "anais-mitchell",
       "title": "Hadestown (Original Broadway Cast Recording)",
       "kind": "album",
       "releaseDate": "2019-06-21",
@@ -138,7 +153,8 @@
       "url": "https://music.apple.com/us/album/hadestown-original-broadway-cast-recording/1466351033?uo=4"
     },
     {
-      "artist": "Mine",
+      "id": "itunes-1449647948",
+      "artistId": "mine",
       "title": "Klebstoff",
       "kind": "album",
       "releaseDate": "2019-04-12",
@@ -147,7 +163,8 @@
       "url": "https://music.apple.com/us/album/klebstoff/1449647948?uo=4"
     },
     {
-      "artist": "Anaïs Mitchell",
+      "id": "itunes-1880808239",
+      "artistId": "anais-mitchell",
       "title": "Hadestown Live From London",
       "kind": "album",
       "releaseDate": "2019-01-01",
@@ -156,7 +173,8 @@
       "url": "https://music.apple.com/us/album/hadestown-live-from-london/1880808239?uo=4"
     },
     {
-      "artist": "Get Well Soon",
+      "id": "itunes-1365544960",
+      "artistId": "get-well-soon",
       "title": "The Horror",
       "kind": "album",
       "releaseDate": "2018-06-08",
@@ -165,7 +183,8 @@
       "url": "https://music.apple.com/us/album/the-horror/1365544960?uo=4"
     },
     {
-      "artist": "Inner Tongue",
+      "id": "itunes-1368072709",
+      "artistId": "inner-tongue",
       "title": "Favours",
       "kind": "album",
       "releaseDate": "2018-05-25",
@@ -174,7 +193,8 @@
       "url": "https://music.apple.com/us/album/favours/1368072709?uo=4"
     },
     {
-      "artist": "Mine",
+      "id": "itunes-1553774869",
+      "artistId": "mine",
       "title": "Mine und Orchester (Live in Berlin)",
       "kind": "album",
       "releaseDate": "2018-02-02",
@@ -183,7 +203,8 @@
       "url": "https://music.apple.com/us/album/mine-und-orchester-live-in-berlin/1553774869?uo=4"
     },
     {
-      "artist": "Mine",
+      "id": "itunes-1440899780",
+      "artistId": "mine",
       "title": "Alle Liebe nachträglich",
       "kind": "album",
       "releaseDate": "2017-10-13",
@@ -192,7 +213,8 @@
       "url": "https://music.apple.com/us/album/alle-liebe-nachtr%C3%A4glich/1440899780?uo=4"
     },
     {
-      "artist": "Wallis Bird",
+      "id": "itunes-1442849904",
+      "artistId": "wallis-bird",
       "title": "Home",
       "kind": "album",
       "releaseDate": "2017-03-30",
@@ -201,7 +223,8 @@
       "url": "https://music.apple.com/us/album/home/1442849904?uo=4"
     },
     {
-      "artist": "Hundreds",
+      "id": "itunes-1150364628",
+      "artistId": "hundreds",
       "title": "Wilderness (Deluxe Edition)",
       "kind": "album",
       "releaseDate": "2016-11-04",
@@ -210,7 +233,8 @@
       "url": "https://music.apple.com/us/album/wilderness-deluxe-edition/1150364628?uo=4"
     },
     {
-      "artist": "Mine",
+      "id": "itunes-1562110914",
+      "artistId": "mine",
       "title": "Das Ziel ist im Weg (Deluxe Edition)",
       "kind": "album",
       "releaseDate": "2016-04-15",
@@ -219,7 +243,8 @@
       "url": "https://music.apple.com/us/album/das-ziel-ist-im-weg-deluxe-edition/1562110914?uo=4"
     },
     {
-      "artist": "Wallis Bird",
+      "id": "itunes-1443129511",
+      "artistId": "wallis-bird",
       "title": "Yeah! (Live 2007-2014)",
       "kind": "album",
       "releaseDate": "2015-08-21",
@@ -228,7 +253,8 @@
       "url": "https://music.apple.com/us/album/yeah-live-2007-2014/1443129511?uo=4"
     },
     {
-      "artist": "Hundreds",
+      "id": "itunes-1684349883",
+      "artistId": "hundreds",
       "title": "Tame the Noise",
       "kind": "album",
       "releaseDate": "2015-06-26",
@@ -237,7 +263,8 @@
       "url": "https://music.apple.com/us/album/tame-the-noise/1684349883?uo=4"
     },
     {
-      "artist": "Hundreds",
+      "id": "itunes-935395006",
+      "artistId": "hundreds",
       "title": "Aftermath Remixes",
       "kind": "album",
       "releaseDate": "2014-12-08",
@@ -246,7 +273,8 @@
       "url": "https://music.apple.com/us/album/aftermath-remixes/935395006?uo=4"
     },
     {
-      "artist": "Get Well Soon",
+      "id": "itunes-1887895120",
+      "artistId": "get-well-soon",
       "title": "Henry - The Infinite Desire of Heinrich Zeppelin Alfred von Nullmeyer - Greatest Hits",
       "kind": "album",
       "releaseDate": "2014-11-21",
@@ -255,7 +283,8 @@
       "url": "https://music.apple.com/us/album/henry-the-infinite-desire-of-heinrich-zeppelin/1887895120?uo=4"
     },
     {
-      "artist": "Mine",
+      "id": "itunes-1553783287",
+      "artistId": "mine",
       "title": "Mine",
       "kind": "album",
       "releaseDate": "2014-10-10",
@@ -264,7 +293,8 @@
       "url": "https://music.apple.com/us/album/mine/1553783287?uo=4"
     },
     {
-      "artist": "Anaïs Mitchell",
+      "id": "itunes-1679410562",
+      "artistId": "anais-mitchell",
       "title": "xoa",
       "kind": "album",
       "releaseDate": "2014-10-06",
@@ -273,7 +303,8 @@
       "url": "https://music.apple.com/us/album/xoa/1679410562?uo=4"
     },
     {
-      "artist": "Hundreds",
+      "id": "itunes-873340165",
+      "artistId": "hundreds",
       "title": "Aftermath",
       "kind": "album",
       "releaseDate": "2014-05-27",
@@ -282,7 +313,8 @@
       "url": "https://music.apple.com/us/album/aftermath/873340165?uo=4"
     },
     {
-      "artist": "Wallis Bird",
+      "id": "itunes-1443892201",
+      "artistId": "wallis-bird",
       "title": "Architect (Deluxe)",
       "kind": "album",
       "releaseDate": "2014-04-11",
@@ -291,7 +323,8 @@
       "url": "https://music.apple.com/us/album/architect-deluxe/1443892201?uo=4"
     },
     {
-      "artist": "Get Well Soon",
+      "id": "itunes-1879658609",
+      "artistId": "get-well-soon",
       "title": "Xanadu (An Original Soundtrack by Get Well Soon)",
       "kind": "album",
       "releaseDate": "2012-08-24",
@@ -300,7 +333,8 @@
       "url": "https://music.apple.com/us/album/xanadu-an-original-soundtrack-by-get-well-soon/1879658609?uo=4"
     },
     {
-      "artist": "Get Well Soon",
+      "id": "itunes-1879657004",
+      "artistId": "get-well-soon",
       "title": "The Scarlet Beast O'Seven Heads",
       "kind": "album",
       "releaseDate": "2012-08-24",
@@ -309,7 +343,8 @@
       "url": "https://music.apple.com/us/album/the-scarlet-beast-oseven-heads/1879657004?uo=4"
     },
     {
-      "artist": "Wallis Bird",
+      "id": "itunes-1443895282",
+      "artistId": "wallis-bird",
       "title": "Wallis Bird (Deluxe)",
       "kind": "album",
       "releaseDate": "2012-03-09",
@@ -318,7 +353,8 @@
       "url": "https://music.apple.com/us/album/wallis-bird-deluxe/1443895282?uo=4"
     },
     {
-      "artist": "Anaïs Mitchell",
+      "id": "itunes-498739583",
+      "artistId": "anais-mitchell",
       "title": "Young Man In America",
       "kind": "album",
       "releaseDate": "2012-02-28",
@@ -327,7 +363,8 @@
       "url": "https://music.apple.com/us/album/young-man-in-america/498739583?uo=4"
     },
     {
-      "artist": "Anaïs Mitchell",
+      "id": "itunes-1441690444",
+      "artistId": "anais-mitchell",
       "title": "Hadestown",
       "kind": "album",
       "releaseDate": "2010-04-26",
@@ -336,7 +373,8 @@
       "url": "https://music.apple.com/us/album/hadestown/1441690444?uo=4"
     },
     {
-      "artist": "Get Well Soon",
+      "id": "itunes-1879653667",
+      "artistId": "get-well-soon",
       "title": "Vexations",
       "kind": "album",
       "releaseDate": "2010-01-22",
@@ -345,7 +383,8 @@
       "url": "https://music.apple.com/us/album/vexations/1879653667?uo=4"
     },
     {
-      "artist": "Get Well Soon",
+      "id": "itunes-1879655550",
+      "artistId": "get-well-soon",
       "title": "Songs Against the Glaciation",
       "kind": "album",
       "releaseDate": "2008-11-14",
@@ -354,7 +393,8 @@
       "url": "https://music.apple.com/us/album/songs-against-the-glaciation/1879655550?uo=4"
     },
     {
-      "artist": "Get Well Soon",
+      "id": "itunes-1879654877",
+      "artistId": "get-well-soon",
       "title": "Rest Now, Weary Head! You Will Get Well Soon",
       "kind": "album",
       "releaseDate": "2008-01-18",
@@ -363,7 +403,8 @@
       "url": "https://music.apple.com/us/album/rest-now-weary-head-you-will-get-well-soon/1879654877?uo=4"
     },
     {
-      "artist": "Anaïs Mitchell",
+      "id": "itunes-1441813236",
+      "artistId": "anais-mitchell",
       "title": "The Brightness",
       "kind": "album",
       "releaseDate": "2007-02-13",
@@ -372,7 +413,8 @@
       "url": "https://music.apple.com/us/album/the-brightness/1441813236?uo=4"
     },
     {
-      "artist": "Wallis Bird",
+      "id": "itunes-1443649033",
+      "artistId": "wallis-bird",
       "title": "Spoons",
       "kind": "album",
       "releaseDate": "2007-01-01",
@@ -381,7 +423,8 @@
       "url": "https://music.apple.com/us/album/spoons/1443649033?uo=4"
     },
     {
-      "artist": "Anaïs Mitchell",
+      "id": "itunes-1441689156",
+      "artistId": "anais-mitchell",
       "title": "Hymns for the Exiled",
       "kind": "album",
       "releaseDate": "2004-09-21",

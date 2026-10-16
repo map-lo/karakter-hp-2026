@@ -1,0 +1,86 @@
+name: Validate and publish
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run check
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: dist
+          if-no-files-found: error
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && vars.DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      AWS_ROLE_ARN: ${{ vars.AWS_ROLE_ARN }}
+      S3_BUCKET: ${{ vars.S3_BUCKET }}
+      AWS_ACCOUNT_ID: ${{ vars.AWS_ACCOUNT_ID }}
+      CLOUDFRONT_DISTRIBUTION_ID: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: dist
+      - name: Require deployment settings
+        shell: bash
+        run: |
+          set -euo pipefail
+          : "${AWS_REGION:?Set AWS_REGION}"
+          : "${AWS_ROLE_ARN:?Set AWS_ROLE_ARN}"
+          : "${S3_BUCKET:?Set S3_BUCKET}"
+          : "${AWS_ACCOUNT_ID:?Set AWS_ACCOUNT_ID}"
+          : "${CLOUDFRONT_DISTRIBUTION_ID:?Set CLOUDFRONT_DISTRIBUTION_ID}"
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          allowed-account-ids: ${{ env.AWS_ACCOUNT_ID }}
+      - name: Upload hashed assets, then pages and uploads
+        shell: bash
+        run: |
+          set -euo pipefail
+          aws s3 sync dist/_astro/ "s3://$S3_BUCKET/_astro/" \
+            --expected-bucket-owner "$AWS_ACCOUNT_ID" \
+            --cache-control "public,max-age=31536000,immutable" --no-progress
+          aws s3 sync dist/ "s3://$S3_BUCKET/" --exclude "_astro/*" \
+            --expected-bucket-owner "$AWS_ACCOUNT_ID" \
+            --cache-control "no-cache" --no-progress
+      - name: Refresh CloudFront
+        shell: bash
+        run: |
+          set -euo pipefail
+          invalidation="$(aws cloudfront create-invalidation \
+            --distribution-id "$CLOUDFRONT_DISTRIBUTION_ID" \
+            --paths "/*" --query 'Invalidation.Id' --output text)"
+          aws cloudfront wait invalidation-completed \
+            --distribution-id "$CLOUDFRONT_DISTRIBUTION_ID" --id "$invalidation"

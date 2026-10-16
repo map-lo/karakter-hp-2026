@@ -1,6 +1,7 @@
 ---
 import type { Release } from "../lib/releases";
 import { createPlaceholder } from "../lib/releases";
+import { url } from "../lib/url";
 
 interface Props {
   release: Release;
@@ -23,7 +24,7 @@ const Tag = target ? "a" : "div";
   >
     <img
       class="block aspect-square w-full bg-[#ececea] object-cover"
-      src={release.artwork}
+      src={release.artwork.startsWith('/') ? url(release.artwork) : release.artwork}
       alt={`${release.title} by ${release.artist}`}
       width="600"
       height="600"

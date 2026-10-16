@@ -1,0 +1,236 @@
+media:
+  input: public/uploads
+  output: /uploads
+  extensions: [jpg, jpeg, png, webp, gif, avif]
+  rename: safe
+
+components:
+  page:
+    type: rich-text
+    options:
+      format: markdown
+      media: false
+  releaseKind:
+    type: select
+    options:
+      values: [album, ep, single]
+  artwork:
+    type: image
+    description: Upload artwork or use an http(s) artwork URL.
+  releaseId:
+    type: string
+    required: true
+    pattern: '^itunes-\d+$'
+    description: Copy the stable ID from Imported releases. Do not use the title.
+
+content:
+  - name: pages
+    label: Text pages
+    type: group
+    items:
+      - name: about
+        label: About
+        type: file
+        path: src/content/pages/about.md
+        format: yaml-frontmatter
+        fields: &pageFields
+          - name: title
+            type: string
+            required: true
+          - name: description
+            label: Search / sharing description
+            type: text
+            required: true
+          - name: body
+            component: page
+            required: true
+      - name: imprint
+        label: Imprint
+        type: file
+        path: src/content/pages/imprint.md
+        format: yaml-frontmatter
+        fields: *pageFields
+      - name: privacy
+        label: Privacy policy
+        type: file
+        path: src/content/pages/privacy.md
+        format: yaml-frontmatter
+        fields: *pageFields
+
+  - name: artists
+    label: Artist roster (list order = website order)
+    type: file
+    path: src/data/artists.json
+    format: json
+    list: true
+    fields:
+      - name: id
+        label: Stable artist ID
+        type: string
+        required: true
+        pattern: '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+        description: Keep unchanged when renaming an artist. Releases refer to this ID.
+      - name: name
+        type: string
+        required: true
+      - name: url
+        label: Website
+        type: string
+        required: true
+      - name: alternateUrl
+        label: Alternate link (reference only)
+        type: string
+      - name: itunesArtistId
+        label: iTunes artist ID
+        type: number
+        description: Optional. Leave blank for artists without an imported catalogue.
+
+  - name: site
+    label: Shared company details and links
+    type: file
+    path: src/data/site.json
+    format: json
+    fields:
+      - name: companyName
+        label: Company name
+        type: string
+        required: true
+      - name: address
+        type: text
+        required: true
+      - name: email
+        type: string
+        required: true
+      - name: instagramUrl
+        label: Instagram URL
+        type: string
+        required: true
+      - name: instagramHandle
+        label: Instagram handle
+        type: string
+        required: true
+      - name: spotifyUrl
+        label: Spotify link
+        type: string
+        required: true
+      - name: appleMusicUrl
+        label: Apple Music link
+        type: string
+        required: true
+
+  - name: editorial
+    label: Release corrections and manual releases
+    type: file
+    path: src/data/release-editorial.json
+    format: json
+    fields:
+      - name: overrides
+        label: Imported release corrections
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{id}"
+        description: Only fill fields you want to override. Blank optional fields keep imported values, except label/link where blank clears the value.
+        fields:
+          - name: id
+            component: releaseId
+          - name: hidden
+            label: Hide from website
+            type: boolean
+          - name: title
+            type: string
+          - name: kind
+            component: releaseKind
+          - name: releaseDate
+            type: date
+            default: ""
+            options:
+              format: yyyy-MM-dd
+              time: false
+          - name: label
+            type: string
+          - name: artwork
+            component: artwork
+          - name: url
+            label: Release link
+            type: string
+      - name: manual
+        label: Manual releases
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{title}"
+        fields:
+          - name: id
+            label: Stable release ID
+            type: string
+            required: true
+            pattern: '^manual-[a-z0-9]+(?:-[a-z0-9]+)*$'
+            description: Unique ID, e.g. manual-artist-album. Keep unchanged after publishing.
+          - name: artistId
+            label: Artist ID
+            type: string
+            required: true
+            description: Copy the stable ID from the Artist roster.
+          - name: title
+            type: string
+            required: true
+          - name: kind
+            component: releaseKind
+            required: true
+          - name: releaseDate
+            type: date
+            required: true
+            options:
+              format: yyyy-MM-dd
+              time: false
+          - name: label
+            type: string
+          - name: artwork
+            component: artwork
+            required: true
+          - name: url
+            label: Release link (blank falls back to artist website)
+            type: string
+          - name: hidden
+            label: Hide from website
+            type: boolean
+
+  - name: imported
+    label: Imported releases (read-only reference)
+    type: file
+    path: src/data/releases.json
+    format: json
+    fields:
+      - name: source
+        type: string
+        readonly: true
+      - name: fetchedAt
+        type: string
+        readonly: true
+      - name: releases
+        type: object
+        readonly: true
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{title} / {artistId} / {id}"
+        fields:
+          - name: id
+            type: string
+          - name: artistId
+            type: string
+          - name: title
+            type: string
+          - name: kind
+            type: string
+          - name: releaseDate
+            type: string
+          - name: label
+            type: string
+          - name: artwork
+            type: string
+          - name: url
+            type: string
