@@ -188,7 +188,7 @@ const sortedArtists = [...artists].sort((a, b) =>
                   data-artist-slug={artist.slug}
                   data-artist-name={artist.name.toLowerCase()}
                 >
-                  {i + 1}__{artist.name.replace(/\s+/g, "_")}
+                  {i + 1}. {artist.name}
                 </a>
               </li>
             ))
@@ -527,7 +527,7 @@ const sortedArtists = [...artists].sort((a, b) =>
     }
 
     .roster-link {
-      @apply inline-flex w-fit lowercase font-inter font-black tracking-tight text-inherit no-underline transition-colors duration-150;
+      @apply inline-flex w-fit font-inter font-black tracking-tight text-inherit no-underline transition-colors duration-150;
       /* Padding is em-based so the vertical rhythm scales with the type at every size */
       font-size: clamp(1.125rem, 7vw, 2.25rem);
       line-height: 1.15;
