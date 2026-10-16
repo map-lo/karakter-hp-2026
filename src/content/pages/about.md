@@ -1,8 +1,7 @@
 ---
-title: "About"
-description: "Karakter Worldwide — philosophy, team and contact."
+title: About (TEST)
+description: Karakter Worldwide — philosophy, team and contact.
 ---
-
 ## Philosophy
 
 KARAKTER is an artist management company based in Berlin and London. Its philosophy is to work honestly and openly with our artists. We have a holistic approach to management, working with artists and producers with strong individual characters and finding the right path to represent them in the most appropriate way – whether that should be on a consultancy basis or full management basis.
@@ -22,14 +21,14 @@ In a time where this industry concentrates more and more on quantity and conveyo
 The founding team has expanded to include additional staff members who align with their values and work approach. The company also provides consultation services and maintains strategic partnerships with various labels, publishers, distributors, and live promoters.
 
 Instagram: @karaktermanagement  
-Email: <info@karakter-worldwide.com>
+Email: [info@karakter-worldwide.com](mailto:info@karakter-worldwide.com)
 
 ## Contact
 
 Karakter Worldwide GmbH, Skalitzer Strasse 67, 10997-Berlin, Germany
 
-Email: <info@karakter-worldwide.com>  
-Instagram: <https://www.instagram.com/karaktermanagement/>
+Email: [info@karakter-worldwide.com](mailto:info@karakter-worldwide.com)  
+Instagram: [https://www.instagram.com/karaktermanagement/](https://www.instagram.com/karaktermanagement/)
 
 UStIDNr: DE273497016  
 HR: HRB 128958 B  
