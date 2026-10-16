@@ -377,6 +377,8 @@ const sortedArtists = [...artists].sort((a, b) =>
     );
 
     let currentRotation = 0;
+    let previousRosterIndex = -1;
+    let rotationDirection = 1;
     let activeArtist: string | null = null;
     let resetTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -447,7 +449,7 @@ const sortedArtists = [...artists].sort((a, b) =>
       "(hover: hover) and (pointer: fine)",
     ).matches;
 
-    rosterLinks.forEach((link) => {
+    rosterLinks.forEach((link, index) => {
       if (!supportsHover) return;
       link.addEventListener("mouseenter", () => {
         // Clear any pending reset timeout from a previous mouseleave
@@ -460,8 +462,13 @@ const sortedArtists = [...artists].sort((a, b) =>
         if (artist && artist !== activeArtist) {
           activeArtist = artist;
 
-          // Slightly rotate the vinyl record on hover
-          currentRotation += 25;
+          if (index !== previousRosterIndex) {
+            rotationDirection = index < previousRosterIndex ? -1 : 1;
+            previousRosterIndex = index;
+          }
+
+          // Preserve the last selection across highlight resets to track direction.
+          currentRotation += 25 * rotationDirection;
           if (vinylDisc) {
             vinylDisc.style.transform = `rotate(${currentRotation}deg)`;
           }
