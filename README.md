@@ -39,8 +39,8 @@ Editors need repository access; confirm organization policies and the hosted CMS
 before inviting them. The CMS interface lives separately from S3; there is no `/admin` route.
 Pages CMS authorization is a manual account step, not something the repository config can do.
 
-The roster's list order controls website order; its initial order preserves the previous
-alphabetical display. Keep artist IDs stable when renaming an artist. Optional iTunes artist
+The website always sorts the roster alphabetically by artist name, ignoring case and accents,
+regardless of CMS list order. Keep artist IDs stable when renaming an artist. Optional iTunes artist
 IDs configure imports; artists without one remain valid roster members.
 Remove or reassign an artist's imported/manual releases before deleting the artist.
 Validation deliberately rejects orphan references.

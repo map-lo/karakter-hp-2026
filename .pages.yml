@@ -58,7 +58,7 @@ content:
         fields: *pageFields
 
   - name: artists
-    label: Artist roster (list order = website order)
+    label: Artist roster (website sorts alphabetically by name)
     type: file
     path: src/data/artists.json
     format: json
