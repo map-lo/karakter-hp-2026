@@ -1,5 +1,5 @@
 ---
-title: About
+title: About us
 description: Karakter Worldwide — philosophy, team and contact.
 ---
 ## Philosophy
