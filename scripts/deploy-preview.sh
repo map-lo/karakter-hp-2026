@@ -22,7 +22,8 @@ if [[ "$branch" == "main" ]]; then
   exit 0
 fi
 
-pr="$(gh pr view "$branch" --repo map-lo/karakter-hp-2026 --json number --jq .number)"
+pr="$(gh pr view "$branch" --repo map-lo/karakter-hp-2026 --json number,state \
+  --jq 'if .state == "OPEN" then .number else error("Local staging requires an open pull request") end')"
 export S3_BUCKET="karakter-homepage-staging-$AWS_ACCOUNT_ID"
 site="http://$S3_BUCKET.s3-website.eu-central-1.amazonaws.com"
 target="$(node -e '
