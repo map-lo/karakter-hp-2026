@@ -81,7 +81,7 @@ content:
             type: string
 
   - name: site
-    label: Shared company details and links
+    label: Company details
     type: file
     path: src/data/site.json
     format: json
