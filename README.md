@@ -2,6 +2,8 @@
 
 Minimal homepage for the artist management Karakter Worldwide, built with Astro and Tailwind CSS.
 
+Temporary CI verification branch: this change will not be merged.
+
 ## Content
 
 Content is repository-owned and editable through [Pages CMS](https://app.pagescms.org).
