@@ -14,8 +14,7 @@ The public website remains a static Astro build; no CMS database or application 
 | About | [`src/content/pages/about.md`](./src/content/pages/about.md) | `/about` |
 | Privacy | [`src/content/pages/privacy.md`](./src/content/pages/privacy.md) | `/privacy` |
 | Imprint | [`src/content/pages/imprint.md`](./src/content/pages/imprint.md) | `/imprint` |
-| Imported catalogue | [`src/data/releases.json`](./src/data/releases.json) | Source data, not edited by hand |
-| Release corrections / manual entries | [`src/data/release-editorial.json`](./src/data/release-editorial.json) | Merged with imported catalogue at build time |
+| Releases | [`src/data/releases.json`](./src/data/releases.json) | Homepage release grid |
 
 Markdown pages have required `title` and `description` frontmatter. Their bodies support
 headings, paragraphs, links, lists, and emphasis, rendered with Astro content collections.
@@ -40,62 +39,38 @@ before inviting them. The CMS interface lives separately from S3; there is no `/
 Pages CMS authorization is a manual account step, not something the repository config can do.
 
 The website always sorts the roster alphabetically by artist name, ignoring case and accents,
-regardless of CMS list order. Keep artist IDs stable when renaming an artist. Optional iTunes artist
-IDs configure imports; artists without one remain valid roster members.
-Remove or reassign an artist's imported/manual releases before deleting the artist.
+regardless of CMS list order. Keep artist IDs stable when renaming an artist.
+Remove or reassign an artist's releases before deleting the artist.
 Validation deliberately rejects orphan references.
 
 Uploads go to [`public/uploads`](./public/uploads) and are stored as `/uploads/...` references.
-Both release-card components apply the Astro base path, including branch previews.
-External artwork URLs remain supported. Rich-text page media uploads are disabled to keep
+Both release-card components apply the Astro base path, including branch previews. Rich-text page media uploads are disabled to keep
 the text pages focused; release artwork is uploaded using its dedicated image field.
 
 ## Releases
 
-The homepage grid shows every release in [`src/data/releases.json`](./src/data/releases.json),
-newest first. That file is a committed cache so builds stay offline safe. Refresh it with:
+Releases are fully hand-managed in Pages CMS under **Releases**, stored in
+[`src/data/releases.json`](./src/data/releases.json). There is no automatic import.
 
-```sh
-npm run releases
-```
+Each release has:
 
-[`scripts/fetch-releases.mjs`](./scripts/fetch-releases.mjs) reads the roster's releases from the
-public iTunes Search API (no key needed). It imports albums only, collapses later editions,
-and preserves provider collection IDs as `itunes-<collectionId>`. Source artist IDs live on
-roster entries, not in code, because names such as `Mine` and `LOTTE` are ambiguous.
-Artists without a source ID are explicitly skipped.
+| Field | Notes |
+| --- | --- |
+| Show release on website (`visible`) | Defaults to on. Turning it off hides the whole release without deleting it. |
+| Artist ID (`artistId`) | Stable ID from the Artist roster. Unknown IDs fail validation. |
+| Title, kind, release date | Required. Kind is `album`, `ep` or `single`. |
+| Label, release link (`url`) | Optional. A blank link falls back to the artist website. |
+| Artwork upload (`artwork`) **or** artwork URL (`artworkUrl`) | Exactly one is required. |
 
-Imports fail on source errors, empty artist catalogues, potentially truncated results,
-invalid records, or stale editorial references. The cache is replaced atomically only after
-the complete candidate validates; failed imports leave the committed cache untouched.
-Unexpected removals are blocked. After reviewing intentional roster/catalogue changes, use:
+The website sorts releases strictly by release date, newest first (including future dates).
+Releases on the same date are ordered by title. The CMS list order is ignored.
 
-```sh
-npm run releases -- --allow-removals
-```
-
-An override for a removed import must also be removed or migrated to a manual entry.
-The removal flag never bypasses reference/content validation.
-
-### Editorial changes
-
-In Pages CMS, **Imported releases** is a read-only reference. Copy a release's ID into
-**Release corrections**, then fill only the fields to override. `hidden: true` hides it.
-Blank optional title/date/artwork/kind fields retain source values; an explicitly blank
-label or link clears that field. A blank link falls back to the artist website.
-Deleting an override restores imported values.
-
-**Manual releases** require a unique `manual-...` ID, an existing artist ID, title,
-kind, date and artwork. Label/link are optional. Imports never write the editorial file.
-All visible releases sort newest first, including future-dated records as before.
-`createPlaceholder()` in [`src/lib/releases.ts`](./src/lib/releases.ts) provides the existing
-inline SVG fallback for unavailable artwork.
-
-The **Refresh release catalogue** Actions workflow runs weekly or manually, validates and
-builds the candidate, and opens a pull request rather than publishing automatically. Enable
-GitHub Actions' permission to create pull requests in repository settings for this workflow.
-Its bot-created PR may not trigger another Actions run with `GITHUB_TOKEN`; validation is
-performed in the refresh workflow itself. Merging by a user triggers the normal `main` build.
+Uploaded artwork is served as-is: there is no resizing service. Covers display at most
+about 110 px wide, so upload square images of about **600 × 600 px**, JPG or WebP,
+ideally under 150 KB. The CMS shows this guidance next to the field; it is not enforced.
+Validation checks that uploaded files exist, including for hidden releases.
+`createPlaceholder()` in [`src/lib/releases.ts`](./src/lib/releases.ts) provides the inline
+SVG fallback for artwork that fails to load.
 
 ## Structure
 
@@ -165,9 +140,8 @@ for quick palette experiments, not a permanent user-facing feature.
 | `npm run build`   | Build the production site to `./dist/`      |
 | `npm run validate:content` | Validate schemas, IDs, references, page metadata and local artwork |
 | `npm run check` | Type-check Astro and TypeScript |
-| `npm test` | Run content, importer, CMS configuration and routing tests |
+| `npm test` | Run content, CMS configuration and routing tests |
 | `npm run preview` | Preview the production build locally        |
-| `npm run releases`| Refresh `src/data/releases.json` from iTunes |
 | `npm run deploy:preview` | Build and upload the public S3 preview |
 
 ## Production: private S3 + CloudFront

@@ -14,14 +14,6 @@ components:
     type: select
     options:
       values: [album, ep, single]
-  artwork:
-    type: image
-    description: Upload artwork or use an http(s) artwork URL.
-  releaseId:
-    type: string
-    required: true
-    pattern: '^itunes-\d+$'
-    description: Copy the stable ID from Imported releases. Do not use the title.
 
 content:
   - name: pages
@@ -80,10 +72,6 @@ content:
       - name: alternateUrl
         label: Alternate link (reference only)
         type: string
-      - name: itunesArtistId
-        label: iTunes artist ID
-        type: number
-        description: Optional. Leave blank for artists without an imported catalogue.
 
   - name: site
     label: Shared company details and links
@@ -118,61 +106,32 @@ content:
         type: string
         required: true
 
-  - name: editorial
-    label: Release corrections and manual releases
+  - name: releases
+    label: Releases
     type: file
-    path: src/data/release-editorial.json
+    path: src/data/releases.json
     format: json
     fields:
-      - name: overrides
-        label: Imported release corrections
+      - name: releases
+        label: Releases (website sorts newest first by release date; list order is ignored)
         type: object
         list:
           collapsible:
             collapsed: true
-            summary: "{id}"
-        description: Only fill fields you want to override. Blank optional fields keep imported values, except label/link where blank clears the value.
+            summary: "{releaseDate} / {title} / {artistId}"
         fields:
-          - name: id
-            component: releaseId
-          - name: hidden
-            label: Hide from website
+          - name: visible
+            label: Show release on website
             type: boolean
-          - name: title
-            type: string
-          - name: kind
-            component: releaseKind
-          - name: releaseDate
-            type: date
-            default: ""
-            options:
-              format: yyyy-MM-dd
-              time: false
-          - name: label
-            type: string
-          - name: artwork
-            component: artwork
-          - name: url
-            label: Release link
-            type: string
-      - name: manual
-        label: Manual releases
-        type: object
-        list:
-          collapsible:
-            collapsed: true
-            summary: "{title}"
-        fields:
-          - name: id
-            label: Stable release ID
-            type: string
-            required: true
-            pattern: '^manual-[a-z0-9]+(?:-[a-z0-9]+)*$'
-            description: Unique ID, e.g. manual-artist-album. Keep unchanged after publishing.
+            default: true
+            description: Turn off to hide the whole release (cover and link) without deleting it.
           - name: artistId
             label: Artist ID
             type: string
             required: true
+            pattern:
+              regex: '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+              message: Use the stable ID from the Artist roster, e.g. get-well-soon.
             description: Copy the stable ID from the Artist roster.
           - name: title
             type: string
@@ -181,56 +140,31 @@ content:
             component: releaseKind
             required: true
           - name: releaseDate
+            label: Release date
             type: date
             required: true
+            description: Determines the position on the website (newest first).
             options:
               format: yyyy-MM-dd
               time: false
           - name: label
             type: string
-          - name: artwork
-            component: artwork
-            required: true
           - name: url
             label: Release link (blank falls back to artist website)
             type: string
-          - name: hidden
-            label: Hide from website
-            type: boolean
-
-  - name: imported
-    label: Imported releases (read-only reference)
-    type: file
-    path: src/data/releases.json
-    format: json
-    fields:
-      - name: source
-        type: string
-        readonly: true
-      - name: fetchedAt
-        type: string
-        readonly: true
-      - name: releases
-        type: object
-        readonly: true
-        list:
-          collapsible:
-            collapsed: true
-            summary: "{title} / {artistId} / {id}"
-        fields:
-          - name: id
-            type: string
-          - name: artistId
-            type: string
-          - name: title
-            type: string
-          - name: kind
-            type: string
-          - name: releaseDate
-            type: string
-          - name: label
-            type: string
           - name: artwork
+            label: Artwork upload
+            type: image
+            description: >-
+              Use either this upload OR the artwork URL below, not both.
+              Suggested: square, 600 × 600 px, JPG or WebP, ideally under 150 KB.
+              Covers display at most ~110 px wide and uploads are not resized automatically,
+              so larger files only slow down the page.
+            options:
+              extensions: [jpg, jpeg, png, webp]
+          - name: artworkUrl
+            label: Artwork URL
             type: string
-          - name: url
-            type: string
+            description: >-
+              Use either this http(s) URL OR the upload above, not both.
+              Prefer a square ~600 × 600 px image, e.g. Apple Music's ".../600x600bb.jpg".

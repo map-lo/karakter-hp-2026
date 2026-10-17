@@ -2,33 +2,28 @@
   {
     "id": "anais-mitchell",
     "name": "Anaïs Mitchell",
-    "url": "http://anaismitchell.com",
-    "itunesArtistId": 79166513
+    "url": "http://anaismitchell.com"
   },
   {
     "id": "get-well-soon",
     "name": "Get Well Soon",
-    "url": "http://www.youwillgetwellsoon.com",
-    "itunesArtistId": 259369584
+    "url": "http://www.youwillgetwellsoon.com"
   },
   {
     "id": "hundreds",
     "name": "Hundreds",
-    "url": "http://www.hundredsmusic.com/",
-    "itunesArtistId": 355169873
+    "url": "http://www.hundredsmusic.com/"
   },
   {
     "id": "inner-tongue",
     "name": "Inner Tongue",
-    "url": "http://innertongue.com",
-    "itunesArtistId": 978465089
+    "url": "http://innertongue.com"
   },
   {
     "id": "lotte",
     "name": "LOTTE",
     "url": "https://www.musikvonlotte.de/",
-    "alternateUrl": "https://open.spotify.com/intl-de/artist/3gqabzO7zvHVzAIT0Nxqa3",
-    "itunesArtistId": 1213801726
+    "alternateUrl": "https://open.spotify.com/intl-de/artist/3gqabzO7zvHVzAIT0Nxqa3"
   },
   {
     "id": "marcus-wuest",
@@ -38,13 +33,11 @@
   {
     "id": "mine",
     "name": "Mine",
-    "url": "https://minemusik.de/",
-    "itunesArtistId": 1027177254
+    "url": "https://minemusik.de/"
   },
   {
     "id": "wallis-bird",
     "name": "Wallis Bird",
-    "url": "http://wallisbird.com",
-    "itunesArtistId": 151288818
+    "url": "http://wallisbird.com"
   }
 ]
