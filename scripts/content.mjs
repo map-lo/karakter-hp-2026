@@ -9,7 +9,7 @@ export const readJson = (file) => JSON.parse(readFileSync(resolve(root, file), '
 
 export function loadContent() {
   return {
-    artists: readJson('src/data/artists.json'),
+    artists: readJson('src/data/artists.json').artists,
     site: readJson('src/data/site.json'),
     releases: readJson('src/data/releases.json')
   };

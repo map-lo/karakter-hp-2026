@@ -50,28 +50,35 @@ content:
         fields: *pageFields
 
   - name: artists
-    label: Artist roster (website sorts alphabetically by name)
+    label: Artist roster
     type: file
     path: src/data/artists.json
     format: json
-    list: true
     fields:
-      - name: id
-        label: Stable artist ID
-        type: string
-        required: true
-        pattern: '^[a-z0-9]+(?:-[a-z0-9]+)*$'
-        description: Keep unchanged when renaming an artist. Releases refer to this ID.
-      - name: name
-        type: string
-        required: true
-      - name: url
-        label: Website
-        type: string
-        required: true
-      - name: alternateUrl
-        label: Alternate link (reference only)
-        type: string
+      - name: artists
+        label: Artists (website sorts alphabetically by name; list order is ignored)
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{name}"
+        fields:
+          - name: id
+            label: Stable artist ID
+            type: string
+            required: true
+            pattern: '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+            description: Keep unchanged when renaming an artist. Releases refer to this ID.
+          - name: name
+            type: string
+            required: true
+          - name: url
+            label: Website
+            type: string
+            required: true
+          - name: alternateUrl
+            label: Alternate link (reference only)
+            type: string
 
   - name: site
     label: Shared company details and links

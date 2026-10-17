@@ -91,6 +91,9 @@ test('CMS config covers canonical files and every release field', () => {
     assert.ok(readFileSync(`${root}/${entry.path}`, 'utf8'));
     assert.ok(entry.fields.length);
   }
+  const artistList = entries.find((entry) => entry.name === 'artists').fields[0];
+  assert.equal(artistList.list.collapsible.summary, '{name}');
+  assert.deepEqual(artistList.fields.map((field) => field.name), ['id', 'name', 'url', 'alternateUrl']);
   const releaseFields = entries.find((entry) => entry.name === 'releases').fields[0].fields;
   assert.deepEqual(releaseFields.map((field) => field.name).sort(), ['artistId', 'artwork', 'artworkUrl',
     'kind', 'label', 'releaseDate', 'title', 'url', 'visible']);
