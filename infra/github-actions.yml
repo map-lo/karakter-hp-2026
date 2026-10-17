@@ -1,15 +1,47 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Scoped GitHub Actions OIDC roles for the existing Karakter S3 website
+Description: Isolated production and staging S3 deployments with GitHub OIDC
 
 Parameters:
   BucketName:
     Type: String
     Default: karakter-homepage-preview-035932132046
-  Repository:
+  StagingBucketName:
     Type: String
-    Default: map-lo/karakter-hp-2026
+    Default: karakter-homepage-staging-035932132046
+  OidcSubjectPrefix:
+    Type: String
+    Description: GitHub repository OIDC subject prefix, including immutable IDs when enabled
 
 Resources:
+  StagingBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketName: !Ref StagingBucketName
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        IgnorePublicAcls: true
+        BlockPublicPolicy: false
+        RestrictPublicBuckets: false
+      WebsiteConfiguration:
+        IndexDocument: index.html
+
+  StagingBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref StagingBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: '*'
+            Action: s3:GetObject
+            Resource: !Sub ${StagingBucket.Arn}/pr-*/*
+
   ProductionRole:
     Type: AWS::IAM::Role
     Properties:
@@ -23,7 +55,7 @@ Resources:
             Condition:
               StringEquals:
                 token.actions.githubusercontent.com:aud: sts.amazonaws.com
-                token.actions.githubusercontent.com:sub: !Sub repo:${Repository}:environment:production
+                token.actions.githubusercontent.com:sub: !Sub ${OidcSubjectPrefix}:environment:production
       Policies:
         - PolicyName: PublishProduction
           PolicyDocument:
@@ -35,9 +67,6 @@ Resources:
               - Effect: Allow
                 Action: [s3:GetObject, s3:PutObject]
                 Resource: !Sub arn:${AWS::Partition}:s3:::${BucketName}/*
-              - Effect: Deny
-                Action: s3:PutObject
-                Resource: !Sub arn:${AWS::Partition}:s3:::${BucketName}/stage/*
 
   StagingRole:
     Type: AWS::IAM::Role
@@ -52,7 +81,7 @@ Resources:
             Condition:
               StringEquals:
                 token.actions.githubusercontent.com:aud: sts.amazonaws.com
-                token.actions.githubusercontent.com:sub: !Sub repo:${Repository}:environment:staging
+                token.actions.githubusercontent.com:sub: !Sub ${OidcSubjectPrefix}:environment:staging
       Policies:
         - PolicyName: PublishStaging
           PolicyDocument:
@@ -60,13 +89,17 @@ Resources:
             Statement:
               - Effect: Allow
                 Action: s3:ListBucket
-                Resource: !Sub arn:${AWS::Partition}:s3:::${BucketName}
+                Resource: !GetAtt StagingBucket.Arn
               - Effect: Allow
                 Action: [s3:GetObject, s3:PutObject, s3:DeleteObject]
-                Resource: !Sub arn:${AWS::Partition}:s3:::${BucketName}/stage/pr-*/*
+                Resource: !Sub ${StagingBucket.Arn}/pr-*/*
 
 Outputs:
   ProductionRoleArn:
     Value: !GetAtt ProductionRole.Arn
   StagingRoleArn:
     Value: !GetAtt StagingRole.Arn
+  StagingBucketName:
+    Value: !Ref StagingBucket
+  StagingWebsiteUrl:
+    Value: !GetAtt StagingBucket.WebsiteURL

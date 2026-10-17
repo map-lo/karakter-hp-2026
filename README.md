@@ -176,7 +176,7 @@ for quick palette experiments, not a permanent user-facing feature.
 | --- | --- |
 | Push or merge into `main` | Test, type-check, build, and publish to the S3 website root |
 | Push to another branch / open or update a PR | No build or deployment |
-| Comment exactly `/stage` on an open PR | Test, type-check, build the PR head commit, publish to `/stage/pr-<number>/`, and reply with the URL |
+| Comment exactly `/stage` on an open PR | Test, type-check, build the PR head commit, publish to `/pr-<number>/` in the dedicated staging bucket, and reply with the URL |
 | Close/merge a PR or delete its branch | Delete only that PR's preview folder |
 
 Staging requires a same-repository, non-`main` PR and a commenter with write/maintain/admin
@@ -191,8 +191,9 @@ Workflows: [publish](./.github/workflows/publish.yml),
 Build jobs do not receive AWS credentials. Deployment and cleanup run trusted default-branch
 code, never PR scripts, with short-lived GitHub OIDC credentials. The `production` and
 `staging` environments accept only `main` workflow refs (the comment/cleanup workflows run
-from the default branch). Production cannot overwrite `stage/`; staging can only write/delete
-`stage/pr-*/` objects. Deployment and cleanup share a per-PR lock and re-check the PR
+from the default branch). The production role has no access to the staging bucket, and
+staging/cleanup credentials have no access to the production bucket. Staging can only
+write/delete `pr-*/` objects. Deployment and cleanup share a per-PR lock and re-check the PR
 before changing S3, so a late build cannot recreate a closed/deleted preview.
 Cleanup is idempotent, includes every PR associated with a deleted branch, and refuses to
 delete a preview if the PR was reopened and its branch exists again. A failed cleanup is
@@ -200,11 +201,17 @@ visible in Actions and can be re-run.
 
 ### AWS/GitHub configuration
 
-The existing AWS account `035932132046` and bucket below are used; this does not create a
-new website, CloudFront distribution, or change DNS. The GitHub OIDC provider must already
-exist in AWS with audience `sts.amazonaws.com`.
-[infra/github-actions.yml](./infra/github-actions.yml) manages two narrowly scoped IAM roles
-in the `karakter-github-actions` CloudFormation stack. To provision/update them and configure
+The existing AWS account `035932132046` and production bucket below are used. All previews
+share a separate bucket, `karakter-homepage-staging-035932132046`, with its own public S3
+website. No CloudFront distribution or DNS changes are made. The GitHub OIDC provider must
+already exist in AWS with audience `sts.amazonaws.com`.
+[infra/github-actions.yml](./infra/github-actions.yml) manages the staging bucket, its public
+read policy (only `pr-*/` objects), and two narrowly scoped IAM roles in the
+`karakter-github-actions` CloudFormation stack. The staging bucket is retained if the stack
+is deleted, avoiding accidental data loss. The setup script reads GitHub's actual OIDC
+subject prefix, including immutable owner/repository IDs when enabled, rather than assuming
+the older name-only subject. Custom subject templates require an explicit trust-policy update.
+To provision/update these resources and configure
 GitHub (requires AWS IAM/CloudFormation and GitHub repository admin access):
 
 ```sh
@@ -220,16 +227,18 @@ The script sets these **repository Actions variables**:
 | `AWS_ACCOUNT_ID` | `035932132046` |
 | `S3_BUCKET` | `karakter-homepage-preview-035932132046` |
 | `SITE_URL` | S3 website origin below, without trailing slash |
+| `STAGING_SITE_URL` | `http://karakter-homepage-staging-035932132046.s3-website.eu-central-1.amazonaws.com` |
 
-Each environment also has its own `AWS_ROLE_ARN` variable. **No permanent AWS access keys
+Each environment also has its own `AWS_ROLE_ARN` variable; `staging` overrides `S3_BUCKET`
+with the dedicated staging bucket name. **No permanent AWS access keys
 or other deployment secrets are needed.** Missing settings fail the workflow rather than
 silently skipping deployment. `workflow_dispatch` on **Validate and publish** allows manual
 recovery on `main`; other refs cannot build or deploy.
 
 Uploads put content-hashed `_astro` assets first with immutable caching, then HTML and uploads
 with `no-cache`. Sync never deletes old assets, preserving in-flight pages; preview cleanup
-removes the exact `stage/pr-N/` prefix, including its assets, without affecting `pr-N0/` or
-production. `stage/` is reserved for CI previews and excluded from site artifact sync.
+removes the exact `pr-N/` prefix, including its assets, without affecting `pr-N0/` or
+production in the other bucket.
 Deleted production routes/uploads need deliberate cleanup. S3 uploads are not an atomic
 whole-site switch: a failed deployment can partially update files; re-run a known-good
 revision to recover. Only deploy content intended to be public.
@@ -241,7 +250,7 @@ and an invalidation step. The current deployment intentionally targets the exist
 
 ## AWS preview
 
-The preview is hosted at:
+The main site is hosted at:
 
 http://karakter-homepage-preview-035932132046.s3-website.eu-central-1.amazonaws.com
 
@@ -262,7 +271,8 @@ The target depends on the current Git branch:
 
 - On `main`, the site is synced to the bucket root (the URL above).
 - On any other branch, an open PR is required (`gh` must be authenticated). The site is
-  built with `ASTRO_BASE=/stage/pr-<number>` and synced to that exact subfolder, matching CI.
+  built with `ASTRO_BASE=/pr-<number>` and synced to that exact subfolder in the **staging**
+  bucket, matching CI: `http://karakter-homepage-staging-035932132046.s3-website.eu-central-1.amazonaws.com/pr-<number>/`.
   Closing the PR or deleting the branch cleans up this folder via GitHub Actions.
 
 Because of this, internal links and public assets must go through `url()` from

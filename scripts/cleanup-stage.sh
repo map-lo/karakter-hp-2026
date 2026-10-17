@@ -10,5 +10,5 @@ if [[ ! "$PR_NUMBER" =~ ^[1-9][0-9]*$ ]]; then
 fi
 
 aws s3api head-bucket --bucket "$S3_BUCKET" --expected-bucket-owner "$AWS_ACCOUNT_ID"
-aws s3 rm "s3://$S3_BUCKET/stage/pr-$PR_NUMBER/" --recursive --only-show-errors
-printf 'Removed preview stage/pr-%s/ (already-absent previews are safe).\n' "$PR_NUMBER"
+aws s3 rm "s3://$S3_BUCKET/pr-$PR_NUMBER/" --recursive --only-show-errors
+printf 'Removed preview pr-%s/ (already-absent previews are safe).\n' "$PR_NUMBER"

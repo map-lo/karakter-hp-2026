@@ -8,8 +8,6 @@ export AWS_ACCOUNT_ID="035932132046"
 export AWS_PROFILE="${AWS_PROFILE:-lya2}"
 export AWS_REGION="eu-central-1"
 export AWS_PAGER=""
-site="http://$S3_BUCKET.s3-website.eu-central-1.amazonaws.com"
-
 branch="$(git branch --show-current)"
 if [[ -z "$branch" ]]; then
   echo "Detached HEAD: check out a branch before deploying." >&2
@@ -20,11 +18,13 @@ if [[ "$branch" == "main" ]]; then
   unset S3_PREFIX ASTRO_BASE
   npm run build
   bash scripts/deploy-site.sh
-  printf '\nPreview: %s\n' "$site"
+  printf '\nPreview: http://%s.s3-website.eu-central-1.amazonaws.com/\n' "$S3_BUCKET"
   exit 0
 fi
 
 pr="$(gh pr view "$branch" --repo map-lo/karakter-hp-2026 --json number --jq .number)"
+export S3_BUCKET="karakter-homepage-staging-$AWS_ACCOUNT_ID"
+site="http://$S3_BUCKET.s3-website.eu-central-1.amazonaws.com"
 target="$(node -e '
   const { stageTarget } = require("./scripts/stage-request.cjs");
   const { prefix, base } = stageTarget(Number(process.argv[1]));

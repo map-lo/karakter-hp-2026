@@ -8,8 +8,10 @@ export AWS_PAGER=""
 repository="map-lo/karakter-hp-2026"
 account="035932132046"
 bucket="karakter-homepage-preview-$account"
+staging_bucket="karakter-homepage-staging-$account"
 stack="karakter-github-actions"
 site="http://$bucket.s3-website.$AWS_REGION.amazonaws.com"
+staging_site="http://$staging_bucket.s3-website.$AWS_REGION.amazonaws.com"
 
 actual_account="$(aws sts get-caller-identity --query Account --output text)"
 if [[ "$actual_account" != "$account" ]]; then
@@ -17,10 +19,19 @@ if [[ "$actual_account" != "$account" ]]; then
   exit 1
 fi
 gh api "repos/$repository" --jq '.permissions.admin' | grep -qx true
+oidc_prefix="$(gh api "repos/$repository/actions/oidc/customization/sub" --jq '
+  if .use_default != true then error("Custom OIDC subject templates require an explicit trust-policy update")
+  elif .use_immutable_subject == true then .sub_claim_prefix
+  else "repo:map-lo/karakter-hp-2026" end
+')"
+if [[ "$oidc_prefix" != repo:* ]]; then
+  echo "GitHub did not return a valid OIDC repository subject prefix." >&2
+  exit 1
+fi
 
 aws cloudformation deploy --stack-name "$stack" \
   --template-file infra/github-actions.yml --capabilities CAPABILITY_IAM \
-  --parameter-overrides "BucketName=$bucket" "Repository=$repository" \
+  --parameter-overrides "BucketName=$bucket" "StagingBucketName=$staging_bucket" "OidcSubjectPrefix=$oidc_prefix" \
   --no-fail-on-empty-changeset
 
 for environment in production staging; do
@@ -51,4 +62,6 @@ gh variable set AWS_REGION --repo "$repository" --body "$AWS_REGION"
 gh variable set AWS_ACCOUNT_ID --repo "$repository" --body "$account"
 gh variable set S3_BUCKET --repo "$repository" --body "$bucket"
 gh variable set SITE_URL --repo "$repository" --body "$site"
-printf '\nConfigured GitHub OIDC deployments to %s (no AWS access-key secrets).\n' "$site"
+gh variable set STAGING_SITE_URL --repo "$repository" --body "$staging_site"
+gh variable set S3_BUCKET --repo "$repository" --env staging --body "$staging_bucket"
+printf '\nConfigured GitHub OIDC (no AWS access-key secrets).\nProduction: %s\nStaging: %s/pr-<number>/\n' "$site" "$staging_site"

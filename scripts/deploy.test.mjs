@@ -10,7 +10,7 @@ import { cleanupTargets, assertCleanupAllowed } from './stage-cleanup.cjs';
 
 test('staging paths are stable, unique PR folders without branch name collisions', () => {
   assert.deepEqual(stageTarget(2), {
-    prefix: 'stage/pr-2', base: '/stage/pr-2'
+    prefix: 'pr-2', base: '/pr-2'
   });
   assert.notEqual(stageTarget(2).prefix, stageTarget(20).prefix);
   for (const number of [0, -1, 1.5, NaN, Infinity, Number.MAX_SAFE_INTEGER + 1, '2', '../main']) {
@@ -53,7 +53,7 @@ test('staging resolves an authorized PR to an immutable commit and exact prefix'
     const fixture = stageFixture({ permission });
     await resolveStageRequest(fixture);
     assert.deepEqual(fixture.outputs, {
-      sha: 'a'.repeat(40), prefix: 'stage/pr-2', base: '/stage/pr-2'
+      sha: 'a'.repeat(40), prefix: 'pr-2', base: '/pr-2'
     });
   }
 });
@@ -138,6 +138,8 @@ test('workflow triggers and credential boundaries match the deployment contract'
   assert.equal(staging.jobs.deploy.steps[0].with.ref, undefined);
   assert.equal(staging.jobs.deploy.steps[0].with['persist-credentials'], false);
   assert.equal(production.jobs.deploy.if.includes('DEPLOY_ENABLED'), false);
+  assert.equal(staging.jobs.deploy.environment.url, '${{ vars.STAGING_SITE_URL }}${{ needs.request.outputs.base }}/');
+  assert.equal(staging.jobs.report.steps[0].env.PREVIEW_URL, '${{ vars.STAGING_SITE_URL }}${{ needs.request.outputs.base }}/');
   assert.deepEqual(cleanup.on, { pull_request_target: { types: ['closed'] }, delete: null });
   assert.equal(cleanup.jobs.cleanup.concurrency.group, 'stage-pr-${{ matrix.pr }}');
   assert.equal(staging.jobs.deploy.concurrency.group, 'stage-pr-${{ github.event.issue.number }}');
@@ -147,7 +149,36 @@ test('workflow triggers and credential boundaries match the deployment contract'
   }
 });
 
-test('S3 publication scopes uploads, preserves old assets and never deletes or overwrites stage from root', () => {
+test('infrastructure isolates buckets and supports immutable GitHub OIDC subject prefixes', () => {
+  const infrastructure = parse(readFileSync(new URL('../infra/github-actions.yml', import.meta.url), 'utf8'), {
+    customTags: ['!Sub', '!Ref', '!GetAtt'].map((tag) => ({ tag, resolve: (value) => value }))
+  });
+  for (const [name, environment] of [['ProductionRole', 'production'], ['StagingRole', 'staging']]) {
+    const role = infrastructure.Resources[name].Properties;
+    const trust = role.AssumeRolePolicyDocument.Statement[0];
+    assert.equal(trust.Condition.StringEquals['token.actions.githubusercontent.com:aud'], 'sts.amazonaws.com');
+    assert.equal(trust.Condition.StringEquals['token.actions.githubusercontent.com:sub'],
+      `\${OidcSubjectPrefix}:environment:${environment}`);
+    const policy = role.Policies[0].PolicyDocument.Statement;
+    assert.equal(policy.length, 2);
+    if (environment === 'production') {
+      assert.equal(policy[1].Resource, 'arn:${AWS::Partition}:s3:::${BucketName}/*');
+      assert.ok(!policy[1].Action.includes('s3:DeleteObject'));
+    } else {
+      assert.equal(policy[0].Resource, 'StagingBucket.Arn');
+      assert.equal(policy[1].Resource, '${StagingBucket.Arn}/pr-*/*');
+      assert.ok(policy[1].Action.includes('s3:DeleteObject'));
+    }
+  }
+  const bucket = infrastructure.Resources.StagingBucket.Properties;
+  assert.equal(bucket.PublicAccessBlockConfiguration.BlockPublicAcls, true);
+  assert.equal(bucket.OwnershipControls.Rules[0].ObjectOwnership, 'BucketOwnerEnforced');
+  const publicRead = infrastructure.Resources.StagingBucketPolicy.Properties.PolicyDocument.Statement[0];
+  assert.equal(publicRead.Action, 's3:GetObject');
+  assert.equal(publicRead.Resource, '${StagingBucket.Arn}/pr-*/*');
+});
+
+test('S3 publication scopes uploads, preserves old assets and cleans only exact PR folders', () => {
   const directory = mkdtempSync(join(tmpdir(), 'karakter-deploy-'));
   try {
     const log = join(directory, 'calls.jsonl');
@@ -159,7 +190,7 @@ test('S3 publication scopes uploads, preserves old assets and never deletes or o
       env: { ...process.env, PATH: `${directory}:${process.env.PATH}`,
         AWS_TEST_LOG: log, S3_BUCKET: 'test-bucket', AWS_ACCOUNT_ID: '123456789012', S3_PREFIX: prefix }
     });
-    for (const prefix of ['', 'stage/pr-2', 'stage/pr-20']) {
+    for (const prefix of ['', 'pr-2', 'pr-20']) {
       writeFileSync(log, '');
       const result = run(prefix);
       assert.equal(result.status, 0, result.stderr);
@@ -169,10 +200,9 @@ test('S3 publication scopes uploads, preserves old assets and never deletes or o
       const destination = `s3://test-bucket/${prefix ? `${prefix}/` : ''}`;
       assert.equal(calls[1][3], `${destination}_astro/`);
       assert.equal(calls[2][3], destination);
-      assert.ok(calls[2].includes('stage/*'));
       assert.ok(calls.every((args) => !args.includes('--delete')));
     }
-    for (const prefix of ['other', 'stage/', 'stage/../main', 'stage/pr-2/../pr-20', 'stage/pr-2/', 'stage/pr-0']) {
+    for (const prefix of ['other', '/', '../main', 'pr-2/../pr-20', 'pr-2/', 'pr-0']) {
       writeFileSync(log, '');
       assert.notEqual(run(prefix).status, 0);
       assert.equal(readFileSync(log, 'utf8'), '');
@@ -189,7 +219,7 @@ test('S3 publication scopes uploads, preserves old assets and never deletes or o
       const calls = readFileSync(log, 'utf8').trim().split('\n').map(JSON.parse);
       assert.equal(calls.length, 2);
       assert.ok(calls[0].includes('--expected-bucket-owner'));
-      assert.deepEqual(calls[1], ['s3', 'rm', `s3://test-bucket/stage/pr-${number}/`, '--recursive', '--only-show-errors']);
+      assert.deepEqual(calls[1], ['s3', 'rm', `s3://test-bucket/pr-${number}/`, '--recursive', '--only-show-errors']);
     }
     for (const number of ['', '0', '-1', '2/../pr-20', '2;echo unsafe']) {
       writeFileSync(log, '');

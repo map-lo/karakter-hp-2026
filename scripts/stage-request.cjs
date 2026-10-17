@@ -2,7 +2,7 @@ function stageTarget(number) {
   if (!Number.isSafeInteger(number) || number <= 0) {
     throw new Error('Invalid pull request number; refusing an unsafe staging path.');
   }
-  return { prefix: `stage/pr-${number}`, base: `/stage/pr-${number}` };
+  return { prefix: `pr-${number}`, base: `/pr-${number}` };
 }
 
 function assertStagePullRequest(pr, repository) {
