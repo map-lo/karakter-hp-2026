@@ -13,7 +13,6 @@
     "validate:content": "node scripts/validate-content.mjs",
     "deploy:preview": "bash scripts/deploy-preview.sh",
     "preview": "astro preview",
-    "releases": "node scripts/fetch-releases.mjs",
     "astro": "astro"
   },
   "dependencies": {
