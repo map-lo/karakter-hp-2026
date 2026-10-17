@@ -1,0 +1,77 @@
+name: Remove PR previews
+
+on:
+  pull_request_target:
+    types: [closed]
+  delete:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  resolve:
+    if: github.event_name == 'pull_request_target' || github.event.ref_type == 'branch' && github.event.ref != 'main'
+    runs-on: ubuntu-latest
+    outputs:
+      prs: ${{ steps.targets.outputs.prs }}
+    steps:
+      # pull_request_target is used only for cleanup; never check out or execute the PR head.
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+      - uses: actions/github-script@v7
+        id: targets
+        with:
+          script: |
+            const { cleanupTargets } = require('./scripts/stage-cleanup.cjs');
+            core.setOutput('prs', JSON.stringify(await cleanupTargets({ github, context })));
+
+  cleanup:
+    needs: resolve
+    if: needs.resolve.outputs.prs != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        pr: ${{ fromJSON(needs.resolve.outputs.prs) }}
+    concurrency:
+      group: stage-pr-${{ matrix.pr }}
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    environment: staging
+    permissions:
+      contents: read
+      pull-requests: read
+      id-token: write
+    env:
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      AWS_ACCOUNT_ID: ${{ vars.AWS_ACCOUNT_ID }}
+      AWS_ROLE_ARN: ${{ vars.AWS_ROLE_ARN }}
+      S3_BUCKET: ${{ vars.S3_BUCKET }}
+      PR_NUMBER: ${{ matrix.pr }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+      - name: Re-check that the preview is no longer active
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { assertCleanupAllowed } = require('./scripts/stage-cleanup.cjs');
+            await assertCleanupAllowed({ github, context, number: Number(process.env.PR_NUMBER) });
+      - name: Require deployment settings
+        run: |
+          set -euo pipefail
+          : "${AWS_REGION:?Set AWS_REGION}"
+          : "${AWS_ACCOUNT_ID:?Set AWS_ACCOUNT_ID}"
+          : "${AWS_ROLE_ARN:?Set AWS_ROLE_ARN}"
+          : "${S3_BUCKET:?Set S3_BUCKET}"
+      - uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          allowed-account-ids: ${{ env.AWS_ACCOUNT_ID }}
+      - name: Delete only this PR's preview
+        run: bash scripts/cleanup-stage.sh

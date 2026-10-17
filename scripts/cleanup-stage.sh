@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+: "${S3_BUCKET:?Set S3_BUCKET}"
+: "${AWS_ACCOUNT_ID:?Set AWS_ACCOUNT_ID}"
+: "${PR_NUMBER:?Set PR_NUMBER}"
+if [[ ! "$PR_NUMBER" =~ ^[1-9][0-9]*$ ]]; then
+  echo "Refusing to delete an invalid PR staging path." >&2
+  exit 1
+fi
+
+aws s3api head-bucket --bucket "$S3_BUCKET" --expected-bucket-owner "$AWS_ACCOUNT_ID"
+aws s3 rm "s3://$S3_BUCKET/stage/pr-$PR_NUMBER/" --recursive --only-show-errors
+printf 'Removed preview stage/pr-%s/ (already-absent previews are safe).\n' "$PR_NUMBER"

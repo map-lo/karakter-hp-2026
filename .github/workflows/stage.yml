@@ -1,0 +1,134 @@
+name: Stage pull request
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: stage-request-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  request:
+    if: github.event.issue.pull_request && github.event.comment.body == '/stage'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      sha: ${{ steps.request.outputs.sha }}
+      prefix: ${{ steps.request.outputs.prefix }}
+      base: ${{ steps.request.outputs.base }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/github-script@v7
+        id: request
+        with:
+          script: |
+            const { resolveStageRequest } = require('./scripts/stage-request.cjs');
+            await resolveStageRequest({ github, context, core });
+
+  build:
+    needs: request
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.request.outputs.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run check
+      - run: npm run build
+        env:
+          ASTRO_BASE: ${{ needs.request.outputs.base }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: stage-site
+          path: dist
+          if-no-files-found: error
+
+  deploy:
+    needs: [request, build]
+    runs-on: ubuntu-latest
+    concurrency:
+      group: stage-pr-${{ github.event.issue.number }}
+      cancel-in-progress: false
+    environment:
+      name: staging
+      url: ${{ vars.SITE_URL }}${{ needs.request.outputs.base }}/
+    permissions:
+      contents: read
+      pull-requests: read
+      id-token: write
+    env:
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      AWS_ROLE_ARN: ${{ vars.AWS_ROLE_ARN }}
+      AWS_ACCOUNT_ID: ${{ vars.AWS_ACCOUNT_ID }}
+      S3_BUCKET: ${{ vars.S3_BUCKET }}
+      S3_PREFIX: ${{ needs.request.outputs.prefix }}
+    steps:
+      # Only the artifact comes from the PR; deployment code comes from the default branch.
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: stage-site
+          path: dist
+      - name: Refuse closed, deleted or changed PRs before publishing
+        uses: actions/github-script@v7
+        env:
+          COMMIT_SHA: ${{ needs.request.outputs.sha }}
+        with:
+          script: |
+            const { assertStageDeployable } = require('./scripts/stage-request.cjs');
+            await assertStageDeployable({ github, context, sha: process.env.COMMIT_SHA });
+      - name: Require deployment settings
+        shell: bash
+        run: |
+          set -euo pipefail
+          : "${AWS_REGION:?Set AWS_REGION}"
+          : "${AWS_ROLE_ARN:?Set AWS_ROLE_ARN}"
+          : "${AWS_ACCOUNT_ID:?Set AWS_ACCOUNT_ID}"
+          : "${S3_BUCKET:?Set S3_BUCKET}"
+          : "${S3_PREFIX:?Missing staging prefix}"
+      - uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          allowed-account-ids: ${{ env.AWS_ACCOUNT_ID }}
+      - name: Publish preview
+        run: bash scripts/deploy-site.sh
+
+  report:
+    if: always() && needs.request.result == 'success'
+    needs: [request, build, deploy]
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/github-script@v7
+        env:
+          RESULT: ${{ needs.deploy.result }}
+          PREVIEW_URL: ${{ vars.SITE_URL }}${{ needs.request.outputs.base }}/
+          COMMIT_SHA: ${{ needs.request.outputs.sha }}
+        with:
+          script: |
+            const run = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const body = process.env.RESULT === 'success'
+              ? `Staged \`${process.env.COMMIT_SHA}\`:\n\n${process.env.PREVIEW_URL}\n\n[Deployment log](${run})`
+              : `Staging failed or was cancelled. [Check the workflow log](${run}) before retrying with \`/stage\`.`;
+            await github.rest.issues.createComment({
+              ...context.repo, issue_number: context.issue.number, body
+            });

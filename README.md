@@ -30,7 +30,7 @@ The existing legal wording was preserved during migration, including the Squares
 2. Open [Pages CMS](https://app.pagescms.org), sign in, and authorize access to this repository.
    For a private repository or organization, approve only the necessary repository access.
 3. Select the repository and the branch to edit. Pages CMS reads [`.pages.yml`](./.pages.yml).
-4. Edit and save. Changes are commits; a `main` save triggers validation and, if enabled,
+4. Edit and save. Changes are commits; a `main` save triggers validation and
    deployment. For review first, edit a content branch and open a pull request into `main`.
 5. Check the **Validate and publish** Actions run before considering the change live.
    A saved commit is not a successful publication. Failed validation/builds do not deploy.
@@ -170,52 +170,74 @@ for quick palette experiments, not a permanent user-facing feature.
 | `npm run releases`| Refresh `src/data/releases.json` from iTunes |
 | `npm run deploy:preview` | Build and upload the public S3 preview |
 
-## Production: private S3 + CloudFront
+## GitHub Actions deployment
 
-[`.github/workflows/publish.yml`](./.github/workflows/publish.yml) validates pull requests and
-`main` changes, runs tests/type-checks, and builds a downloadable static site artifact.
-Deployment is **off by default**; no AWS resources are created by these workflows.
+| Event | Result |
+| --- | --- |
+| Push or merge into `main` | Test, type-check, build, and publish to the S3 website root |
+| Push to another branch / open or update a PR | No build or deployment |
+| Comment exactly `/stage` on an open PR | Test, type-check, build the PR head commit, publish to `/stage/pr-<number>/`, and reply with the URL |
+| Close/merge a PR or delete its branch | Delete only that PR's preview folder |
 
-To enable it:
+Staging requires a same-repository, non-`main` PR and a commenter with write/maintain/admin
+access. Forks and read-only commenters cannot trigger builds. PR-number folders are stable
+across branch renames, safe for arbitrary branch names (including slashes), and unique even
+when a deleted branch name is reused. Each `/stage` resolves the current immutable commit;
+later pushes do not update its preview automatically. If the PR changes during the build,
+the deploy fails explicitly: comment `/stage` again.
 
-1. Create a private S3 bucket and a CloudFront distribution with an S3 **REST origin**
-   and Origin Access Control. Keep S3 public access blocked and restrict the bucket policy
-   to that distribution. Set up the domain/TLS certificate separately.
-2. Publish [`scripts/cloudfront-rewrite.js`](./scripts/cloudfront-rewrite.js) as a CloudFront
-   Function using JavaScript runtime 2.0 and associate it with the site's **viewer-request** event. It maps `/about`
-   and `/about/` to `/about/index.html` without rewriting asset paths.
-3. Create an AWS role for GitHub OIDC. Restrict its trust to this repository's `production`
-   environment (`repo:map-lo/karakter-hp-2026:environment:production`) and audience
-   `sts.amazonaws.com`. Give it only bucket listing/object read-write access for this site,
-   plus `cloudfront:CreateInvalidation` and `cloudfront:GetInvalidation` for its distribution.
-   No long-lived AWS access keys belong in GitHub or the repository.
-4. Create the GitHub `production` environment, restrict deployment branches to `main`,
-   and optionally require approval.
-5. Configure these **repository Actions variables**:
+Workflows: [publish](./.github/workflows/publish.yml),
+[stage](./.github/workflows/stage.yml), and [cleanup](./.github/workflows/stage-cleanup.yml).
+Build jobs do not receive AWS credentials. Deployment and cleanup run trusted default-branch
+code, never PR scripts, with short-lived GitHub OIDC credentials. The `production` and
+`staging` environments accept only `main` workflow refs (the comment/cleanup workflows run
+from the default branch). Production cannot overwrite `stage/`; staging can only write/delete
+`stage/pr-*/` objects. Deployment and cleanup share a per-PR lock and re-check the PR
+before changing S3, so a late build cannot recreate a closed/deleted preview.
+Cleanup is idempotent, includes every PR associated with a deleted branch, and refuses to
+delete a preview if the PR was reopened and its branch exists again. A failed cleanup is
+visible in Actions and can be re-run.
 
-   | Variable | Value |
-   | --- | --- |
-   | `DEPLOY_ENABLED` | `true` only once infrastructure and permissions are ready |
-   | `AWS_REGION` | Bucket region, e.g. `eu-central-1` |
-   | `AWS_ROLE_ARN` | OIDC deployment role ARN |
-   | `AWS_ACCOUNT_ID` | Expected 12-digit bucket-owning AWS account ID |
-   | `S3_BUCKET` | Production bucket name, without `s3://` |
-   | `CLOUDFRONT_DISTRIBUTION_ID` | Production distribution ID |
+### AWS/GitHub configuration
 
-6. Run **Validate and publish** on `main` and check both the build and deployment jobs.
-   Verify `/`, `/about`, `/privacy`, `/imprint` and artwork over HTTPS.
+The existing AWS account `035932132046` and bucket below are used; this does not create a
+new website, CloudFront distribution, or change DNS. The GitHub OIDC provider must already
+exist in AWS with audience `sts.amazonaws.com`.
+[infra/github-actions.yml](./infra/github-actions.yml) manages two narrowly scoped IAM roles
+in the `karakter-github-actions` CloudFormation stack. To provision/update them and configure
+GitHub (requires AWS IAM/CloudFormation and GitHub repository admin access):
 
-Deployment uploads content-hashed `_astro` assets first with immutable caching, then HTML
-and uploads with revalidation, and waits for CloudFront invalidation. Configure CloudFront
-cache policies with minimum TTL **0** so origin `no-cache` is respected. S3 sync intentionally
-does not delete old assets, avoiding broken in-flight pages. Deleted routes/uploads therefore
-need deliberate cleanup; do not upload confidential material. S3 uploads are not an atomic
-whole-site switch: a failed deployment can partially update files. Re-run a known-good
-revision's workflow to recover; enable bucket versioning for additional recovery options.
+```sh
+aws sso login --profile lya2
+bash scripts/setup-github-deploy.sh
+```
 
-Use content branches/PRs for approval; this configuration does not implement automatic
-CloudFront preview deployments or a separate draft database. The existing local branch
-preview command below remains available.
+The script sets these **repository Actions variables**:
+
+| Variable | Value |
+| --- | --- |
+| `AWS_REGION` | `eu-central-1` |
+| `AWS_ACCOUNT_ID` | `035932132046` |
+| `S3_BUCKET` | `karakter-homepage-preview-035932132046` |
+| `SITE_URL` | S3 website origin below, without trailing slash |
+
+Each environment also has its own `AWS_ROLE_ARN` variable. **No permanent AWS access keys
+or other deployment secrets are needed.** Missing settings fail the workflow rather than
+silently skipping deployment. `workflow_dispatch` on **Validate and publish** allows manual
+recovery on `main`; other refs cannot build or deploy.
+
+Uploads put content-hashed `_astro` assets first with immutable caching, then HTML and uploads
+with `no-cache`. Sync never deletes old assets, preserving in-flight pages; preview cleanup
+removes the exact `stage/pr-N/` prefix, including its assets, without affecting `pr-N0/` or
+production. `stage/` is reserved for CI previews and excluded from site artifact sync.
+Deleted production routes/uploads need deliberate cleanup. S3 uploads are not an atomic
+whole-site switch: a failed deployment can partially update files; re-run a known-good
+revision to recover. Only deploy content intended to be public.
+
+For future HTTPS hosting, use a private S3 REST origin with CloudFront Origin Access Control
+and a certificate/domain. [scripts/cloudfront-rewrite.js](./scripts/cloudfront-rewrite.js)
+can map directory routes to `index.html`; CI would also need scoped invalidation permissions
+and an invalidation step. The current deployment intentionally targets the existing HTTP site.
 
 ## AWS preview
 
@@ -232,16 +254,16 @@ npm run deploy:preview
 ```
 
 [`scripts/deploy-preview.sh`](./scripts/deploy-preview.sh) verifies the bucket owner,
-builds the static site, and syncs `dist/` to the bucket. Uploads use `Cache-Control: no-cache`
-so browsers revalidate content when the preview changes. Sync does not delete older files.
+builds the static site, and uses the same upload script as CI. Pages use `Cache-Control: no-cache`
+so browsers revalidate content when the preview changes; hashed assets are immutable.
 Only deploy content intended to be public.
 
 The target depends on the current Git branch:
 
 - On `main`, the site is synced to the bucket root (the URL above).
-- On any other branch, the site is built with `ASTRO_BASE=/<branch>` and synced to a
-  `<branch>/` subfolder, e.g. `.../feature-x/`. The folder name is the lowercased branch name
-  with unsafe characters replaced by `-`. Branch syncs use `--delete`, scoped to that folder.
+- On any other branch, an open PR is required (`gh` must be authenticated). The site is
+  built with `ASTRO_BASE=/stage/pr-<number>` and synced to that exact subfolder, matching CI.
+  Closing the PR or deleting the branch cleans up this folder via GitHub Actions.
 
 Because of this, internal links and public assets must go through `url()` from
 [`src/lib/url.ts`](./src/lib/url.ts) (or `import.meta.env.BASE_URL`) instead of hard-coded `/` paths.
