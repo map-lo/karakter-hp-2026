@@ -36,4 +36,4 @@ HR: HRB 128958 B
 
 Karakter Worldwide does not accept unsolicited demos or MP3s. Please email us FIRST with some brief information about you.
 
-Design credit: Maximilian Schenkel c/o: Karakter Worldwide Ltd (London) / Karakter Worldwide GmbH
+Design credit: bitflut.com c/o: Karakter Worldwide Ltd (London) / Karakter Worldwide GmbH
