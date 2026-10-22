@@ -1,0 +1,167 @@
+{
+  "Comment": "Hetzner export 2026-10-22; apex NS/SOA managed by Route 53; self-CNAMEs gema/tours omitted with owner approval",
+  "Changes": [
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "karakter-worldwide.com.",
+        "Type": "A",
+        "TTL": 86400,
+        "ResourceRecords": [
+          { "Value": "198.185.159.144" },
+          { "Value": "198.185.159.145" },
+          { "Value": "198.49.23.144" },
+          { "Value": "198.49.23.145" }
+        ]
+      }
+    },
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "2015.karakter-worldwide.com.",
+        "Type": "A",
+        "TTL": 86400,
+        "ResourceRecords": [{ "Value": "138.201.121.254" }]
+      }
+    },
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "localhost.karakter-worldwide.com.",
+        "Type": "A",
+        "TTL": 86400,
+        "ResourceRecords": [{ "Value": "127.0.0.1" }]
+      }
+    },
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "loopback.karakter-worldwide.com.",
+        "Type": "CNAME",
+        "TTL": 86400,
+        "ResourceRecords": [{ "Value": "localhost.karakter-worldwide.com." }]
+      }
+    },
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "merch.karakter-worldwide.com.",
+        "Type": "CNAME",
+        "TTL": 600,
+        "ResourceRecords": [{ "Value": "06443cfdff2676bd.vercel-dns-017.com." }]
+      }
+    },
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "projects.karakter-worldwide.com.",
+        "Type": "CNAME",
+        "TTL": 3600,
+        "ResourceRecords": [{ "Value": "1e5511a0fd37b942.vercel-dns-017.com." }]
+      }
+    },
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "radar.karakter-worldwide.com.",
+        "Type": "CNAME",
+        "TTL": 600,
+        "ResourceRecords": [{ "Value": "b5ff04da959a9220.vercel-dns-017.com." }]
+      }
+    },
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "rwwaxlr3ztxhm224payw.karakter-worldwide.com.",
+        "Type": "CNAME",
+        "TTL": 86400,
+        "ResourceRecords": [{ "Value": "verify.squarespace.com." }]
+      }
+    },
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "socials.karakter-worldwide.com.",
+        "Type": "CNAME",
+        "TTL": 600,
+        "ResourceRecords": [{ "Value": "b898c12b0a85c9e7.vercel-dns-017.com." }]
+      }
+    },
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "squarespace._domainkey.karakter-worldwide.com.",
+        "Type": "CNAME",
+        "TTL": 86400,
+        "ResourceRecords": [{ "Value": "squarespace-domainkey.squarespace-mail.com.karakter-worldwide.com." }]
+      }
+    },
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "www.karakter-worldwide.com.",
+        "Type": "CNAME",
+        "TTL": 86400,
+        "ResourceRecords": [{ "Value": "ext-cust.squarespace.com." }]
+      }
+    },
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "zeit.karakter-worldwide.com.",
+        "Type": "CNAME",
+        "TTL": 300,
+        "ResourceRecords": [{ "Value": "cname.vercel-dns.com." }]
+      }
+    },
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "karakter-worldwide.com.",
+        "Type": "MX",
+        "TTL": 86400,
+        "ResourceRecords": [
+          { "Value": "1 ASPMX.L.GOOGLE.COM." },
+          { "Value": "10 ALT3.ASPMX.L.GOOGLE.COM." },
+          { "Value": "10 ALT4.ASPMX.L.GOOGLE.COM." },
+          { "Value": "5 ALT1.ASPMX.L.GOOGLE.COM." },
+          { "Value": "5 ALT2.ASPMX.L.GOOGLE.COM." }
+        ]
+      }
+    },
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "karakter-worldwide.com.",
+        "Type": "TXT",
+        "TTL": 86400,
+        "ResourceRecords": [
+          { "Value": "\"google-site-verification=kCffV3bcjv3bxrsyxq78tsDAQWv0uL6WTKdKqONqOlI\"" },
+          { "Value": "\"v=spf1 include:_spf.google.com ~all\"" }
+        ]
+      }
+    },
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "_dmarc.karakter-worldwide.com.",
+        "Type": "TXT",
+        "TTL": 3600,
+        "ResourceRecords": [
+          { "Value": "\"v=DMARC1; p=quarantine; rua=mailto:dmarc-reports@karakter-worldwide.com; ruf=mailto:dmarc-reports@karakter-worldwide.com; fo=1;\"" }
+        ]
+      }
+    },
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "google._domainkey.karakter-worldwide.com.",
+        "Type": "TXT",
+        "TTL": 60,
+        "ResourceRecords": [
+          { "Value": "\"v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwCORUm2yUpA0EusXh7nHtCXLm/x8poZJ6hSe2qJdZp7fvDUsBu0+1VZ5PMrW/jer2avcSMT/zzHO9kntovC3IJM4/lxp8jhO7Z9e61FOSdWX4SQZTrRHh2WDbIDYURKUw3B5I1FPjzFtvrSvga01aA93xKxlkBaRs5lJgJSenRSEAa86Ky2Wx6NlCZmYyeyIT\" \"JWqmUam3PG5f2lfeps99tdxV7pBKN7W2KiF8TO57LpZHkR+o34h/Pip4B4KTSr1vMjokIcu46w7UwJw1UnHbsNirkfBH0N7FY1oYRcoC/ZB6XOWP7+2K0EHglB2xViFkIm28mdW6n0UmukffagCYQIDAQAB\"" }
+        ]
+      }
+    }
+  ]
+}

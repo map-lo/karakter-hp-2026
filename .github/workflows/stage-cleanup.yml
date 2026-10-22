@@ -50,6 +50,7 @@ jobs:
       AWS_ROLE_ARN: ${{ vars.AWS_ROLE_ARN }}
       S3_BUCKET: ${{ vars.S3_BUCKET }}
       PR_NUMBER: ${{ matrix.pr }}
+      CLOUDFRONT_DISTRIBUTION_ID: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -68,6 +69,7 @@ jobs:
           : "${AWS_ACCOUNT_ID:?Set AWS_ACCOUNT_ID}"
           : "${AWS_ROLE_ARN:?Set AWS_ROLE_ARN}"
           : "${S3_BUCKET:?Set S3_BUCKET}"
+          : "${CLOUDFRONT_DISTRIBUTION_ID:?Set CLOUDFRONT_DISTRIBUTION_ID}"
       - uses: aws-actions/configure-aws-credentials@v5
         with:
           role-to-assume: ${{ env.AWS_ROLE_ARN }}

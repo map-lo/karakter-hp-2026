@@ -4,6 +4,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 : "${S3_BUCKET:?Set S3_BUCKET}"
 : "${AWS_ACCOUNT_ID:?Set AWS_ACCOUNT_ID}"
+: "${CLOUDFRONT_DISTRIBUTION_ID:?Set CLOUDFRONT_DISTRIBUTION_ID}"
 
 prefix="${S3_PREFIX:-}"
 if [[ -n "$prefix" ]]; then
@@ -21,3 +22,4 @@ aws s3 sync dist/_astro/ "s3://$S3_BUCKET/${prefix}_astro/" \
 aws s3 sync dist/ "s3://$S3_BUCKET/$prefix" \
   --exclude "_astro/*" \
   --cache-control "no-cache" --no-progress
+bash scripts/invalidate-site.sh "/${prefix}*"

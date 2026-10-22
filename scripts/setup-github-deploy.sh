@@ -2,16 +2,14 @@
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
-export AWS_PROFILE="${AWS_PROFILE:-lya2}"
+export AWS_PROFILE="${AWS_PROFILE:-karakter-org}"
 export AWS_REGION="${AWS_REGION:-eu-central-1}"
 export AWS_PAGER=""
 repository="map-lo/karakter-hp-2026"
-account="035932132046"
-bucket="karakter-homepage-preview-$account"
+account="544709547144"
+bucket="karakter-homepage-production-$account"
 staging_bucket="karakter-homepage-staging-$account"
 stack="karakter-github-actions"
-site="http://$bucket.s3-website.$AWS_REGION.amazonaws.com"
-staging_site="http://$staging_bucket.s3-website.$AWS_REGION.amazonaws.com"
 
 actual_account="$(aws sts get-caller-identity --query Account --output text)"
 if [[ "$actual_account" != "$account" ]]; then
@@ -34,6 +32,19 @@ aws cloudformation deploy --stack-name "$stack" \
   --parameter-overrides "BucketName=$bucket" "StagingBucketName=$staging_bucket" "OidcSubjectPrefix=$oidc_prefix" \
   --no-fail-on-empty-changeset
 
+output_value() {
+  local value
+  value="$(aws cloudformation describe-stacks --stack-name "$stack" \
+    --query "Stacks[0].Outputs[?OutputKey=='$1'].OutputValue | [0]" --output text)"
+  if [[ -z "$value" || "$value" == None ]]; then
+    echo "Missing CloudFormation output: $1" >&2
+    return 1
+  fi
+  printf '%s' "$value"
+}
+
+site="$(output_value ProductionWebsiteUrl)"
+staging_site="$(output_value StagingWebsiteUrl)"
 for environment in production staging; do
   gh api --method PUT "repos/$repository/environments/$environment" --input - <<'JSON'
 {"deployment_branch_policy":{"protected_branches":false,"custom_branch_policies":true}}
@@ -46,16 +57,23 @@ JSON
   fi
   if [[ "$environment" == production ]]; then
     output="ProductionRoleArn"
+    environment_bucket="$bucket"
+    distribution="$(output_value ProductionDistributionId)"
   else
     output="StagingRoleArn"
+    environment_bucket="$staging_bucket"
+    distribution="$(output_value StagingDistributionId)"
   fi
-  role="$(aws cloudformation describe-stacks --stack-name "$stack" \
-    --query "Stacks[0].Outputs[?OutputKey=='$output'].OutputValue | [0]" --output text)"
+  role="$(output_value "$output")"
   if [[ "$role" != arn:aws:iam::"$account":role/* ]]; then
     echo "CloudFormation did not return the expected deployment role." >&2
     exit 1
   fi
   gh variable set AWS_ROLE_ARN --repo "$repository" --env "$environment" --body "$role"
+  gh variable set AWS_ACCOUNT_ID --repo "$repository" --env "$environment" --body "$account"
+  gh variable set AWS_REGION --repo "$repository" --env "$environment" --body "$AWS_REGION"
+  gh variable set S3_BUCKET --repo "$repository" --env "$environment" --body "$environment_bucket"
+  gh variable set CLOUDFRONT_DISTRIBUTION_ID --repo "$repository" --env "$environment" --body "$distribution"
 done
 
 gh variable set AWS_REGION --repo "$repository" --body "$AWS_REGION"
@@ -63,5 +81,4 @@ gh variable set AWS_ACCOUNT_ID --repo "$repository" --body "$account"
 gh variable set S3_BUCKET --repo "$repository" --body "$bucket"
 gh variable set SITE_URL --repo "$repository" --body "$site"
 gh variable set STAGING_SITE_URL --repo "$repository" --body "$staging_site"
-gh variable set S3_BUCKET --repo "$repository" --env staging --body "$staging_bucket"
 printf '\nConfigured GitHub OIDC (no AWS access-key secrets).\nProduction: %s\nStaging: %s/pr-<number>/\n' "$site" "$staging_site"

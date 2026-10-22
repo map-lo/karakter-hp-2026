@@ -148,7 +148,7 @@ for quick palette experiments, not a permanent user-facing feature.
 
 | Event | Result |
 | --- | --- |
-| Push or merge into `main` | Test, type-check, build, and publish to the S3 website root |
+| Push or merge into `main` | Test, type-check, build, publish to private S3, and invalidate CloudFront |
 | Push to another branch / open or update a PR | No build or deployment |
 | Comment exactly `/stage` on an open PR | Test, type-check, build the PR head commit, publish to `/pr-<number>/` in the dedicated staging bucket, and reply with the URL |
 | Close/merge a PR or delete its branch | Delete only that PR's preview folder |
@@ -175,36 +175,62 @@ visible in Actions and can be re-run.
 
 ### AWS/GitHub configuration
 
-The existing AWS account `035932132046` and production bucket below are used. All previews
-share a separate bucket, `karakter-homepage-staging-035932132046`, with its own public S3
-website. No CloudFront distribution or DNS changes are made. The GitHub OIDC provider must
-already exist in AWS with audience `sts.amazonaws.com`.
-[infra/github-actions.yml](./infra/github-actions.yml) manages the staging bucket, its public
-read policy (only `pr-*/` objects), and two narrowly scoped IAM roles in the
-`karakter-github-actions` CloudFormation stack. The staging bucket is retained if the stack
-is deleted, avoiding accidental data loss. The setup script reads GitHub's actual OIDC
+The **Karakter** member account `544709547144` belongs to organization `o-2d7aspvqv0`,
+managed by account `035932132046`. Its root email is `stefan+karakter@loveyourartist.de`.
+Both production and staging now use the member account, in `eu-central-1`.
+The previous public S3 preview resources in the management account are left intact;
+GitHub no longer publishes there.
+
+[infra/github-actions.yml](./infra/github-actions.yml) manages the
+`karakter-github-actions` CloudFormation stack: two private, encrypted S3 buckets, two
+CloudFront distributions, an Origin Access Control, directory-index routing function,
+GitHub OIDC provider, isolated deployment roles, and the Route 53 hosted zone.
+All S3 public access is blocked. Each bucket permits reads only from its own CloudFront
+distribution; staging exposes only `pr-*/` objects. Viewers are redirected to HTTPS,
+and CloudFront signs HTTPS origin requests. Unknown routes are not rewritten to the homepage.
+Buckets and the hosted zone are retained on stack deletion.
+
+| Resource | Value |
+| --- | --- |
+| Production | <https://dsk9324ext.cloudfront.net> |
+| Production bucket | `karakter-homepage-production-544709547144` |
+| Production distribution | `E294DZFE2GGRD7` |
+| Staging | <https://d2xrjj8i3globn.cloudfront.net/pr-N/> |
+| Staging bucket | `karakter-homepage-staging-544709547144` |
+| Staging distribution | `E1HHELYCUEPLSK` |
+| Route 53 zone | `Z030739431M5X8J5MUKZQ` |
+
+The setup script reads GitHub's actual OIDC
 subject prefix, including immutable owner/repository IDs when enabled, rather than assuming
 the older name-only subject. Custom subject templates require an explicit trust-policy update.
-To provision/update these resources and configure
-GitHub (requires AWS IAM/CloudFormation and GitHub repository admin access):
+To provision/update these resources and configure GitHub (requires member-account
+administrator access and GitHub repository admin access):
 
 ```sh
 aws sso login --profile lya2
+aws configure set role_arn arn:aws:iam::544709547144:role/OrganizationAccountAccessRole --profile karakter-org
+aws configure set source_profile lya2 --profile karakter-org
+aws configure set region eu-central-1 --profile karakter-org
 bash scripts/setup-github-deploy.sh
 ```
+
+`karakter-org` assumes the organization-created role through `lya2`; it stores no new
+access keys. The unrelated pre-existing local profile named `karakter` is not used.
+Secure the member root account with MFA/recovery controls and review AWS billing
+alerts separately; creating the member account does not configure these controls.
 
 The script sets these **repository Actions variables**:
 
 | Variable | Value |
 | --- | --- |
 | `AWS_REGION` | `eu-central-1` |
-| `AWS_ACCOUNT_ID` | `035932132046` |
-| `S3_BUCKET` | `karakter-homepage-preview-035932132046` |
-| `SITE_URL` | S3 website origin below, without trailing slash |
-| `STAGING_SITE_URL` | `http://karakter-homepage-staging-035932132046.s3-website.eu-central-1.amazonaws.com` |
+| `AWS_ACCOUNT_ID` | `544709547144` |
+| `S3_BUCKET` | `karakter-homepage-production-544709547144` |
+| `SITE_URL` | Production URL (CloudFront initially; custom domain after activation), without trailing slash |
+| `STAGING_SITE_URL` | Staging CloudFront URL, without trailing slash |
 
-Each environment also has its own `AWS_ROLE_ARN` variable; `staging` overrides `S3_BUCKET`
-with the dedicated staging bucket name. **No permanent AWS access keys
+Each environment has its own `AWS_ROLE_ARN`, `AWS_ACCOUNT_ID`, `AWS_REGION`, `S3_BUCKET`,
+and `CLOUDFRONT_DISTRIBUTION_ID` variables. **No permanent AWS access keys
 or other deployment secrets are needed.** Missing settings fail the workflow rather than
 silently skipping deployment. `workflow_dispatch` on **Validate and publish** allows manual
 recovery on `main`; other refs cannot build or deploy.
@@ -212,47 +238,116 @@ recovery on `main`; other refs cannot build or deploy.
 Uploads put content-hashed `_astro` assets first with immutable caching, then HTML and uploads
 with `no-cache`. Sync never deletes old assets, preserving in-flight pages; preview cleanup
 removes the exact `pr-N/` prefix, including its assets, without affecting `pr-N0/` or
-production in the other bucket.
+production in the other bucket. Publishing invalidates `/*` for production or the exact
+`/pr-N/*` path for staging and waits for completion. Cleanup also invalidates the deleted
+preview. Each role can invalidate only its own distribution. CloudFront's minimum cache
+TTL is zero, respecting HTML's `no-cache` and hashed assets' immutable cache headers.
+Invalidation failures fail the workflow rather than reporting publication success.
 Deleted production routes/uploads need deliberate cleanup. S3 uploads are not an atomic
 whole-site switch: a failed deployment can partially update files; re-run a known-good
 revision to recover. Only deploy content intended to be public.
 
-For future HTTPS hosting, use a private S3 REST origin with CloudFront Origin Access Control
-and a certificate/domain. [scripts/cloudfront-rewrite.js](./scripts/cloudfront-rewrite.js)
-can map directory routes to `index.html`; CI would also need scoped invalidation permissions
-and an invalidation step. The current deployment intentionally targets the existing HTTP site.
+### Local deployment
 
-## AWS preview
-
-The main site is hosted at:
-
-http://karakter-homepage-preview-035932132046.s3-website.eu-central-1.amazonaws.com
-
-The S3 bucket `karakter-homepage-preview-035932132046` is in `eu-central-1`
-and uses the local AWS CLI profile `lya2`. Sign in first if the SSO session has expired:
+Prefer GitHub Actions for production. For a deliberate local deployment, sign in first:
 
 ```sh
 aws sso login --profile lya2
 npm run deploy:preview
 ```
 
-[`scripts/deploy-preview.sh`](./scripts/deploy-preview.sh) verifies the bucket owner,
-builds the static site, and uses the same upload script as CI. Pages use `Cache-Control: no-cache`
-so browsers revalidate content when the preview changes; hashed assets are immutable.
-Only deploy content intended to be public.
+[`scripts/deploy-preview.sh`](./scripts/deploy-preview.sh) verifies the member account and
+bucket owner, reads bucket/distribution URLs from CloudFormation, builds the site, and uses
+the same upload/invalidation scripts as CI. Only deploy content intended to be public.
 
 The target depends on the current Git branch:
 
-- On `main`, the site is synced to the bucket root (the URL above).
+- On `main`, the site is published to production.
 - On any other branch, an open PR is required (`gh` must be authenticated). The site is
   built with `ASTRO_BASE=/pr-<number>` and synced to that exact subfolder in the **staging**
-  bucket, matching CI: `http://karakter-homepage-staging-035932132046.s3-website.eu-central-1.amazonaws.com/pr-<number>/`.
+  bucket, matching CI: `https://d2xrjj8i3globn.cloudfront.net/pr-<number>/`.
   Closing the PR or deleting the branch cleans up this folder via GitHub Actions.
 
 Because of this, internal links and public assets must go through `url()` from
 [`src/lib/url.ts`](./src/lib/url.ts) (or `import.meta.env.BASE_URL`) instead of hard-coded `/` paths.
 
-This is an HTTP-only, publicly readable preview with AWS storage and request charges.
-Public ACLs remain blocked; anonymous reads are granted by the bucket policy, not ACLs.
-The website serves `index.html`, including the generated page directories.
-For HTTPS, use CloudFront with a private S3 bucket instead.
+AWS storage, CDN requests/transfer, Route 53, and invalidations beyond the free allowance
+can incur charges. PR previews are public through HTTPS, not authenticated/private previews.
+
+### DNS migration: Hetzner to Route 53
+
+The zone was created without changing the domain's registrar delegation. The initial
+Route 53 records preserve the old Squarespace website, Google Workspace MX/SPF/DKIM/DMARC,
+verification records, and other subdomains.
+[infra/dns-records.json](./infra/dns-records.json) is the approved pre-cutover snapshot;
+**do not reapply it after website cutover**, because it restores the Squarespace A/WWW records.
+Hetzner's `gema` and `tours` CNAMEs point to themselves and were omitted with owner approval:
+Route 53 rejects CNAME loops. The unusual existing Squarespace DKIM target is preserved
+exactly, not silently corrected.
+
+The Route 53 nameservers to set **at the domain registrar** are:
+
+```text
+ns-573.awsdns-07.net
+ns-121.awsdns-15.com
+ns-1523.awsdns-62.org
+ns-1662.awsdns-15.co.uk
+```
+
+Changing NS records inside the old Hetzner zone alone does not change parent delegation.
+Keep the old zone active during propagation. Before delegation, compare every migrated record
+against Hetzner and verify that no parent DS/DNSSEC record exists (none was observed during
+preparation); stale DS records would break validation. The previous website records have
+an 86400-second TTL, so website cutover can take a day even after delegation propagates.
+
+An ACM certificate was requested in **us-east-1** for `karakter-worldwide.com` and
+`www.karakter-worldwide.com`:
+
+```text
+arn:aws:acm:us-east-1:544709547144:certificate/e5830794-e225-4b40-9e5d-56535d09f84e
+```
+
+[infra/dns-validation.json](./infra/dns-validation.json) contains its CNAMEs, already placed
+in Route 53. They validate once the new zone is publicly delegated; alternatively add the
+same CNAMEs at Hetzner to validate before delegation. Keep these records for automatic renewal.
+**Do not point the website at CloudFront until ACM is issued and the distribution accepts
+both hostnames.** The generated CloudFront HTTPS URL works independently of this migration.
+
+After delegation (or adding validation CNAMEs at Hetzner), confirm ACM shows `ISSUED`:
+
+```sh
+aws acm describe-certificate --profile karakter-org --region us-east-1 \
+  --certificate-arn arn:aws:acm:us-east-1:544709547144:certificate/e5830794-e225-4b40-9e5d-56535d09f84e \
+  --query Certificate.Status --output text
+```
+
+Only then attach the certificate/hostnames. CloudFormation waits for CloudFront deployment;
+other parameter values are preserved:
+
+```sh
+aws cloudformation deploy --profile karakter-org --region eu-central-1 \
+  --stack-name karakter-github-actions --template-file infra/github-actions.yml \
+  --capabilities CAPABILITY_IAM \
+  --parameter-overrides CertificateArn=arn:aws:acm:us-east-1:544709547144:certificate/e5830794-e225-4b40-9e5d-56535d09f84e \
+  --no-fail-on-empty-changeset
+
+curl --fail --connect-to karakter-worldwide.com:443:dsk9324ext.cloudfront.net:443 \
+  https://karakter-worldwide.com/
+curl --fail --connect-to www.karakter-worldwide.com:443:dsk9324ext.cloudfront.net:443 \
+  https://www.karakter-worldwide.com/
+```
+
+Once both HTTPS hostnames work, apply the **one-time atomic website cutover**:
+
+```sh
+aws route53 change-resource-record-sets --profile karakter-org \
+  --hosted-zone-id Z030739431M5X8J5MUKZQ --change-batch file://infra/dns-cutover.json
+gh variable set SITE_URL --repo map-lo/karakter-hp-2026 --body https://karakter-worldwide.com
+```
+
+[infra/dns-cutover.json](./infra/dns-cutover.json) replaces only the apex A record and
+old `www` CNAME with CloudFront A/AAAA aliases; mail and other subdomains remain unchanged.
+It is intentionally one-time: its DELETE requires the exact old CNAME.
+Verify public NS, both HTTPS hostnames, nested routes, and Google Workspace records after
+propagation. After the certificate is attached, setup reads the custom production URL
+from CloudFormation; subsequent setup runs preserve the activated hostname.

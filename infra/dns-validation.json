@@ -1,0 +1,27 @@
+{
+  "Comment": "ACM DNS validation for Karakter CloudFront certificate in us-east-1; retain for automatic renewal",
+  "Changes": [
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "_cc6ae08c7c20d9521bdbb81048c8a829.karakter-worldwide.com.",
+        "Type": "CNAME",
+        "TTL": 300,
+        "ResourceRecords": [
+          { "Value": "_c1c9cffef3aa7612c397c9a83b322c6e.wzccmgtwzk.acm-validations.aws." }
+        ]
+      }
+    },
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "_9fdea438ec314e5c73a12ee9a7436183.www.karakter-worldwide.com.",
+        "Type": "CNAME",
+        "TTL": 300,
+        "ResourceRecords": [
+          { "Value": "_994ee5604ed464fe5e2806042878d69f.wzccmgtwzk.acm-validations.aws." }
+        ]
+      }
+    }
+  ]
+}
