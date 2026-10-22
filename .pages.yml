@@ -105,13 +105,13 @@ content:
         type: string
         required: true
       - name: spotifyUrl
-        label: Spotify link
+        label: Spotify playlist URL
         type: string
-        required: true
+        description: Optional. Leave blank to hide the Spotify playlist icon.
       - name: appleMusicUrl
-        label: Apple Music link
+        label: Apple Music playlist URL
         type: string
-        required: true
+        description: Optional. Leave blank to hide the Apple Music playlist icon.
 
   - name: releases
     label: Releases

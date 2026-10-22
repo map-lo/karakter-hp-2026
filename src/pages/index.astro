@@ -201,6 +201,7 @@ const artistById = new Map(artists.map((artist) => [artist.id, artist]));
           /* Contact links: Mail, Instagram, Spotify & Apple Music icons before about text */
         }
         <div class="flex items-center gap-4">
+          {site.spotifyUrl && (
           <a
             class="contact-link"
             href={site.spotifyUrl}
@@ -218,6 +219,8 @@ const artistById = new Map(artists.map((artist) => [artist.id, artist]));
               ></path>
             </svg>
           </a>
+          )}
+          {site.appleMusicUrl && (
           <a
             class="contact-link"
             href={site.appleMusicUrl}
@@ -235,6 +238,7 @@ const artistById = new Map(artists.map((artist) => [artist.id, artist]));
               ></path>
             </svg>
           </a>
+          )}
           <a
             class="contact-link"
             href={`mailto:${site.email}`}

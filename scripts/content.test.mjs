@@ -58,6 +58,29 @@ test('blank optional label/link become null', () => {
   assert.equal(result.url, null);
 });
 
+test('playlist URLs are independently optional and validate non-empty URLs', () => {
+  const site = loadContent().site;
+  const fields = ['spotifyUrl', 'appleMusicUrl'];
+  const withoutPlaylists = { ...site };
+  for (const field of fields) delete withoutPlaylists[field];
+  const parsed = siteSchema.parse(withoutPlaylists);
+  for (const field of fields) {
+    assert.equal(parsed[field], undefined);
+    for (const value of ['', null, undefined]) {
+      assert.equal(siteSchema.parse({ ...withoutPlaylists, [field]: value })[field], undefined);
+    }
+    const url = field === 'spotifyUrl'
+      ? 'https://open.spotify.com/playlist/test'
+      : 'https://music.apple.com/playlist/test';
+    const result = siteSchema.parse({ ...withoutPlaylists, [field]: url });
+    assert.equal(result[field], url);
+    assert.equal(result[fields.find((name) => name !== field)], undefined);
+    for (const value of ['not-a-url', 'javascript:alert(1)']) {
+      assert.throws(() => siteSchema.parse({ ...withoutPlaylists, [field]: value }));
+    }
+  }
+});
+
 test('artist renaming preserves release association by ID; unknown artists fail', () => {
   const [result] = resolveReleases({ releases: [release] }, [{ ...artist, name: 'Renamed' }]);
   assert.equal(result.artist, 'Renamed');
@@ -104,6 +127,12 @@ test('CMS config covers canonical files and every release field', () => {
     entries.find((entry) => entry.name === 'site').fields.map((field) => field.name).sort(),
     Object.keys(siteSchema.shape).sort()
   );
+  const siteFields = entries.find((entry) => entry.name === 'site').fields;
+  for (const name of ['spotifyUrl', 'appleMusicUrl']) {
+    const field = siteFields.find((field) => field.name === name);
+    assert.notEqual(field.required, true);
+    assert.match(field.description, /Leave blank to hide/);
+  }
 });
 
 test('CloudFront directory routing preserves assets and query strings', () => {

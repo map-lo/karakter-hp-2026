@@ -27,8 +27,8 @@ export const siteSchema = z.strictObject({
   email: z.email(),
   instagramUrl: webUrl,
   instagramHandle: text,
-  spotifyUrl: webUrl,
-  appleMusicUrl: webUrl
+  spotifyUrl: optional(webUrl),
+  appleMusicUrl: optional(webUrl)
 });
 export const pageSchema = z.object({
   title: text,

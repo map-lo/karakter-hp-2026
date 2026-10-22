@@ -38,6 +38,10 @@ Editors need repository access; confirm organization policies and the hosted CMS
 before inviting them. The CMS interface lives separately from S3; there is no `/admin` route.
 Pages CMS authorization is a manual account step, not something the repository config can do.
 
+Under **Company details**, set the optional **Spotify playlist URL** and **Apple Music
+playlist URL** fields. Leave either field blank to hide its homepage icon; the two links
+are independent. Non-empty values must be HTTP or HTTPS URLs.
+
 The website always sorts the roster alphabetically by artist name, ignoring case and accents,
 regardless of CMS list order. Keep artist IDs stable when renaming an artist.
 Remove or reassign an artist's releases before deleting the artist.
