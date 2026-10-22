@@ -4,7 +4,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 export AWS_ACCOUNT_ID="544709547144"
-export AWS_PROFILE="${AWS_PROFILE:-karakter-org}"
+export AWS_PROFILE="${AWS_PROFILE:-karakter-hp}"
 export AWS_REGION="eu-central-1"
 export AWS_PAGER=""
 export S3_BUCKET CLOUDFRONT_DISTRIBUTION_ID

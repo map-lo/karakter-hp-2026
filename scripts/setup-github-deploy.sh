@@ -2,7 +2,7 @@
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
-export AWS_PROFILE="${AWS_PROFILE:-karakter-org}"
+export AWS_PROFILE="${AWS_PROFILE:-karakter-hp}"
 export AWS_REGION="${AWS_REGION:-eu-central-1}"
 export AWS_PAGER=""
 repository="map-lo/karakter-hp-2026"

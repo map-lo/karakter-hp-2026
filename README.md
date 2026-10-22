@@ -211,15 +211,16 @@ To provision/update these resources and configure GitHub (requires member-accoun
 administrator access and GitHub repository admin access):
 
 ```sh
-aws sso login --profile lya2
-aws configure set role_arn arn:aws:iam::544709547144:role/OrganizationAccountAccessRole --profile karakter-org
-aws configure set source_profile lya2 --profile karakter-org
-aws configure set region eu-central-1 --profile karakter-org
+aws configure sso --profile karakter-hp
+aws sso login --profile karakter-hp
 bash scripts/setup-github-deploy.sh
 ```
 
-`karakter-org` assumes the organization-created role through `lya2`; it stores no new
-access keys. The unrelated pre-existing local profile named `karakter` is not used.
+`karakter-hp` uses IAM Identity Center directly with account `544709547144`,
+permission set `AdministratorAccess`, and shared SSO session `loveyourartist`
+(start URL `https://d-99676f68fd.awsapps.com/start/#`, SSO region `eu-central-1`).
+It stores no permanent access keys. The unrelated standalone account uses the local
+profile `karakter-legacy` and is not used for this site.
 Secure the member root account with MFA/recovery controls and review AWS billing
 alerts separately; creating the member account does not configure these controls.
 
@@ -256,7 +257,7 @@ revision to recover. Only deploy content intended to be public.
 Prefer GitHub Actions for production. For a deliberate local deployment, sign in first:
 
 ```sh
-aws sso login --profile lya2
+aws sso login --profile karakter-hp
 npm run deploy:preview
 ```
 
@@ -320,7 +321,7 @@ both hostnames.** The generated CloudFront HTTPS URL works independently of this
 After delegation (or adding validation CNAMEs at Hetzner), confirm ACM shows `ISSUED`:
 
 ```sh
-aws acm describe-certificate --profile karakter-org --region us-east-1 \
+aws acm describe-certificate --profile karakter-hp --region us-east-1 \
   --certificate-arn arn:aws:acm:us-east-1:544709547144:certificate/e5830794-e225-4b40-9e5d-56535d09f84e \
   --query Certificate.Status --output text
 ```
@@ -329,7 +330,7 @@ Only then attach the certificate/hostnames. CloudFormation waits for CloudFront 
 other parameter values are preserved:
 
 ```sh
-aws cloudformation deploy --profile karakter-org --region eu-central-1 \
+aws cloudformation deploy --profile karakter-hp --region eu-central-1 \
   --stack-name karakter-github-actions --template-file infra/github-actions.yml \
   --capabilities CAPABILITY_IAM \
   --parameter-overrides CertificateArn=arn:aws:acm:us-east-1:544709547144:certificate/e5830794-e225-4b40-9e5d-56535d09f84e \
@@ -344,7 +345,7 @@ curl --fail --connect-to www.karakter-worldwide.com:443:dsk9324ext.cloudfront.ne
 Once both HTTPS hostnames work, apply the **one-time atomic website cutover**:
 
 ```sh
-aws route53 change-resource-record-sets --profile karakter-org \
+aws route53 change-resource-record-sets --profile karakter-hp \
   --hosted-zone-id Z030739431M5X8J5MUKZQ --change-batch file://infra/dns-cutover.json
 gh variable set SITE_URL --repo map-lo/karakter-hp-2026 --body https://karakter-worldwide.com
 ```
